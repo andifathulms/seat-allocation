@@ -1,0 +1,130 @@
+@import './tokens.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: var(--t-body);
+  line-height: 1.55;
+  /* DESIGN.md §3.1: non-negotiable, the app animates numbers. */
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+h1,
+h2,
+h3,
+p,
+figure,
+ul,
+ol {
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+svg text {
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* DESIGN.md §8: focus is visible everywhere and never removed. */
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.panel :focus-visible {
+  outline-color: var(--ink-panel);
+}
+
+/* -- shared page furniture ---------------------------------------------- */
+
+.page {
+  max-width: var(--page);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.h1 {
+  font-size: var(--t-h1);
+  line-height: 1.15;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.h2 {
+  font-size: var(--t-h2);
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+.prose {
+  max-width: var(--measure);
+  color: var(--ink-soft);
+}
+
+.small {
+  font-size: var(--t-small);
+  line-height: 1.45;
+}
+
+.micro {
+  font-size: var(--t-micro);
+  line-height: 1.3;
+  font-weight: 500;
+}
+
+.figure {
+  font-family: var(--font-narrow);
+  font-size: var(--t-figure);
+  line-height: var(--t-figure-lh);
+  font-weight: 600;
+}
+
+.panel {
+  background: var(--panel);
+  color: var(--ink-panel);
+  border-radius: var(--radius);
+}
+
+/* Every instrument has a table equivalent. It is reachable by keyboard and is
+ * hidden only visually until opened, never removed from the accessibility tree.
+ */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

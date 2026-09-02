@@ -92,3 +92,24 @@ two thirds of the screen costs more to displace.
 KPU gave numbers 1 to 17 to the parties that contested 2019, 18 to 23 to the Aceh
 local parties, and 24 to Partai Ummat. The field holds the actual nomor urut. It
 is used only to break exact quotient ties, where the ordering is what matters.
+
+---
+
+## 5. Archivo and Source Serif 4 are named but not self-hosted
+
+**Rule affected:** CLAUDE.md non-negotiable 3 ("no fonts from a CDN — self-host");
+DESIGN.md §3.
+
+DESIGN.md specifies Archivo, Archivo Narrow and Source Serif 4, self-hosted and
+subset. The font files were not available to this build and CLAUDE.md forbids
+fetching them from a CDN, so nothing is fetched.
+
+`--font-ui`, `--font-narrow` and `--font-law` in `src/styles/tokens.css` name
+those three families first and fall back to system faces. Dropping the subset
+`.woff2` files into `public/fonts/` and adding the `@font-face` rules is the
+whole change; no other file refers to a family name.
+
+Until then the numeral treatment still holds: `font-variant-numeric:
+tabular-nums lining-nums` is set on `body` and on `svg text`, so figures do not
+jitter when they animate, which is what DESIGN.md §3.1 calls non-negotiable.
+The narrow width and the serif voice for pasal text are what is missing.

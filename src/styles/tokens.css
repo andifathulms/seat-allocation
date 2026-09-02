@@ -1,0 +1,85 @@
+/*
+ * DESIGN.md §2 and §3. Every value here is chrome. No party colour appears in
+ * CSS: parties-2024.json owns those, and they arrive as inline fill attributes.
+ */
+
+:root {
+  /* -- ground and chrome, DESIGN.md §2.1 -------------------------------- */
+  --paper: #e8e9e6;
+  --panel: #6e7370;
+  --panel-deep: #585d5a;
+  --ink: #16191a;
+  --ink-soft: #4a4f4e;
+  --ink-panel: #f2f3f1;
+  --rule: #c3c6c1;
+  --rule-panel: #8a8f8c;
+
+  /* The only two functional non-party colours in the app. */
+  --void: #2b2e2d;
+  --warn: #b4472e;
+
+  /* -- type, DESIGN.md §3 ------------------------------------------------
+   * Archivo and Source Serif 4 are named first so that dropping the self-hosted
+   * files into public/fonts picks them up with no further change. Until then the
+   * stacks fall back to system faces. See DECISIONS.md §5.
+   */
+  --font-ui: 'Archivo', ui-sans-serif, system-ui, 'Helvetica Neue', Arial, sans-serif;
+  --font-narrow: 'Archivo Narrow', 'Archivo', ui-sans-serif, system-ui,
+    'Helvetica Neue', Arial, sans-serif;
+  --font-law: 'Source Serif 4', ui-serif, Georgia, 'Times New Roman', serif;
+
+  --t-hero: 76px;
+  --t-hero-lh: 0.9;
+  --t-figure: 39px;
+  --t-figure-lh: 1;
+  --t-h1: 31px;
+  --t-h2: 25px;
+  --t-body: 16px;
+  --t-small: 13px;
+  --t-micro: 11px;
+  --t-law: 15px;
+
+  /* -- spacing, DESIGN.md §4.3 ------------------------------------------ */
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s5: 24px;
+  --s6: 40px;
+  --s7: 64px;
+  --s8: 104px;
+
+  --measure: 68ch;
+  --page: 72rem;
+  --gutter: 24px;
+  --radius: 2px;
+
+  /* -- motion, DESIGN.md §6.2 ------------------------------------------- */
+  --d-migrate: 420ms;
+  --d-step: 260ms;
+  --d-sweep: 520ms;
+  --d-popover: 140ms;
+  --d-control: 120ms;
+  --e-migrate: cubic-bezier(0.32, 0.72, 0, 1);
+  --e-step: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --d-migrate: 0ms;
+    --d-step: 0ms;
+    --d-sweep: 0ms;
+    --d-popover: 0ms;
+    --d-control: 0ms;
+  }
+}
+
+@media (max-width: 720px) {
+  :root {
+    --t-hero: 52px;
+    --t-figure: 31px;
+    --t-h1: 25px;
+    --t-h2: 20px;
+    --gutter: 16px;
+  }
+}
