@@ -1,0 +1,49 @@
+.table-view {
+  margin-top: var(--s3);
+}
+
+.table-view__toggle {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.table-view__scroll {
+  margin-top: var(--s3);
+  max-height: 30rem;
+  overflow: auto;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+}
+
+.table-view table {
+  width: 100%;
+  font-size: var(--t-small);
+}
+
+.table-view th,
+.table-view td {
+  padding: var(--s1) var(--s3);
+  text-align: left;
+  border-bottom: 1px solid var(--rule);
+  font-weight: 400;
+}
+
+.table-view thead th {
+  position: sticky;
+  top: 0;
+  background: var(--paper);
+  font-weight: 600;
+  border-bottom-color: var(--ink);
+}
+
+.table-view tbody th {
+  font-weight: 600;
+}
+
+/* Numerals are the only right-aligned thing on the page, so digits line up the
+   way a tally does. DESIGN.md §1. */
+.table-view .numeric {
+  text-align: right;
+  font-family: var(--font-narrow);
+}

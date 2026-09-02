@@ -4,6 +4,7 @@ import type { Dapil, Party, RuleSet, SeatAward } from '../../engine/types';
 import { S } from '../../copy/strings.id';
 import { count, decimal } from '../../ui/format';
 import { useReducedMotion } from '../../ui/motion';
+import { TableView } from '../../ui/TableView';
 import './cascade.css';
 
 interface Props {
@@ -223,6 +224,29 @@ export function Cascade({ parties, dapil, code, rules, onSelect }: Props) {
         </div>
         )}
       </div>
+
+      <TableView
+        caption={`${S.cascade}: ${selected.name}`}
+        columns={[
+          { key: 'ordinal', label: S.step, numeric: true },
+          { key: 'party', label: S.party },
+          { key: 'votes', label: S.votes, numeric: true },
+          { key: 'divisor', label: 'pembagi', numeric: true },
+          { key: 'quotient', label: 'hasil bagi', numeric: true },
+        ]}
+        rows={trace.map((award) => ({
+          ordinal: award.ordinal,
+          party: parties.find((p) => p.id === award.winner)?.shortName ?? award.winner,
+          votes: count(selected.votes[award.winner] ?? 0),
+          divisor: decimal(
+            award.table.find((c) => c.party === award.winner)?.divisor ?? 1,
+            isQuota ? 0 : 1,
+          ),
+          quotient: isQuota
+            ? decimal(award.quotient, 4)
+            : count(Math.round(award.quotient)),
+        }))}
+      />
 
       {/* The arithmetic for the current step, printed in full so it can be
           checked by hand. DESIGN.md §5.2. */}

@@ -4,11 +4,13 @@ import { loadDataset } from './data/load';
 import { reproduce, type Reproduction } from './data/reproduction';
 import type { Dataset } from './data/schema';
 import { useAllocation } from './state/useAllocation';
+import { count, decimal, percent } from './ui/format';
 import { Archipelago } from './views/Archipelago/Archipelago';
 import { Cascade } from './views/Cascade/Cascade';
 import { Chamber } from './views/Chamber/Chamber';
 import { Legend } from './ui/Legend';
 import { MetricStrip } from './ui/MetricStrip';
+import { TableView } from './ui/TableView';
 import { Transport } from './ui/Transport';
 import { Verification } from './ui/Verification';
 import { Proportionality } from './views/Proportionality/Proportionality';
@@ -86,6 +88,31 @@ function Loaded({ data }: { data: Dataset }) {
             baselineSeats={reproduction.baseline.seatsByParty}
             totalValidVotes={data.parties.totalValidVotes}
           />
+          <TableView
+            caption={`${S.legend}. ${S.chamberNote}`}
+            columns={[
+              { key: 'party', label: S.party },
+              { key: 'votes', label: S.votes, numeric: true },
+              { key: 'voteShare', label: S.voteShare, numeric: true },
+              { key: 'seats', label: S.seats, numeric: true },
+              { key: 'seatShare', label: S.seatShare, numeric: true },
+              { key: 'baseline', label: S.under2024, numeric: true },
+            ]}
+            rows={[...data.parties.parties]
+              .sort(
+                (a, b) =>
+                  (allocation.seatsByParty[b.id] ?? 0) - (allocation.seatsByParty[a.id] ?? 0) ||
+                  b.nationalVotes - a.nationalVotes,
+              )
+              .map((p) => ({
+                party: p.fullName,
+                votes: count(p.nationalVotes),
+                voteShare: percent(p.nationalVotes / data.parties.totalValidVotes, 2),
+                seats: allocation.seatsByParty[p.id] ?? 0,
+                seatShare: percent(allocation.metrics.shares[p.id]?.seatShare ?? 0, 2),
+                baseline: reproduction.baseline.seatsByParty[p.id] ?? 0,
+              }))}
+          />
         </section>
 
         <section className="section">
@@ -107,6 +134,23 @@ function Loaded({ data }: { data: Dataset }) {
             totalValidVotes={data.parties.totalValidVotes}
             animate={!scrubbing}
           />
+          <TableView
+            caption={S.voteBarNote}
+            columns={[
+              { key: 'party', label: S.party },
+              { key: 'votes', label: S.votes, numeric: true },
+              { key: 'share', label: S.voteShare, numeric: true },
+              { key: 'state', label: S.seats },
+            ]}
+            rows={[...data.parties.parties]
+              .sort((a, b) => b.nationalVotes - a.nationalVotes)
+              .map((p) => ({
+                party: p.shortName,
+                votes: count(p.nationalVotes),
+                share: percent(p.nationalVotes / data.parties.totalValidVotes, 2),
+                state: (allocation.seatsByParty[p.id] ?? 0) > 0 ? S.converted : S.notConverted,
+              }))}
+          />
         </section>
 
         <section className="section">
@@ -120,6 +164,32 @@ function Loaded({ data }: { data: Dataset }) {
             selected={selectedDapil}
             onSelect={setSelectedDapil}
             animate={!scrubbing}
+          />
+          <TableView
+            caption={S.archipelagoNote}
+            columns={[
+              { key: 'dapil', label: S.dapil },
+              { key: 'magnitude', label: S.magnitude, numeric: true },
+              { key: 'composition', label: S.legend },
+              { key: 'changed', label: S.changedDapil },
+            ]}
+            rows={allocation.byDapil.map((result) => {
+              const d = data.dapil.dapil.find((x) => x.code === result.dapil);
+              const base = reproduction.baseline.byDapil.find((x) => x.dapil === result.dapil);
+              return {
+                dapil: d?.name ?? result.dapil,
+                magnitude: d?.magnitude ?? 0,
+                composition: data.parties.parties
+                  .filter((p) => (result.seats[p.id] ?? 0) > 0)
+                  .map((p) => `${p.shortName} ${result.seats[p.id]}`)
+                  .join(', '),
+                changed: data.parties.parties.some(
+                  (p) => (result.seats[p.id] ?? 0) !== (base?.seats[p.id] ?? 0),
+                )
+                  ? 'ya'
+                  : '',
+              };
+            })}
           />
         </section>
 
@@ -143,6 +213,31 @@ function Loaded({ data }: { data: Dataset }) {
             metrics={allocation.metrics}
             animate={!scrubbing}
           />
+          <TableView
+            caption={S.proportionalityNote}
+            columns={[
+              { key: 'party', label: S.party },
+              { key: 'voteShare', label: S.voteShare, numeric: true },
+              { key: 'seatShare', label: S.seatShare, numeric: true },
+              { key: 'gap', label: 'selisih', numeric: true },
+            ]}
+            rows={[...data.parties.parties]
+              .sort(
+                (a, b) =>
+                  (allocation.metrics.shares[b.id]?.voteShare ?? 0) -
+                  (allocation.metrics.shares[a.id]?.voteShare ?? 0),
+              )
+              .map((p) => {
+                const share = allocation.metrics.shares[p.id] ?? { voteShare: 0, seatShare: 0 };
+                const gap = (share.seatShare - share.voteShare) * 100;
+                return {
+                  party: p.shortName,
+                  voteShare: percent(share.voteShare, 2),
+                  seatShare: percent(share.seatShare, 2),
+                  gap: `${gap > 0 ? '+' : gap < 0 ? '−' : ''}${decimal(Math.abs(gap), 2)}`,
+                };
+              })}
+          />
         </section>
       </main>
 
@@ -151,6 +246,7 @@ function Loaded({ data }: { data: Dataset }) {
         onChange={setRules}
         onScrub={setScrubbing}
         averageMagnitude={averageMagnitude}
+        citations={data.rules}
       />
     </>
   );

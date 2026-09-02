@@ -9,7 +9,9 @@ import {
   THRESHOLD_MAX,
   THRESHOLD_STEP,
 } from '../state/rules';
+import { Cite } from './Cite';
 import { percent } from './format';
+import type { RulesFile } from '../data/schema';
 import './transport.css';
 
 interface Props {
@@ -18,6 +20,7 @@ interface Props {
   /** true while the scrubber is being dragged: continuous control, no easing */
   onScrub: (scrubbing: boolean) => void;
   averageMagnitude: number;
+  citations: RulesFile;
 }
 
 const SCOPES: Array<{ value: ThresholdScope; label: string }> = [
@@ -44,7 +47,7 @@ const GEOGRAPHIES: Array<{ value: Geography; label: string }> = [
  * vocabulary people already have for that. It also keeps the control under the
  * thumb on a phone while the chamber stays at eye level.
  */
-export function Transport({ rules, onChange, onScrub, averageMagnitude }: Props) {
+export function Transport({ rules, onChange, onScrub, averageMagnitude, citations }: Props) {
   const sliderId = useId();
   const atDefault = isDefault(rules);
 
@@ -67,9 +70,10 @@ export function Transport({ rules, onChange, onScrub, averageMagnitude }: Props)
         )}
 
         <div className="transport__scrub">
-          <label className="transport__label small" htmlFor={sliderId}>
-            {S.threshold}
-          </label>
+          <span className="transport__label small">
+            <label htmlFor={sliderId}>{S.threshold}</label>
+            <Cite rules={citations} of="threshold" />
+          </span>
           <output className="transport__value figure" htmlFor={sliderId}>
             {percent(rules.threshold, 1)}
           </output>
@@ -113,18 +117,21 @@ export function Transport({ rules, onChange, onScrub, averageMagnitude }: Props)
         <div className="transport__rules">
           <Toggle
             label={S.thresholdScope}
+            cite={<Cite rules={citations} of="threshold" />}
             options={SCOPES}
             value={rules.thresholdScope}
             onSelect={(v) => onChange({ ...rules, thresholdScope: v })}
           />
           <Toggle
             label={S.divisor}
+            cite={<Cite rules={citations} of="divisor" />}
             options={DIVISORS}
             value={rules.divisor}
             onSelect={(v) => onChange({ ...rules, divisor: v })}
           />
           <Toggle
             label={S.geography}
+            cite={<Cite rules={citations} of="dapil" />}
             options={GEOGRAPHIES}
             value={rules.geography}
             onSelect={(v) => onChange({ ...rules, geography: v })}
@@ -152,18 +159,23 @@ export function Transport({ rules, onChange, onScrub, averageMagnitude }: Props)
  */
 function Toggle<T extends string>({
   label,
+  cite,
   options,
   value,
   onSelect,
 }: {
   label: string;
+  cite?: React.ReactNode;
   options: ReadonlyArray<{ value: T; label: string }>;
   value: T;
   onSelect: (value: T) => void;
 }) {
   return (
     <fieldset className="toggle">
-      <legend className="toggle__legend micro">{label}</legend>
+      <legend className="toggle__legend micro">
+        {label}
+        {cite}
+      </legend>
       {options.map((option) => (
         <button
           key={option.value}
