@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { S } from './copy/strings.id';
 import { loadDataset } from './data/load';
+import { pickDefaultDapil } from './data/defaultDapil';
 import { reproduce, type Reproduction } from './data/reproduction';
 import type { Dataset } from './data/schema';
 import { useAllocation } from './state/useAllocation';
@@ -60,8 +61,8 @@ function Loaded({ data }: { data: Dataset }) {
   const [scrubbing, setScrubbing] = useState(false);
 
   const averageMagnitude = data.official.totalSeats / data.dapil.dapil.length;
-  const [selectedDapil, setSelectedDapil] = useState<string>(
-    () => data.dapil.dapil[0]?.code ?? '',
+  const [selectedDapil, setSelectedDapil] = useState<string>(() =>
+    pickDefaultDapil(data.parties.parties, data.dapil.dapil),
   );
 
   return (

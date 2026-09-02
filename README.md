@@ -74,6 +74,8 @@ controls, whenever any control is off its 2024 default.
 - 40 engine tests, every expected value hand-computed.
 - Full recomputation at 0,23 ms median across a threshold sweep, against a 16 ms
   budget.
+- Dragging the threshold from 4,0% to 0 on the production build: 60 fps median,
+  p95 frame 17,6 ms, 1,3% of frames over 20 ms, no recomputation stall.
 - 289 KB shipped, code and data together, against a 1 MB budget.
 - Zero axe-core violations at 380, 720 and 1400 px, on default and changed rules.
 - Reduced motion measured, not assumed: every instrument lands in one write.

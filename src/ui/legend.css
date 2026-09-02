@@ -30,6 +30,17 @@
   transform: translateX(2px);
 }
 
+.legend__fill,
+.legend__hatch {
+  transition: opacity var(--d-migrate) cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* The hatch resolves only after the seats have arrived, so the legend and the
+   chamber report the same event at the same moment. DESIGN.md §6.4. */
+.legend__hatch {
+  transition-delay: var(--d-migrate);
+}
+
 .legend__swatch {
   grid-area: swatch;
   display: block;

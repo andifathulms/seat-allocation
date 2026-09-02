@@ -50,13 +50,22 @@ export function Legend({
               >
                 <span className="legend__swatch" aria-hidden="true">
                   <svg viewBox="0 0 12 12" width="12" height="12">
+                    {/* DESIGN.md §6.4: when the party crosses back in, the
+                        hatch resolves to solid rather than disappearing. */}
                     <rect
+                      className="legend__fill"
                       width="12"
                       height="12"
                       fill={party.color}
                       opacity={zero ? 0.4 : 1}
                     />
-                    {zero && <rect width="12" height="12" fill="url(#hatch)" />}
+                    <rect
+                      className="legend__hatch"
+                      width="12"
+                      height="12"
+                      fill="url(#hatch)"
+                      opacity={zero ? 1 : 0}
+                    />
                   </svg>
                 </span>
                 <span className="legend__name">{party.shortName}</span>

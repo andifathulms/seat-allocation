@@ -29,3 +29,13 @@
   font-family: var(--font-narrow);
   font-size: 0.062px;
 }
+
+.chamber__label--out text {
+  font-size: 0.042px;
+}
+
+.chamber__leader {
+  stroke: var(--ink-panel);
+  stroke-width: 0.005px;
+  opacity: 0.7;
+}
