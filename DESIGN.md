@@ -277,6 +277,17 @@ The three discrete controls are inline text toggles, not dropdowns or segmented 
 with its label in a fixed left column so the three read as one table of settings. Reset is
 a text link, disabled at defaults.
 
+Each toggle is a `fieldset`, and its visible label is **not** its `legend`. A fieldset's
+rendered legend is taken out of the element's own formatting context in WebKit, so a legend
+styled as a grid item is silently dropped from the grid and the options collapse into the
+label's column — which doubled the bar's height in Safari and nowhere else. The legend
+stays, visually hidden, for the group's accessible name; the visible label is a sibling the
+grid can place.
+
+The bar publishes its measured height as `--transport-h`, because it grows when the
+counterfactual statement appears and the clearance the page needs beneath it is therefore
+not a constant.
+
 **The counterfactual statement (PRD §10.1) lives in this bar**, appearing directly above
 the scrubber the moment any control leaves its default and staying until reset. The bar
 grows to accommodate it rather than the text overlaying anything.
@@ -325,6 +336,12 @@ four party columns at a time with horizontal scroll and snap points.
 at 380 px. Parties are ordered around the arc by seat count, largest at the left, which
 keeps block boundaries stable as counts change and avoids implying a left-right political
 axis the app has no business asserting.
+
+**The arc has to fit between the rail and the transport**, so it is capped at the viewport
+height less `--transport-h` and the space the rail and this section's head occupy. Dragging
+the threshold and watching the chamber recompose is the app's core moment, and it does not
+happen at all if the arc is behind the control being dragged. On a short window the arc
+shrinks and keeps dark stage either side rather than running under the bar.
 
 Each seat is a circle. **The seat total sits in the hemicycle's own void**, at `--t-hero`
 with its unit beneath — the number and the thing it counts read as one object, and the

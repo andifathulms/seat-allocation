@@ -9,7 +9,7 @@
   align-items: start;
   column-gap: var(--s5);
   row-gap: var(--s3);
-  padding-bottom: var(--s5);
+  padding-bottom: var(--s6);
 }
 
 /* The spine. Narrow tabular figures, aligned with the heading's cap height. */

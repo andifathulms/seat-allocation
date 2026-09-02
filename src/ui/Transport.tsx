@@ -1,4 +1,4 @@
-import { useId } from 'react';
+import { useEffect, useId, useRef } from 'react';
 import { RULES_2024 } from '../engine';
 import type { DivisorRule, Geography, RuleSet, ThresholdScope } from '../engine/types';
 import { S } from '../copy/strings.id';
@@ -50,6 +50,27 @@ const GEOGRAPHIES: Array<{ value: Geography; label: string }> = [
 export function Transport({ rules, onChange, onScrub, averageMagnitude, citations }: Props) {
   const sliderId = useId();
   const atDefault = isDefault(rules);
+  const bar = useRef<HTMLElement>(null);
+
+  /**
+   * The bar floats over the instruments and grows when the counterfactual
+   * statement appears, so the clearance the page needs beneath it is not a
+   * constant. Publishing the measured height lets the last instrument scroll
+   * clear of it instead of ending under it.
+   */
+  useEffect(() => {
+    const node = bar.current;
+    if (!node) return;
+    const observer = new ResizeObserver(([entry]) => {
+      const height = entry?.borderBoxSize?.[0]?.blockSize ?? node.offsetHeight;
+      document.documentElement.style.setProperty('--transport-h', `${Math.round(height)}px`);
+    });
+    observer.observe(node);
+    return () => {
+      observer.disconnect();
+      document.documentElement.style.removeProperty('--transport-h');
+    };
+  }, []);
 
   const ticks = [
     ...SNAP_POINTS,
@@ -61,7 +82,7 @@ export function Transport({ rules, onChange, onScrub, averageMagnitude, citation
   ].sort((a, b) => a.value - b.value);
 
   return (
-    <section className="transport" aria-label={S.controls}>
+    <section className="transport" aria-label={S.controls} ref={bar}>
       <div className="transport__inner page">
         {/* PRD §10.1. Adjacent to the controls, in plain language, at all times
             when any knob is off its 2024 default. Never a dismissible modal. */}
@@ -192,10 +213,18 @@ function Toggle<T extends string>({
 }) {
   return (
     <fieldset className="toggle">
-      <legend className="toggle__legend micro">
-        {label}
+      {/* A fieldset's rendered legend is taken out of its own formatting context
+          in WebKit, so a legend styled as a grid item is silently dropped from
+          the grid and the options collapse into the label's column. The legend
+          stays for the group's accessible name and the visible label is a
+          sibling that the grid can actually place. The visible text is hidden
+          from assistive technology so the name is not announced twice; the
+          citation is not, because it is a real control. */}
+      <legend className="visually-hidden">{label}</legend>
+      <span className="toggle__label micro">
+        <span aria-hidden="true">{label}</span>
         {cite}
-      </legend>
+      </span>
       <span className="toggle__options">
         {options.map((option) => (
           <button

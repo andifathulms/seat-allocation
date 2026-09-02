@@ -10,6 +10,24 @@
   /* The hemicycle is the only centred element on the page, and it is centred
      because the chamber it depicts is symmetrical. DESIGN.md §1. */
   overflow: visible;
+
+  /*
+   * The arc has to fit between the rail and the transport. Dragging the
+   * threshold and watching the chamber recompose is the app's core moment, and
+   * it does not happen at all if the arc is behind the control being dragged.
+   *
+   * The reservation is the rail, this section's head, and the transport at
+   * whatever height it currently is — Transport.tsx measures it. `svh` rather
+   * than `vh` so a mobile browser's retracting chrome does not push the arc
+   * under the bar on first paint.
+   */
+  max-height: calc(100svh - var(--transport-h, 9rem) - 19rem);
+}
+
+@supports not (height: 100svh) {
+  .chamber__svg {
+    max-height: calc(100vh - var(--transport-h, 9rem) - 19rem);
+  }
 }
 
 /* The seat total, in the arc's own void. */

@@ -261,10 +261,8 @@
   column-gap: var(--s3);
 }
 
-.toggle__legend {
+.toggle__label {
   color: var(--ink-soft);
-  padding: 0;
-  float: left;
 }
 
 .toggle__options {
@@ -304,6 +302,28 @@
 
 .transport__sheet {
   display: none;
+}
+
+/* A laptop in a short window gives the bar a fifth of the viewport at the
+   default height. The year notes are the first thing to go: they are context
+   for the tick, and the tick keeps its value. */
+@media (max-height: 760px) {
+  .transport__inner {
+    padding-block: var(--s3) var(--s4);
+    gap: var(--s3);
+  }
+
+  .transport__tick-note {
+    display: none;
+  }
+
+  .transport__track {
+    padding-bottom: 3.4rem;
+  }
+
+  .transport__rules {
+    gap: var(--s2);
+  }
 }
 
 @media (max-width: 960px) {

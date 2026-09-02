@@ -12,8 +12,11 @@
   gap: var(--s6);
 }
 
+/* Clearance for the transport, which floats over the page and changes height
+   when the counterfactual statement appears. Transport.tsx measures it; the
+   fallback covers the frame before the observer first fires. */
 main {
-  padding-bottom: var(--s8);
+  padding-bottom: calc(var(--transport-h, 9rem) + var(--s6));
 }
 
 @media (max-width: 720px) {
