@@ -1,6 +1,8 @@
 .rail {
-  position: sticky;
-  top: 0;
+  /* Fixed rather than sticky: a sticky rail is still in flow, so it reserves
+     3,5rem above the masthead for a bar that is not shown yet. */
+  position: fixed;
+  inset: 0 0 auto;
   z-index: 30;
   background: color-mix(in srgb, var(--paper) 86%, transparent);
   backdrop-filter: blur(10px);

@@ -54,3 +54,17 @@
   stroke: var(--rule-stage);
   stroke-width: 0.005px;
 }
+
+@media (max-width: 720px) {
+  /* Below this width the arc is about 340 px across and eight block labels
+     cannot be placed inside it without colliding. They are dropped rather than
+     shrunk: the legend directly beneath names every block with its count, and
+     the arc's accessible description still lists them all. */
+  .chamber__label {
+    display: none;
+  }
+
+  .chamber__total-value {
+    font-size: 0.34px;
+  }
+}

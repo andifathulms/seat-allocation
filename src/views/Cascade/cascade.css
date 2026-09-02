@@ -269,3 +269,28 @@
     min-width: 0;
   }
 }
+
+@media (max-width: 720px) {
+  .cascade__board {
+    padding: var(--s4);
+    gap: var(--s4);
+  }
+
+  .cascade__arithmetic {
+    font-size: var(--t-h3);
+  }
+
+  .cascade__head {
+    gap: var(--s3);
+  }
+
+  .cascade__head label,
+  .cascade__transport {
+    width: 100%;
+  }
+
+  .cascade__head select {
+    flex: 1 1 auto;
+    max-width: none;
+  }
+}
