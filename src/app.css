@@ -1,0 +1,23 @@
+.masthead {
+  padding-top: var(--s6);
+}
+
+.masthead .prose {
+  margin-top: var(--s2);
+  margin-bottom: var(--s5);
+}
+
+/* DESIGN.md §7: on a reproduction failure the instruments are dimmed, not
+   hidden. The numbers stay reachable; the claim to have reproduced does not. */
+.page--unverified .section {
+  opacity: 0.78;
+}
+
+.section {
+  margin-top: var(--s7);
+}
+
+.section > .prose {
+  margin-top: var(--s2);
+  margin-bottom: var(--s4);
+}

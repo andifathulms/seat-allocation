@@ -1,0 +1,60 @@
+.hatch-def {
+  position: absolute;
+}
+
+.legend {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+  gap: var(--s1) var(--s4);
+  margin-top: var(--s4);
+}
+
+.legend__item {
+  display: grid;
+  grid-template-columns: 12px 1fr auto;
+  grid-template-areas:
+    'swatch name seats'
+    '.      share delta';
+  align-items: baseline;
+  column-gap: var(--s2);
+  width: 100%;
+  padding: var(--s1) var(--s2);
+  border: 2px solid transparent;
+  border-radius: var(--radius);
+  text-align: left;
+}
+
+/* Selection is an outline and an offset, never a colour. DESIGN.md §2.1. */
+.legend__item--on {
+  border-color: var(--ink);
+  transform: translateX(2px);
+}
+
+.legend__swatch {
+  grid-area: swatch;
+  display: block;
+  line-height: 0;
+  align-self: center;
+}
+
+.legend__name {
+  grid-area: name;
+  font-weight: 600;
+}
+
+.legend__seats {
+  grid-area: seats;
+  font-size: 1.4rem;
+  text-align: right;
+}
+
+.legend__share {
+  grid-area: share;
+  color: var(--ink-soft);
+}
+
+.legend__delta {
+  grid-area: delta;
+  text-align: right;
+  color: var(--ink);
+}

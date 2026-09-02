@@ -1,3 +1,73 @@
+import { useEffect, useState } from 'react';
+import { S } from './copy/strings.id';
+import { loadDataset } from './data/load';
+import { reproduce, type Reproduction } from './data/reproduction';
+import type { Dataset } from './data/schema';
+import { useAllocation } from './state/useAllocation';
+import { Chamber } from './views/Chamber/Chamber';
+import { Legend } from './ui/Legend';
+import { Verification } from './ui/Verification';
+import './app.css';
+
 export function App() {
-  return <div className="page">Suara ke Kursi</div>;
+  const [data, setData] = useState<Dataset | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    loadDataset(import.meta.env.BASE_URL)
+      .then(setData)
+      .catch((e: unknown) => setError(e instanceof Error ? e.message : String(e)));
+  }, []);
+
+  if (error) {
+    return (
+      <main className="page">
+        <p className="verification verification--failed">
+          {S.loadFailed} {error}
+        </p>
+      </main>
+    );
+  }
+  if (!data) {
+    return (
+      <main className="page">
+        <p className="small">{S.loading}</p>
+      </main>
+    );
+  }
+  return <Loaded data={data} />;
+}
+
+function Loaded({ data }: { data: Dataset }) {
+  const [reproduction] = useState<Reproduction>(() => reproduce(data));
+  const { allocation } = useAllocation(data);
+
+  return (
+    <>
+      <header className="page masthead">
+        <h1 className="h1">{S.title}</h1>
+        <p className="prose">{S.subtitle}</p>
+        <Verification reproduction={reproduction} />
+      </header>
+
+      <main className={`page${reproduction.reproduced ? '' : ' page--unverified'}`}>
+        <section className="section">
+          <h2 className="h2">{S.chamber}</h2>
+          <p className="prose small">{S.chamberNote}</p>
+          <Chamber
+            parties={data.parties.parties}
+            seatsByParty={allocation.seatsByParty}
+            total={data.official.totalSeats}
+            animate
+          />
+          <Legend
+            parties={data.parties.parties}
+            seatsByParty={allocation.seatsByParty}
+            baselineSeats={reproduction.baseline.seatsByParty}
+            totalValidVotes={data.parties.totalValidVotes}
+          />
+        </section>
+      </main>
+    </>
+  );
 }

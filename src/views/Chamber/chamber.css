@@ -1,0 +1,31 @@
+.chamber {
+  margin: 0;
+  padding: var(--s5) var(--s4) var(--s4);
+  background: var(--panel);
+  border-radius: var(--radius);
+}
+
+.chamber__svg {
+  display: block;
+  width: 100%;
+  max-width: 56rem;
+  margin: 0 auto;
+  /* The hemicycle is the only centred element on the page, and it is centred
+     because the chamber it depicts is symmetrical. DESIGN.md §1. */
+  overflow: visible;
+}
+
+.chamber__label text {
+  fill: var(--ink-panel);
+  font-family: var(--font-ui);
+  font-size: 0.048px;
+  font-weight: 600;
+  paint-order: stroke;
+  stroke: rgb(0 0 0 / 35%);
+  stroke-width: 0.012px;
+}
+
+.chamber__label .chamber__count {
+  font-family: var(--font-narrow);
+  font-size: 0.062px;
+}

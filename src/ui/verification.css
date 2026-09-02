@@ -1,0 +1,46 @@
+.verification {
+  border-block: 1px solid var(--rule);
+  padding: var(--s3) 0;
+}
+
+.verification__line {
+  font-size: var(--t-small);
+  line-height: 1.45;
+  max-width: var(--measure);
+}
+
+.verification--ok .verification__line {
+  color: var(--ink-soft);
+}
+
+.verification--unverified .verification__line,
+.verification--failed .verification__line {
+  color: var(--warn);
+}
+
+.verification__detail {
+  margin-top: var(--s2);
+  max-width: var(--measure);
+}
+
+.verification__detail summary {
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+
+.verification__detail ul {
+  margin-top: var(--s2);
+  display: grid;
+  gap: var(--s1);
+  color: var(--ink-soft);
+}
+
+.verification__detail li {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr;
+  gap: var(--s2);
+}
+
+.verification__mark {
+  font-family: var(--font-narrow);
+}
