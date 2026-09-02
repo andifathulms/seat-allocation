@@ -115,6 +115,24 @@
   margin-bottom: 2px;
 }
 
+.transport__tick--right {
+  transform: translateX(-100%);
+  justify-items: end;
+}
+
+.transport__tick--right::before {
+  justify-self: end;
+}
+
+.transport__tick--left {
+  transform: none;
+  justify-items: start;
+}
+
+.transport__tick--left::before {
+  justify-self: start;
+}
+
 .transport__tick--on {
   color: var(--ink);
 }
@@ -178,9 +196,47 @@
   opacity: 0.5;
 }
 
+.transport__sheet {
+  display: none;
+}
+
 @media (max-width: 720px) {
+  /* The value alone still reads at this width; the year note does not fit
+     between neighbouring ticks and is dropped rather than overlapped. */
+  .transport__tick-note {
+    display: none;
+  }
+
+  /* 3,5% and 4,0% are five pixels apart on a 380 px track, so alternate ticks
+     drop to a second row rather than printing over each other. */
+  .transport__tick:nth-child(even) {
+    padding-top: 1.15em;
+  }
+
+  .transport__track {
+    padding-bottom: var(--s6);
+  }
+
+  .transport__sheet {
+    display: block;
+  }
+
+  .transport__sheet summary {
+    color: var(--ink);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+
   .transport__rules {
-    gap: var(--s2) var(--s4);
+    display: none;
+    gap: var(--s3) var(--s4);
+  }
+
+  .transport__sheet[open] ~ .transport__rules {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .transport__reset {

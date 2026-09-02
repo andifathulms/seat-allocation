@@ -51,6 +51,7 @@ export const S = {
   under2024: 'aturan 2024',
 
   controls: 'Aturan',
+  moreRules: 'Aturan lain',
   threshold: 'Ambang batas',
   thresholdScope: 'Cakupan ambang batas',
   scopeNational: 'nasional',
@@ -115,6 +116,21 @@ export const S = {
   party: 'Partai',
   dapil: 'Dapil',
   magnitude: 'Kursi',
+
+  context: 'Latar hukum',
+  contextNote:
+    'Mahkamah Konstitusi menyatakan ambang batas 4 persen berlaku untuk Pemilu 2024 ' +
+    'dan mewajibkan pembentuk undang-undang merumuskan ulang angkanya sebelum tahapan ' +
+    'Pemilu 2029 dimulai. Kutipan berikut adalah apa yang diwajibkan Mahkamah, bukan ' +
+    'pendapat aplikasi ini.',
+
+  sources: 'Sumber data',
+  provenanceCertified: 'Angka bersertifikat KPU.',
+  provenanceSynthetic:
+    'Berkas dapil-2024.json pada versi ini adalah placeholder, bukan rekapitulasi ' +
+    'bersertifikat. Total suara nasional tiap partai dan total 580 kursi pada 84 dapil ' +
+    'sesuai angka resmi; angka suara per dapil tidak. Karena itu baris verifikasi di ' +
+    'atas menyatakan hasil resmi belum dapat direproduksi.',
 
   source: 'Sumber',
   tie: 'Hasil bagi seri',

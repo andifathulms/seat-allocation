@@ -1,0 +1,57 @@
+.colophon {
+  display: grid;
+  gap: var(--s7);
+  margin-top: var(--s8);
+  padding-top: var(--s6);
+  padding-bottom: var(--s7);
+  border-top: 1px solid var(--rule);
+}
+
+.colophon > section > .prose {
+  margin-top: var(--s2);
+}
+
+.colophon__quote {
+  margin: var(--s4) 0 0;
+  padding-left: var(--s4);
+  border-left: 2px solid var(--rule);
+  max-width: 62ch;
+}
+
+/* The law keeps its own voice here as it does inside the citation popovers. */
+.colophon__quote q {
+  font-family: var(--font-law);
+  font-size: var(--t-law);
+  line-height: 1.7;
+}
+
+.colophon__attribution {
+  margin-top: var(--s2);
+  color: var(--ink-soft);
+}
+
+.colophon__sources {
+  display: grid;
+  gap: var(--s2);
+  margin-top: var(--s3);
+  margin-bottom: var(--s4);
+  max-width: var(--measure);
+}
+
+.colophon__sources li {
+  display: grid;
+  gap: 2px;
+}
+
+.colophon__sources a {
+  color: var(--ink);
+  text-underline-offset: 3px;
+}
+
+.colophon__meta {
+  color: var(--ink-soft);
+}
+
+.colophon__warn {
+  color: var(--warn);
+}

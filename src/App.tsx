@@ -8,6 +8,7 @@ import { count, decimal, percent } from './ui/format';
 import { Archipelago } from './views/Archipelago/Archipelago';
 import { Cascade } from './views/Cascade/Cascade';
 import { Chamber } from './views/Chamber/Chamber';
+import { Colophon } from './ui/Colophon';
 import { Legend } from './ui/Legend';
 import { MetricStrip } from './ui/MetricStrip';
 import { TableView } from './ui/TableView';
@@ -240,6 +241,8 @@ function Loaded({ data }: { data: Dataset }) {
           />
         </section>
       </main>
+
+      <Colophon data={data} />
 
       <Transport
         rules={rules}

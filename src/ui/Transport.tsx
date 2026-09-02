@@ -96,23 +96,33 @@ export function Transport({ rules, onChange, onScrub, averageMagnitude, citation
               aria-valuetext={percent(rules.threshold, 1)}
             />
             <ul className="transport__ticks" aria-hidden="true">
-              {ticks.map((tick) => (
+              {ticks.map((tick) => {
+                const at = tick.value / THRESHOLD_MAX;
+                // A tick near either end would centre its label off the page, so
+                // the label hangs inward from the mark instead.
+                const edge = at > 0.85 ? ' transport__tick--right' : at < 0.15 ? ' transport__tick--left' : '';
+                const on = Math.abs(rules.threshold - tick.value) < 0.0005 ? ' transport__tick--on' : '';
+                return (
                 <li
                   key={tick.note}
-                  style={{ left: `${(tick.value / THRESHOLD_MAX) * 100}%` }}
-                  className={
-                    Math.abs(rules.threshold - tick.value) < 0.0005
-                      ? 'transport__tick transport__tick--on'
-                      : 'transport__tick'
-                  }
+                  style={{ left: `${at * 100}%` }}
+                  className={`transport__tick${on}${edge}`}
                 >
                   <span className="micro">{tick.label}</span>
                   <span className="micro transport__tick-note">{tick.note}</span>
                 </li>
-              ))}
+                );
+              })}
             </ul>
           </div>
         </div>
+
+        {/* DESIGN.md §4.4: below 720 px the scrubber keeps the full width and the
+            three discrete controls collapse behind one sheet, so the chamber
+            stays at eye level while the control stays under the thumb. */}
+        <details className="transport__sheet">
+          <summary className="small">{S.moreRules}</summary>
+        </details>
 
         <div className="transport__rules">
           <Toggle

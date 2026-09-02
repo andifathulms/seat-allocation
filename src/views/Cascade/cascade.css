@@ -100,6 +100,7 @@
   padding: 0 var(--s2) 1.6rem 0;
   overflow-x: auto;
   scroll-snap-type: x proximity;
+  min-width: 0;
 }
 
 .cascade__sweep {
@@ -211,7 +212,7 @@
 
 @media (max-width: 720px) {
   .cascade__board {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .cascade__ghosts {
@@ -221,5 +222,21 @@
     grid-auto-flow: column;
     grid-auto-columns: max-content;
     overflow-x: auto;
+    /* Without this the max-content columns set the grid track's minimum width
+       and push the whole page past the viewport. */
+    min-width: 0;
+  }
+}
+
+@media (max-width: 720px) {
+  .cascade__transport {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .cascade__transport input[type='range'] {
+    flex: 1 1 8rem;
+    width: auto;
+    min-width: 0;
   }
 }

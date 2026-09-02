@@ -48,3 +48,17 @@
 .vote-bar__party-votes {
   font-family: var(--font-narrow);
 }
+
+@media (max-width: 720px) {
+  /* The two totals are the widest figures in the app; side by side they run past
+     a 380 px viewport, so they stack. */
+  .vote-bar__caption {
+    flex-direction: column;
+    gap: var(--s3);
+  }
+
+  .vote-bar__side--right {
+    text-align: left;
+    justify-items: start;
+  }
+}
