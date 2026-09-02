@@ -31,7 +31,16 @@ export function TableView({ caption, columns, rows }: Props) {
       >
         {open ? S.hideTable : S.showTable}
       </button>
-      <div id={id} hidden={!open} className="table-view__scroll">
+      {/* The pane scrolls, so it must be focusable or a keyboard user cannot
+          reach the rows below the fold. */}
+      <div
+        id={id}
+        hidden={!open}
+        className="table-view__scroll"
+        tabIndex={0}
+        role="region"
+        aria-label={caption}
+      >
         <table>
           <caption className="visually-hidden">{caption}</caption>
           <thead>

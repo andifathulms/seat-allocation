@@ -63,7 +63,6 @@
 
 .cascade__ghost-label {
   color: var(--ink-panel);
-  opacity: 0.75;
   max-width: none;
 }
 
@@ -89,7 +88,6 @@
 
 .cascade__ghost-votes {
   font-family: var(--font-narrow);
-  opacity: 0.75;
 }
 
 .cascade__columns {
@@ -145,7 +143,7 @@
 }
 
 .cascade__divisor {
-  opacity: 0.75;
+  font-weight: 400;
 }
 
 .cascade__quotient {
@@ -190,7 +188,7 @@
 }
 
 .cascade__quota-phase {
-  opacity: 0.75;
+  font-weight: 400;
 }
 
 .cascade__arithmetic {

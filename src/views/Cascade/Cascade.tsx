@@ -161,8 +161,15 @@ export function Cascade({ parties, dapil, code, rules, onSelect }: Props) {
       </div>
 
       <div className="cascade__board panel">
+        {/* The ghost list scrolls sideways below 720 px, so it must be focusable
+            or a keyboard user cannot reach the parties past the edge. */}
         {eliminated.length > 0 && (
-          <div className="cascade__ghosts">
+          <div
+            className="cascade__ghosts"
+            tabIndex={0}
+            role="group"
+            aria-label={S.eliminated}
+          >
             <p className="micro cascade__ghost-label">{S.eliminated}</p>
             {eliminated
               .map((id) => parties.find((p) => p.id === id))
@@ -196,7 +203,13 @@ export function Cascade({ parties, dapil, code, rules, onSelect }: Props) {
             ))}
           </ol>
         ) : (
-        <div className="cascade__columns" style={{ '--sweep': `${(1 - sweep / (maxQuotient * 1.08)) * 100}%` } as React.CSSProperties}>
+        <div
+          className="cascade__columns"
+          tabIndex={0}
+          role="group"
+          aria-label={S.cascade}
+          style={{ '--sweep': `${(1 - sweep / (maxQuotient * 1.08)) * 100}%` } as React.CSSProperties}
+        >
           <div className="cascade__sweep" aria-hidden="true" />
           {columns.map((column) => (
             <div key={column.id} className="cascade__column">

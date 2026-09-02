@@ -61,7 +61,7 @@ export function Transport({ rules, onChange, onScrub, averageMagnitude, citation
   ].sort((a, b) => a.value - b.value);
 
   return (
-    <div className="transport" role="group" aria-label={S.controls}>
+    <section className="transport" aria-label={S.controls}>
       <div className="transport__inner page">
         {/* PRD §10.1. Adjacent to the controls, in plain language, at all times
             when any knob is off its 2024 default. Never a dismissible modal. */}
@@ -160,7 +160,7 @@ export function Transport({ rules, onChange, onScrub, averageMagnitude, citation
           <p className="transport__note small">{S.geographyNationalNote}</p>
         )}
       </div>
-    </div>
+    </section>
   );
 }
 

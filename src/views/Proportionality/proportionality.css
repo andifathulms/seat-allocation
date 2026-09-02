@@ -29,7 +29,6 @@
   fill: var(--ink-panel);
   font-family: var(--font-ui);
   font-size: 3.2px;
-  opacity: 0.8;
 }
 
 .proportionality__label {

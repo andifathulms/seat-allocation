@@ -136,3 +136,32 @@ A party evenly spread across the country does need roughly that share to take a
 seat anywhere; a regionally concentrated one needs far less nationally, which is
 plausibly where a ~1% figure comes from, but that is a different calculation and
 is not what the named formula produces.
+
+---
+
+## 7. Two chrome values move a few units for contrast
+
+**Rules affected:** DESIGN.md §2.1, `--panel` and `--warn`; §7.
+
+DESIGN.md §8 requires 4,5:1 for text. Two of §2.1's own values do not reach it:
+
+- `--ink-panel` `#F2F3F1` on `--panel` `#6E7370` gives 4,34:1. `--panel` moves to
+  `#696E6B`, five units darker, which gives 4,67:1 and is still the mid-value
+  ground §0 argues for.
+- `--warn` `#B4472E` on `--paper` gives 4,44:1. It moves to `#AE442C` on the same
+  hue, giving 4,70:1.
+
+Two consequences follow from the same arithmetic:
+
+**Secondary text on panels carries no opacity.** A mid-value panel leaves no
+contrast to spare, so any faded label falls below 4,5:1. Rank on panels comes
+from the type scale — size and weight — which is what §3.1 provides anyway.
+
+**The reproduction-failure state desaturates rather than fades.** §7 asks for the
+instruments to be dimmed. Reducing their opacity pulls every label inside them
+below 4,5:1 for the same reason. `filter: saturate(0.5)` drains the party colour,
+leaves every neutral exactly where it was, and still reads at a glance as a
+provisional state.
+
+Verified with axe-core: zero violations at 380, 720 and 1400 px, on the default
+rules and on changed ones, with every table and popover expanded.

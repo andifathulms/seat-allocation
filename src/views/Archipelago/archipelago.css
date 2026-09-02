@@ -45,8 +45,9 @@
 }
 
 .archipelago__code {
+  /* Secondary rank on a panel comes from size and weight, never from opacity:
+     the panel is mid-value, so any fade drops the text below 4,5:1. */
   color: var(--ink-panel);
-  opacity: 0.8;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

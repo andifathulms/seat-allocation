@@ -6,7 +6,10 @@
 :root {
   /* -- ground and chrome, DESIGN.md §2.1 -------------------------------- */
   --paper: #e8e9e6;
-  --panel: #6e7370;
+  /* DESIGN.md §2.1 gives #6E7370. At that value --ink-panel reaches only 4,34:1,
+     below the 4,5:1 §8 requires for text. Five units darker clears it at 4,67:1
+     and is still the mid-value ground §0 asks for. See DECISIONS.md §7. */
+  --panel: #696e6b;
   --panel-deep: #585d5a;
   --ink: #16191a;
   --ink-soft: #4a4f4e;
@@ -16,7 +19,9 @@
 
   /* The only two functional non-party colours in the app. */
   --void: #2b2e2d;
-  --warn: #b4472e;
+  /* DESIGN.md §2.1 gives #B4472E, which reaches 4,44:1 on paper. This is the
+     nearest value on the same hue that clears 4,5:1, at 4,70:1. */
+  --warn: #ae442c;
 
   /* -- type, DESIGN.md §3 ------------------------------------------------
    * Archivo and Source Serif 4 are named first so that dropping the self-hosted
