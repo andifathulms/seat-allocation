@@ -165,7 +165,7 @@ export function Proportionality({ parties, metrics, animate }: Props) {
               r={step.point.r}
               fill={step.point.color}
               fillOpacity={step.point.seatShare === 0 ? 0.45 : 1}
-              stroke="var(--panel-deep)"
+              stroke="var(--stage-sub)"
               strokeWidth={0.3}
             />
             {labelled.has(step.point.id) && (

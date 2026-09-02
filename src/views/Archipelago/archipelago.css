@@ -1,7 +1,7 @@
 .archipelago {
   background: var(--panel);
-  color: var(--ink-panel);
-  border-radius: var(--radius);
+  color: var(--on-stage);
+  border-radius: var(--r-sm);
   padding: var(--s4);
 }
 
@@ -24,7 +24,7 @@
   width: 100%;
   padding: 2px;
   border: 2px solid transparent;
-  border-radius: var(--radius);
+  border-radius: var(--r-sm);
   color: inherit;
   text-align: left;
 }
@@ -34,7 +34,7 @@
 }
 
 .archipelago__cell--on {
-  border-color: var(--ink-panel);
+  border-color: var(--on-stage);
   transform: translateY(-2px);
 }
 
@@ -47,7 +47,7 @@
 .archipelago__code {
   /* Secondary rank on a panel comes from size and weight, never from opacity:
      the panel is mid-value, so any fade drops the text below 4,5:1. */
-  color: var(--ink-panel);
+  color: var(--on-stage);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

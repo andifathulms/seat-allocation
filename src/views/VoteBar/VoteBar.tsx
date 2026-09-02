@@ -120,7 +120,7 @@ export function VoteBar({ parties, seatsByParty, totalValidVotes, animate }: Pro
             width={step.segment.width * 100}
             height={8}
             fill={step.segment.converted ? step.segment.color : 'var(--void)'}
-            stroke={step.segment.converted ? 'none' : 'var(--rule-panel)'}
+            stroke={step.segment.converted ? 'none' : 'var(--rule-stage)'}
             strokeWidth={step.segment.converted ? 0 : 0.08}
             vectorEffect="non-scaling-stroke"
           >

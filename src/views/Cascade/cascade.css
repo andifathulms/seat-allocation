@@ -13,7 +13,7 @@
   color: var(--ink);
   background: var(--paper);
   border: 1px solid var(--ink);
-  border-radius: var(--radius);
+  border-radius: var(--r-sm);
   padding: 2px var(--s2);
 }
 
@@ -57,12 +57,12 @@
   align-content: start;
   gap: var(--s2);
   padding-right: var(--s4);
-  border-right: 1px solid var(--rule-panel);
+  border-right: 1px solid var(--rule-stage);
   min-width: 9rem;
 }
 
 .cascade__ghost-label {
-  color: var(--ink-panel);
+  color: var(--on-stage);
   max-width: none;
 }
 
@@ -107,7 +107,7 @@
   right: 0;
   top: var(--sweep);
   height: 0;
-  border-top: 2px solid var(--ink-panel);
+  border-top: 2px solid var(--on-stage);
   transition: top var(--d-step) cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 2;
   pointer-events: none;
@@ -130,9 +130,9 @@
   gap: var(--s1);
   padding: 2px var(--s1);
   border: 1px solid;
-  border-radius: var(--radius);
-  background: var(--panel-deep);
-  color: var(--ink-panel);
+  border-radius: var(--r-sm);
+  background: var(--stage-sub);
+  color: var(--on-stage);
   transition:
     background var(--d-step) linear,
     color var(--d-step) linear;
@@ -155,7 +155,7 @@
   font-family: var(--font-narrow);
   font-weight: 600;
   color: var(--ink);
-  background: var(--ink-panel);
+  background: var(--on-stage);
   border-radius: 50%;
   min-width: 1.35em;
   padding: 0 2px;
@@ -166,7 +166,7 @@
   position: absolute;
   bottom: 0;
   left: 0;
-  color: var(--ink-panel);
+  color: var(--on-stage);
 }
 
 .cascade__quota {
@@ -215,7 +215,7 @@
 
   .cascade__ghosts {
     border-right: none;
-    border-bottom: 1px solid var(--rule-panel);
+    border-bottom: 1px solid var(--rule-stage);
     padding: 0 0 var(--s3);
     grid-auto-flow: column;
     grid-auto-columns: max-content;

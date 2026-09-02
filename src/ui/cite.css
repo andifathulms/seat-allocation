@@ -15,8 +15,8 @@
   color: var(--ink);
 }
 
-.panel .cite__marker {
-  color: var(--ink-panel);
+.stage .cite__marker {
+  color: var(--on-stage);
 }
 
 /* Dismissible and keyboard-reachable, never a hover tooltip. */
@@ -32,7 +32,7 @@
   background: var(--paper);
   color: var(--ink);
   border: 1px solid var(--ink);
-  border-radius: var(--radius);
+  border-radius: var(--r-sm);
   text-align: left;
   animation: cite-in var(--d-popover) cubic-bezier(0.4, 0, 0.2, 1);
 }

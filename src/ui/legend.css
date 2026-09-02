@@ -20,7 +20,7 @@
   width: 100%;
   padding: var(--s1) var(--s2);
   border: 2px solid transparent;
-  border-radius: var(--radius);
+  border-radius: var(--r-sm);
   text-align: left;
 }
 

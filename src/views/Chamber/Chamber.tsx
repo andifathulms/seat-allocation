@@ -231,7 +231,7 @@ export function Chamber({ parties, seatsByParty, total, animate }: Props) {
             cy={seat.fromY}
             r={geometry.seatRadius}
             fill={seat.fromColor}
-            stroke="var(--panel-deep)"
+            stroke="var(--stage-sub)"
             strokeWidth={geometry.seatRadius * 0.14}
           />
         ))}

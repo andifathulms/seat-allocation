@@ -2,7 +2,7 @@
   margin: 0;
   padding: var(--s5);
   background: var(--panel);
-  border-radius: var(--radius);
+  border-radius: var(--r-sm);
 }
 
 .proportionality__svg {
@@ -13,26 +13,26 @@
 }
 
 .proportionality__grid {
-  stroke: var(--rule-panel);
+  stroke: var(--rule-stage);
   stroke-width: 0.15;
   opacity: 0.6;
 }
 
 .proportionality__parity {
-  stroke: var(--rule-panel);
+  stroke: var(--rule-stage);
   stroke-width: 0.4;
   vector-effect: non-scaling-stroke;
 }
 
 .proportionality__tick,
 .proportionality__axis-name {
-  fill: var(--ink-panel);
+  fill: var(--on-stage);
   font-family: var(--font-ui);
   font-size: 3.2px;
 }
 
 .proportionality__label {
-  fill: var(--ink-panel);
+  fill: var(--on-stage);
   font-family: var(--font-ui);
   font-size: 3.4px;
   font-weight: 600;

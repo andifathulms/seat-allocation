@@ -1,49 +1,68 @@
 /*
- * DESIGN.md §2 and §3. Every value here is chrome. No party colour appears in
- * CSS: parties-2024.json owns those, and they arrive as inline fill attributes.
+ * DESIGN.md §2, §3, §4 and §6. Every value here is chrome.
+ *
+ * No party colour appears in CSS: parties-2024.json owns those, and they arrive
+ * as inline fill attributes. Nothing in this file is a brand accent — the app
+ * has none, because every saturated pixel on screen has to be data.
  */
 
 :root {
-  /* -- ground and chrome, DESIGN.md §2.1 -------------------------------- */
-  --paper: #e8e9e6;
-  /* DESIGN.md §2.1 gives #6E7370. At that value --ink-panel reaches only 4,34:1,
-     below the 4,5:1 §8 requires for text. Five units darker clears it at 4,67:1
-     and is still the mid-value ground §0 asks for. See DECISIONS.md §7. */
-  --panel: #696e6b;
-  --panel-deep: #585d5a;
-  --ink: #16191a;
-  --ink-soft: #4a4f4e;
-  --ink-panel: #f2f3f1;
-  --rule: #c3c6c1;
-  --rule-panel: #8a8f8c;
+  color-scheme: light dark;
+
+  /* -- paper: the reading register, DESIGN.md §2.1 ----------------------- */
+  --paper: #f2f1ed;
+  /* Recessed on paper: table heads, insets, the sticky rail. */
+  --paper-sub: #e7e5df;
+  /* Raised off paper: popovers and the transport, which float over content. */
+  --paper-raise: #fbfaf7;
+  --ink: #16181b;
+  --ink-soft: #565a60;
+  /* Decoration and disabled states only — below 4,5:1 and never load-bearing. */
+  --ink-faint: #878c93;
+  --rule: #dad7d0;
+  --rule-strong: #b9b5ac;
+
+  /* -- stage: the data register, DESIGN.md §2.1 --------------------------
+   * The only ground a party colour is ever drawn on. Deep rather than
+   * mid-value, which is what lets the palette in parties-2024.json stay
+   * saturated — see §2.2 and scripts/extract/solve-colors.ts.
+   */
+  --stage: #16191d;
+  --stage-sub: #1e2228;
+  --stage-raise: #262b32;
+  --on-stage: #f4f5f6;
+  --on-stage-soft: #a9afb7;
+  --rule-stage: #333941;
 
   /* The only two functional non-party colours in the app. */
-  --void: #2b2e2d;
-  /* DESIGN.md §2.1 gives #B4472E, which reaches 4,44:1 on paper. This is the
-     nearest value on the same hue that clears 4,5:1, at 4,70:1. */
-  --warn: #ae442c;
+  --void: #6b717a;
+  --warn: #b23c22;
+  --warn-stage: #ff8c6b;
 
   /* -- type, DESIGN.md §3 ------------------------------------------------
-   * Self-hosted from public/fonts; the @font-face rules are in fonts.css. The
-   * system stacks remain as the fallback while the face loads and if it fails.
+   * Self-hosted from public/fonts; the @font-face rules are in fonts.css.
    */
   --font-ui: 'Archivo', ui-sans-serif, system-ui, 'Helvetica Neue', Arial, sans-serif;
   --font-narrow: 'Archivo Narrow', 'Archivo', ui-sans-serif, system-ui,
     'Helvetica Neue', Arial, sans-serif;
   --font-law: 'Source Serif 4', ui-serif, Georgia, 'Times New Roman', serif;
 
-  --t-hero: 76px;
-  --t-hero-lh: 0.9;
-  --t-figure: 39px;
-  --t-figure-lh: 1;
-  --t-h1: 31px;
-  --t-h2: 25px;
-  --t-body: 16px;
-  --t-small: 13px;
+  /* The seat total, and nothing else. DESIGN.md §3.1. */
+  --t-hero: clamp(72px, 13vw, 148px);
+  --t-hero-lh: 0.82;
+  --t-display: clamp(38px, 6.2vw, 68px);
+  --t-display-lh: 0.98;
+  --t-figure-lg: clamp(32px, 4.4vw, 46px);
+  --t-figure: clamp(26px, 3vw, 33px);
+  --t-h2: clamp(23px, 2.6vw, 31px);
+  --t-h3: 19px;
+  --t-body: 17px;
+  --t-small: 13.5px;
   --t-micro: 11px;
-  --t-law: 15px;
+  --t-law: 16px;
 
   /* -- spacing, DESIGN.md §4.3 ------------------------------------------ */
+  --s0: 2px;
   --s1: 4px;
   --s2: 8px;
   --s3: 12px;
@@ -52,11 +71,14 @@
   --s6: 40px;
   --s7: 64px;
   --s8: 104px;
+  --s9: 160px;
 
-  --measure: 68ch;
-  --page: 72rem;
-  --gutter: 24px;
-  --radius: 2px;
+  --measure: 64ch;
+  --page: 78rem;
+  --gutter: clamp(20px, 4.5vw, 56px);
+  --r-sm: 3px;
+  --r: 8px;
+  --r-lg: 16px;
 
   /* -- motion, DESIGN.md §6.2 ------------------------------------------- */
   --d-migrate: 420ms;
@@ -66,6 +88,28 @@
   --d-control: 120ms;
   --e-migrate: cubic-bezier(0.32, 0.72, 0, 1);
   --e-step: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/*
+ * The stage is fixed: it is the ground the palette was solved against, so it
+ * does not move between themes. Only the reading register flips, and the stage
+ * gains a hairline because it no longer separates from the page by value alone.
+ */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #0b0d10;
+    --paper-sub: #14171b;
+    --paper-raise: #1a1e23;
+    --ink: #edeef0;
+    --ink-soft: #a2a8b0;
+    --ink-faint: #6d737b;
+    --rule: #252a30;
+    --rule-strong: #3b414a;
+    --stage: #181b20;
+    --stage-sub: #212630;
+    --stage-raise: #2a3038;
+    --warn: #ff8c6b;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -80,10 +124,9 @@
 
 @media (max-width: 720px) {
   :root {
-    --t-hero: 52px;
-    --t-figure: 31px;
-    --t-h1: 25px;
-    --t-h2: 20px;
-    --gutter: 16px;
+    --t-body: 16px;
+    --s7: 52px;
+    --s8: 72px;
+    --s9: 96px;
   }
 }

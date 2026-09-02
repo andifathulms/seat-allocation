@@ -170,7 +170,7 @@ export function Archipelago({
                       groups.current[i] = node;
                     }}
                   >
-                    <rect width={CELL_W} height={CELL_H} fill="var(--panel-deep)" />
+                    <rect width={CELL_W} height={CELL_H} fill="var(--stage-sub)" />
                     {step.bars.map((bar) => (
                       <rect
                         key={bar.id}
@@ -184,7 +184,7 @@ export function Archipelago({
                     ))}
                   </g>
                   {cell.changed && (
-                    <polygon points="0,0 7,0 0,7" fill="var(--ink-panel)" />
+                    <polygon points="0,0 7,0 0,7" fill="var(--on-stage)" />
                   )}
                 </svg>
                 <span className="archipelago__code micro">{cell.dapil.code}</span>
