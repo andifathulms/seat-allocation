@@ -4,3 +4,6 @@ dist/
 *.local
 .vite/
 coverage/
+
+# TypeScript incremental build state
+*.tsbuildinfo
