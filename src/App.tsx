@@ -11,6 +11,7 @@ import { Legend } from './ui/Legend';
 import { MetricStrip } from './ui/MetricStrip';
 import { Transport } from './ui/Transport';
 import { Verification } from './ui/Verification';
+import { Proportionality } from './views/Proportionality/Proportionality';
 import { VoteBar } from './views/VoteBar/VoteBar';
 import './app.css';
 
@@ -131,6 +132,16 @@ function Loaded({ data }: { data: Dataset }) {
             code={selectedDapil}
             rules={rules}
             onSelect={setSelectedDapil}
+          />
+        </section>
+
+        <section className="section">
+          <h2 className="h2">{S.proportionality}</h2>
+          <p className="prose small">{S.proportionalityNote}</p>
+          <Proportionality
+            parties={data.parties.parties}
+            metrics={allocation.metrics}
+            animate={!scrubbing}
           />
         </section>
       </main>

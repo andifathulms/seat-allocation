@@ -1,0 +1,43 @@
+.proportionality {
+  margin: 0;
+  padding: var(--s5);
+  background: var(--panel);
+  border-radius: var(--radius);
+}
+
+.proportionality__svg {
+  display: block;
+  width: 100%;
+  max-width: 38rem;
+  margin: 0 auto;
+}
+
+.proportionality__grid {
+  stroke: var(--rule-panel);
+  stroke-width: 0.15;
+  opacity: 0.6;
+}
+
+.proportionality__parity {
+  stroke: var(--rule-panel);
+  stroke-width: 0.4;
+  vector-effect: non-scaling-stroke;
+}
+
+.proportionality__tick,
+.proportionality__axis-name {
+  fill: var(--ink-panel);
+  font-family: var(--font-ui);
+  font-size: 3.2px;
+  opacity: 0.8;
+}
+
+.proportionality__label {
+  fill: var(--ink-panel);
+  font-family: var(--font-ui);
+  font-size: 3.4px;
+  font-weight: 600;
+  paint-order: stroke;
+  stroke: rgb(0 0 0 / 30%);
+  stroke-width: 0.8px;
+}
