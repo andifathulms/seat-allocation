@@ -42,7 +42,11 @@ export function allocate(
   const threshold = applyThreshold(parties, dapil, rules);
 
   const seatsByParty: Record<PartyId, number> = {};
-  for (const p of parties) seatsByParty[p.id] = 0;
+  const byId = new Map<PartyId, Party>();
+  for (const p of parties) {
+    seatsByParty[p.id] = 0;
+    byId.set(p.id, p);
+  }
 
   const byDapil: DapilResult[] = [];
   const ties: Allocation['ties'] = [];
@@ -66,7 +70,7 @@ export function allocate(
     const votes = new Float64Array(ids.length);
     const ballotNumbers = new Int32Array(ids.length);
     for (let i = 0; i < ids.length; i++) {
-      const party = parties.find((p) => p.id === ids[i]) as Party;
+      const party = byId.get(ids[i] as PartyId) as Party;
       votes[i] = d.votes[party.id] ?? 0;
       ballotNumbers[i] = party.ballotNumber;
     }
