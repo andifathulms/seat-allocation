@@ -15,7 +15,7 @@
       "ballotNumber": 1,
       "shortName": "PKB",
       "fullName": "Partai Kebangkitan Bangsa",
-      "color": "#62E58A",
+      "color": "#00A651",
       "nationalVotes": 16115655
     },
     {
@@ -23,7 +23,7 @@
       "ballotNumber": 2,
       "shortName": "Gerindra",
       "fullName": "Partai Gerakan Indonesia Raya",
-      "color": "#BB9437",
+      "color": "#C39B3E",
       "nationalVotes": 20071708
     },
     {
@@ -31,7 +31,7 @@
       "ballotNumber": 3,
       "shortName": "PDI-P",
       "fullName": "Partai Demokrasi Indonesia Perjuangan",
-      "color": "#DC1F17",
+      "color": "#E1251B",
       "nationalVotes": 25387279
     },
     {
@@ -47,7 +47,7 @@
       "ballotNumber": 5,
       "shortName": "NasDem",
       "fullName": "Partai NasDem",
-      "color": "#27428E",
+      "color": "#5D6CBF",
       "nationalVotes": 14660516
     },
     {
@@ -55,7 +55,7 @@
       "ballotNumber": 6,
       "shortName": "Buruh",
       "fullName": "Partai Buruh",
-      "color": "#FF712E",
+      "color": "#FFC4A8",
       "nationalVotes": 972910
     },
     {
@@ -71,7 +71,7 @@
       "ballotNumber": 8,
       "shortName": "PKS",
       "fullName": "Partai Keadilan Sejahtera",
-      "color": "#FFBD90",
+      "color": "#EF7204",
       "nationalVotes": 12781353
     },
     {
@@ -79,7 +79,7 @@
       "ballotNumber": 9,
       "shortName": "PKN",
       "fullName": "Partai Kebangkitan Nusantara",
-      "color": "#83A8F3",
+      "color": "#D8E2FF",
       "nationalVotes": 326800
     },
     {
@@ -87,7 +87,7 @@
       "ballotNumber": 10,
       "shortName": "Hanura",
       "fullName": "Partai Hati Nurani Rakyat",
-      "color": "#970011",
+      "color": "#FF9587",
       "nationalVotes": 1094588
     },
     {
@@ -95,7 +95,7 @@
       "ballotNumber": 11,
       "shortName": "Garuda",
       "fullName": "Partai Garda Republik Indonesia",
-      "color": "#866700",
+      "color": "#A37F0E",
       "nationalVotes": 406883
     },
     {
@@ -103,7 +103,7 @@
       "ballotNumber": 12,
       "shortName": "PAN",
       "fullName": "Partai Amanat Nasional",
-      "color": "#5087D9",
+      "color": "#7BABFF",
       "nationalVotes": 10984003
     },
     {
@@ -111,7 +111,7 @@
       "ballotNumber": 13,
       "shortName": "PBB",
       "fullName": "Partai Bulan Bintang",
-      "color": "#005328",
+      "color": "#82DFA2",
       "nationalVotes": 484486
     },
     {
@@ -119,7 +119,7 @@
       "ballotNumber": 14,
       "shortName": "Demokrat",
       "fullName": "Partai Demokrat",
-      "color": "#B5CCFF",
+      "color": "#508FE8",
       "nationalVotes": 11283160
     },
     {
@@ -135,7 +135,7 @@
       "ballotNumber": 16,
       "shortName": "Perindo",
       "fullName": "Partai Persatuan Indonesia",
-      "color": "#3962B8",
+      "color": "#BBC6FF",
       "nationalVotes": 1955154
     },
     {
@@ -143,7 +143,7 @@
       "ballotNumber": 17,
       "shortName": "PPP",
       "fullName": "Partai Persatuan Pembangunan",
-      "color": "#39B25F",
+      "color": "#008639",
       "nationalVotes": 5878777
     },
     {
@@ -151,7 +151,7 @@
       "ballotNumber": 24,
       "shortName": "Ummat",
       "fullName": "Partai Ummat",
-      "color": "#15805D",
+      "color": "#60BF99",
       "nationalVotes": 642545
     }
   ]

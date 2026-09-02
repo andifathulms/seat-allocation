@@ -1,29 +1,46 @@
 /**
- * One-time palette solve, committed for provenance.
+ * Palette solve, committed for provenance.
  *
- * DESIGN.md §2.2 sets two constraints on the eighteen party colours:
+ *   npx tsx scripts/extract/solve-colors.ts --write
  *
- *   1. parties sharing a hue family separate by at least 18 points of Lab
- *      lightness, adjusting lightness and never hue;
- *   2. every colour reaches 3:1 contrast against --panel.
+ * DESIGN.md §2 sets three constraints on the eighteen party colours:
  *
- * The first is enforced here. The second cannot be satisfied against a
- * mid-value panel — see DECISIONS.md — so this script reports each ratio
- * instead of forcing it, and the figure is auditable rather than assumed.
+ *   1. hue is never touched — it is the recognisable part;
+ *   2. every colour reaches 3,5:1 against `--stage`, the one ground any party
+ *      colour is ever drawn on;
+ *   3. parties sharing a hue family separate by at least MIN_LIGHTNESS_GAP
+ *      points of Lab lightness.
  *
- *   npx tsx scripts/extract/solve-colors.ts
+ * The 2024 revision moved the instrument ground from a mid-value grey to a deep
+ * one. That single change is what makes this solve tractable: against a mid
+ * ground the gamut had to be spread in both directions, which forced five of the
+ * eighteen into pastels that no longer read as the party. Against a deep ground
+ * the whole usable band sits above L* 48, where hues stay saturated, so the
+ * contrast floor and the family separation can both be met without draining
+ * chroma. See DESIGN.md §2.2 and DECISIONS.md.
  */
 
-const PANEL = '#6E7370';
-const PAPER = '#E8E9E6';
+import { readFileSync, writeFileSync } from 'node:fs';
+
+/** The only ground a party colour is ever drawn on. DESIGN.md §2.1. */
+const STAGE = '#16191D';
+/** Reading ground. No party colour is drawn on it; reported for audit only. */
+const PAPER = '#F2F1ED';
+
+const MIN_CONTRAST = 3.5;
+/** Two colours belong to the same hue family when their hues are this close. */
+const FAMILY_ARC = 22;
+const MIN_LIGHTNESS_GAP = 11;
+/** Outside this band a saturated hue reads as grey or as white. */
+const LIGHTNESS_BAND: [number, number] = [48, 90];
 
 /**
  * Hue and chroma come from each party's logo. Lightness is solved below.
  *
- * `votes` is the 2024 national valid vote and is used only to decide which
- * member of a crowded hue family keeps its brand lightness: displacing the
- * colour a reader meets on two thirds of the screen costs more than displacing
- * one that appears in the legend at zero seats.
+ * `votes` is the 2024 national valid vote and decides which member of a crowded
+ * hue family keeps its brand lightness: displacing the colour a reader meets on
+ * two thirds of the screen costs more than displacing one that appears in the
+ * legend at zero seats.
  */
 const SEEDS: Array<{ id: string; short: string; seed: string; votes: number }> = [
   { id: 'pkb', short: 'PKB', seed: '#00A651', votes: 16_115_655 },
@@ -45,10 +62,6 @@ const SEEDS: Array<{ id: string; short: string; seed: string; votes: number }> =
   { id: 'ppp', short: 'PPP', seed: '#009444', votes: 5_878_777 },
   { id: 'ummat', short: 'Ummat', seed: '#0E7C5A', votes: 642_545 },
 ];
-
-/** Two colours belong to the same hue family when their hues are this close. */
-const FAMILY_ARC = 25;
-const MIN_LIGHTNESS_GAP = 18;
 
 // ---------- colour space ----------
 
@@ -116,8 +129,7 @@ function labToHex([L, a, bb]: Lab): string {
 
 /**
  * Re-lightens a colour to a target L*, holding hue and shrinking chroma only as
- * far as the sRGB gamut requires. Hue is never touched: it is the recognisable
- * part.
+ * far as the sRGB gamut requires.
  */
 function atLightness(lab: Lab, targetL: number): string {
   const [, a, b] = lab;
@@ -145,6 +157,14 @@ function arc(a: number, b: number): number {
   return d > 180 ? 360 - d : d;
 }
 
+/** Lowest L* at which this hue clears MIN_CONTRAST against the stage. */
+function floorFor(lab: Lab): number {
+  for (let L = LIGHTNESS_BAND[0]; L <= LIGHTNESS_BAND[1]; L += 0.5) {
+    if (contrast(atLightness(lab, L), STAGE) >= MIN_CONTRAST) return L;
+  }
+  return LIGHTNESS_BAND[1];
+}
+
 // ---------- solve ----------
 
 interface Solved {
@@ -154,12 +174,14 @@ interface Solved {
   votes: number;
   hue: number;
   seedLightness: number;
+  floor: number;
   lightness: number;
   hex: string;
 }
 
 const solved: Solved[] = SEEDS.map((s) => {
   const lab = rgbToLab(s.seed);
+  const floor = Math.max(LIGHTNESS_BAND[0], floorFor(lab));
   return {
     id: s.id,
     short: s.short,
@@ -167,17 +189,18 @@ const solved: Solved[] = SEEDS.map((s) => {
     votes: s.votes,
     hue: hueDegrees(lab),
     seedLightness: lab[0],
-    lightness: lab[0],
+    floor,
+    // A colour already light enough keeps its brand lightness exactly.
+    lightness: Math.min(LIGHTNESS_BAND[1], Math.max(lab[0], floor)),
     hex: s.seed,
   };
 });
 
 /**
- * Within each hue family, push lightness apart by the minimum that satisfies the
- * gap, then recentre the family on its original mean. Colours that already
- * separate do not move at all, so a party keeps its brand lightness unless
- * another party's hue forces it away — recognisability is the point of using
- * these colours in the first place.
+ * Within each hue family, walk upward from the darkest member and push each
+ * successor to at least MIN_LIGHTNESS_GAP above its predecessor. Upward only:
+ * the contrast floor already fixes the bottom of the band, so there is nowhere
+ * below to go, and pushing up keeps every member inside the saturated range.
  */
 const families: Solved[][] = [];
 for (const s of [...solved].sort((a, b) => a.hue - b.hue)) {
@@ -187,38 +210,46 @@ for (const s of [...solved].sort((a, b) => a.hue - b.hue)) {
 }
 
 /**
- * The band inside which a hue stays recognisably itself. Outside it a saturated
- * blue reads as white or as black, which defeats the purpose of separating it.
+ * Within each family the largest party keeps its brand lightness exactly, and
+ * the others take the slot nearest their own brand lightness that clears the gap
+ * from every party already placed. Fidelity therefore tracks screen presence:
+ * the colour a reader meets on two thirds of the screen is the one that stays
+ * true, and the colour that appears once in a legend at zero seats is the one
+ * that moves. Where the band cannot hold the whole family at the full gap, the
+ * remaining member takes the position furthest from its neighbours and the
+ * shortfall is printed rather than hidden.
  */
-const LIGHTNESS_BAND: [number, number] = [30, 82];
-
 for (const family of families) {
   if (family.length < 2) continue;
-  family.sort((a, b) => a.lightness - b.lightness);
-  const anchor = family.reduce((a, m) => (m.votes > a.votes ? m : a), family[0] as Solved);
+  family.sort((a, b) => b.votes - a.votes);
 
-  // Five of the eighteen parties use a blue within a 40-degree arc. Holding the
-  // full 18-point gap for all five would push the ends outside the band, so a
-  // family too large for the gap takes the largest gap the band allows and the
-  // shortfall is reported below rather than hidden.
-  const gap = Math.min(
-    MIN_LIGHTNESS_GAP,
-    (LIGHTNESS_BAND[1] - LIGHTNESS_BAND[0]) / (family.length - 1),
-  );
+  const placed: number[] = [];
+  for (const member of family) {
+    const low = Math.max(LIGHTNESS_BAND[0], member.floor);
+    const high = LIGHTNESS_BAND[1];
+    const want = Math.min(high, Math.max(low, member.lightness));
 
-  for (let i = 1; i < family.length; i++) {
-    const prev = family[i - 1] as Solved;
-    const cur = family[i] as Solved;
-    cur.lightness = Math.max(cur.lightness, prev.lightness + gap);
+    if (placed.length === 0) {
+      member.lightness = want;
+      placed.push(want);
+      continue;
+    }
+
+    let best = want;
+    let bestScore = -Infinity;
+    for (let L = low; L <= high; L += 0.5) {
+      const nearest = Math.min(...placed.map((q) => Math.abs(q - L)));
+      // Clearing the gap is worth more than brand fidelity; among the slots
+      // that clear it, the one nearest the brand lightness wins.
+      const score = Math.min(nearest, MIN_LIGHTNESS_GAP) * 1000 - Math.abs(L - want);
+      if (score > bestScore) {
+        bestScore = score;
+        best = L;
+      }
+    }
+    member.lightness = best;
+    placed.push(best);
   }
-
-  // Slide the whole family so the anchor lands back on its brand lightness.
-  let shift = anchor.seedLightness - anchor.lightness;
-  const lowest = (family[0] as Solved).lightness + shift;
-  const highest = (family[family.length - 1] as Solved).lightness + shift;
-  if (lowest < LIGHTNESS_BAND[0]) shift += LIGHTNESS_BAND[0] - lowest;
-  if (highest > LIGHTNESS_BAND[1]) shift -= highest - LIGHTNESS_BAND[1];
-  for (const m of family) m.lightness += shift;
 }
 
 for (const s of solved) {
@@ -228,34 +259,49 @@ for (const s of solved) {
 // ---------- report ----------
 
 const order = SEEDS.map((s) => solved.find((x) => x.id === s.id) as Solved);
-console.log('party      seed     solved    L*    hue   vs panel  vs paper');
+let failures = 0;
+
+console.log(`stage ${STAGE}   paper ${PAPER}   floor ${MIN_CONTRAST}:1\n`);
+console.log('party      seed     solved     L*   hue   vs stage  vs paper');
 for (const s of order) {
   const lab = rgbToLab(s.hex);
+  const vsStage = contrast(s.hex, STAGE);
+  if (vsStage < MIN_CONTRAST - 0.01) failures++;
   console.log(
     `${s.id.padEnd(10)} ${s.seed} ${s.hex} ${lab[0].toFixed(0).padStart(4)} ` +
-      `${s.hue.toFixed(0).padStart(5)}  ${contrast(s.hex, PANEL).toFixed(2).padStart(7)}  ` +
-      `${contrast(s.hex, PAPER).toFixed(2).padStart(7)}`,
+      `${s.hue.toFixed(0).padStart(5)}  ${vsStage.toFixed(2).padStart(8)}  ` +
+      `${contrast(s.hex, PAPER).toFixed(2).padStart(8)}`,
   );
 }
 
-console.log('\nhue families and their lightness gaps');
+console.log('\nhue families');
 for (const family of families) {
   if (family.length < 2) continue;
-  const gaps = family
+  const members = [...family].sort((a, b) => a.lightness - b.lightness);
+  const gaps = members
     .slice(1)
-    .map((m, i) => m.lightness - (family[i] as Solved).lightness);
-  const short = gaps.some((g) => g < MIN_LIGHTNESS_GAP - 0.5) ? '  (below 18)' : '';
+    .map((m, i) => (m.lightness - (members[i] as Solved).lightness).toFixed(0));
   console.log(
-    `  ${family.map((m) => m.id).join(' · ')}  →  ΔL* ` +
-      `${gaps.map((g) => g.toFixed(0)).join(', ')}${short}`,
+    `  ${members.map((m) => m.short).join(' · ')}  L* ` +
+      `${members.map((m) => m.lightness.toFixed(0)).join(' ')}  gaps ${gaps.join(' ')}`,
   );
 }
 
-console.log('\ncolors, ready to paste into parties-2024.json');
-console.log(
-  JSON.stringify(
-    Object.fromEntries(order.map((s) => [s.id, s.hex])),
-    null,
-    2,
-  ),
-);
+if (failures > 0) {
+  console.error(`\n${failures} colour(s) below ${MIN_CONTRAST}:1 against the stage.`);
+  process.exitCode = 1;
+}
+
+// ---------- write ----------
+
+if (process.argv.includes('--write')) {
+  const path = new URL('../../public/data/parties-2024.json', import.meta.url);
+  const file = readFileSync(path, 'utf8');
+  const data = JSON.parse(file) as { parties: Array<{ id: string; color: string }> };
+  for (const party of data.parties) {
+    const match = solved.find((s) => s.id === party.id);
+    if (match) party.color = match.hex;
+  }
+  writeFileSync(path, `${JSON.stringify(data, null, 2)}\n`);
+  console.log(`\nwrote ${data.parties.length} colours to public/data/parties-2024.json`);
+}
