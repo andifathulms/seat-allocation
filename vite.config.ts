@@ -12,8 +12,4 @@ export default defineConfig({
     target: 'es2022',
     assetsInlineLimit: 0,
   },
-  test: {
-    environment: 'node',
-    include: ['tests/**/*.test.ts'],
-  },
 });
