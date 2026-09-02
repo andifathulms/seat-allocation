@@ -127,7 +127,7 @@ export function Proportionality({ parties, metrics, animate }: Props) {
   }, [points, x]);
 
   return (
-    <figure className="proportionality">
+    <figure className="proportionality stage">
       <svg
         className="proportionality__svg"
         viewBox={`-16 -14 ${W + 26} ${H + 34}`}

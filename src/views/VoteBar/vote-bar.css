@@ -1,25 +1,41 @@
 .vote-bar {
   margin: 0;
+  padding: var(--s6) var(--s5) var(--s5);
+  display: grid;
+  gap: var(--s5);
+}
+
+/* The bar's ends are rounded by the container: preserveAspectRatio="none"
+   scales the viewBox non-uniformly, so an rx on the rects themselves would
+   arrive on screen as an ellipse. */
+.vote-bar__track {
+  border-radius: 4px;
+  overflow: hidden;
 }
 
 .vote-bar__svg {
   display: block;
   width: 100%;
-  height: 56px;
-  overflow: visible;
+  height: 76px;
 }
 
+/*
+ * The boundary between converted and unconverted is the only element in the app
+ * that moves horizontally across the full page width, which makes it the
+ * clearest reading of the threshold's cost. DESIGN.md §5.4.
+ */
 .vote-bar__caption {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--s5);
-  margin-top: var(--s3);
 }
 
 .vote-bar__side {
   display: grid;
-  gap: 2px;
-  color: var(--ink-soft);
+  gap: var(--s2);
+  align-content: start;
+  color: var(--on-stage-soft);
+  font-size: var(--t-small);
 }
 
 .vote-bar__side--right {
@@ -28,37 +44,51 @@
 }
 
 .vote-bar__figure {
-  color: var(--ink);
+  color: var(--on-stage);
+  font-size: var(--t-figure-lg);
+  line-height: 1;
+}
+
+.vote-bar__breakdown {
+  padding: var(--s4);
+  background: var(--stage-sub);
+  border-radius: var(--r);
+}
+
+.vote-bar__breakdown-head {
+  color: var(--on-stage-soft);
 }
 
 .vote-bar__parties {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--s1) var(--s4);
-  margin-top: var(--s4);
-  padding-top: var(--s3);
-  border-top: 1px solid var(--rule);
-  color: var(--ink-soft);
+  gap: var(--s2) var(--s5);
+  margin-top: var(--s3);
+  color: var(--on-stage-soft);
 }
 
 .vote-bar__party-name {
-  color: var(--ink);
+  color: var(--on-stage);
+  font-weight: 600;
 }
 
 .vote-bar__party-votes {
   font-family: var(--font-narrow);
 }
 
-@media (max-width: 720px) {
+@media (max-width: 640px) {
   /* The two totals are the widest figures in the app; side by side they run past
      a 380 px viewport, so they stack. */
   .vote-bar__caption {
-    flex-direction: column;
-    gap: var(--s3);
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .vote-bar__side--right {
     text-align: left;
     justify-items: start;
+  }
+
+  .vote-bar__svg {
+    height: 56px;
   }
 }

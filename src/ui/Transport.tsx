@@ -65,95 +65,105 @@ export function Transport({ rules, onChange, onScrub, averageMagnitude, citation
       <div className="transport__inner page">
         {/* PRD §10.1. Adjacent to the controls, in plain language, at all times
             when any knob is off its 2024 default. Never a dismissible modal. */}
-        {!atDefault && (
-          <p className="transport__counterfactual small">{S.counterfactual}</p>
-        )}
+        {!atDefault && <p className="transport__counterfactual small">{S.counterfactual}</p>}
 
-        <div className="transport__scrub">
-          <span className="transport__label small">
-            <label htmlFor={sliderId}>{S.threshold}</label>
-            <Cite rules={citations} of="threshold" />
-          </span>
-          <output className="transport__value figure" htmlFor={sliderId}>
-            {percent(rules.threshold, 1)}
-          </output>
-          <div className="transport__track">
-            <input
-              id={sliderId}
-              type="range"
-              min={0}
-              max={THRESHOLD_MAX}
-              step={THRESHOLD_STEP}
-              value={rules.threshold}
-              disabled={rules.thresholdScope === 'none'}
-              onPointerDown={() => onScrub(true)}
-              onPointerUp={() => onScrub(false)}
-              onPointerCancel={() => onScrub(false)}
-              onKeyDown={() => onScrub(false)}
-              onChange={(e) =>
-                onChange({ ...rules, threshold: Number(e.currentTarget.value) })
-              }
-              aria-valuetext={percent(rules.threshold, 1)}
-            />
-            <ul className="transport__ticks" aria-hidden="true">
-              {ticks.map((tick) => {
-                const at = tick.value / THRESHOLD_MAX;
-                // A tick near either end would centre its label off the page, so
-                // the label hangs inward from the mark instead.
-                const edge = at > 0.85 ? ' transport__tick--right' : at < 0.15 ? ' transport__tick--left' : '';
-                const on = Math.abs(rules.threshold - tick.value) < 0.0005 ? ' transport__tick--on' : '';
-                return (
-                <li
-                  key={tick.note}
-                  style={{ left: `${at * 100}%` }}
-                  className={`transport__tick${on}${edge}`}
-                >
-                  <span className="micro">{tick.label}</span>
-                  <span className="micro transport__tick-note">{tick.note}</span>
-                </li>
-                );
-              })}
-            </ul>
+        <div className="transport__console">
+          <div className="transport__scrub">
+            <span className="transport__label small">
+              <label htmlFor={sliderId}>{S.threshold}</label>
+              <Cite rules={citations} of="threshold" />
+            </span>
+            <output className="transport__value figure" htmlFor={sliderId}>
+              {percent(rules.threshold, 1)}
+            </output>
+            <div className="transport__track">
+              <div
+                className="transport__fill"
+                style={{ width: `${(rules.threshold / THRESHOLD_MAX) * 100}%` }}
+                aria-hidden="true"
+              />
+              <input
+                id={sliderId}
+                type="range"
+                min={0}
+                max={THRESHOLD_MAX}
+                step={THRESHOLD_STEP}
+                value={rules.threshold}
+                disabled={rules.thresholdScope === 'none'}
+                onPointerDown={() => onScrub(true)}
+                onPointerUp={() => onScrub(false)}
+                onPointerCancel={() => onScrub(false)}
+                onKeyDown={() => onScrub(false)}
+                onChange={(e) => onChange({ ...rules, threshold: Number(e.currentTarget.value) })}
+                aria-valuetext={percent(rules.threshold, 1)}
+              />
+              <ul className="transport__ticks" aria-hidden="true">
+                {ticks.map((tick) => {
+                  const at = tick.value / THRESHOLD_MAX;
+                  // A tick near either end would centre its label off the page,
+                  // so the label hangs inward from the mark instead.
+                  const edge =
+                    at > 0.85
+                      ? ' transport__tick--right'
+                      : at < 0.15
+                        ? ' transport__tick--left'
+                        : '';
+                  const on =
+                    Math.abs(rules.threshold - tick.value) < 0.0005 ? ' transport__tick--on' : '';
+                  return (
+                    <li
+                      key={tick.note}
+                      style={{ left: `${at * 100}%` }}
+                      className={`transport__tick${on}${edge}`}
+                    >
+                      <span className="micro">{tick.label}</span>
+                      <span className="micro transport__tick-note">{tick.note}</span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
           </div>
-        </div>
 
-        {/* DESIGN.md §4.4: below 720 px the scrubber keeps the full width and the
-            three discrete controls collapse behind one sheet, so the chamber
-            stays at eye level while the control stays under the thumb. */}
-        <details className="transport__sheet">
-          <summary className="small">{S.moreRules}</summary>
-        </details>
+          {/* DESIGN.md §4.4: below 860 px the scrubber keeps the full width and
+              the three discrete controls collapse behind one sheet, so the
+              chamber stays at eye level while the control stays under the
+              thumb. */}
+          <details className="transport__sheet">
+            <summary className="small">{S.moreRules}</summary>
+          </details>
 
-        <div className="transport__rules">
-          <Toggle
-            label={S.thresholdScope}
-            cite={<Cite rules={citations} of="threshold" />}
-            options={SCOPES}
-            value={rules.thresholdScope}
-            onSelect={(v) => onChange({ ...rules, thresholdScope: v })}
-          />
-          <Toggle
-            label={S.divisor}
-            cite={<Cite rules={citations} of="divisor" />}
-            options={DIVISORS}
-            value={rules.divisor}
-            onSelect={(v) => onChange({ ...rules, divisor: v })}
-          />
-          <Toggle
-            label={S.geography}
-            cite={<Cite rules={citations} of="dapil" />}
-            options={GEOGRAPHIES}
-            value={rules.geography}
-            onSelect={(v) => onChange({ ...rules, geography: v })}
-          />
-          <button
-            type="button"
-            className="transport__reset small"
-            disabled={atDefault}
-            onClick={() => onChange({ ...RULES_2024 })}
-          >
-            {S.reset}
-          </button>
+          <div className="transport__rules">
+            <Toggle
+              label={S.thresholdScope}
+              cite={<Cite rules={citations} of="threshold" />}
+              options={SCOPES}
+              value={rules.thresholdScope}
+              onSelect={(v) => onChange({ ...rules, thresholdScope: v })}
+            />
+            <Toggle
+              label={S.divisor}
+              cite={<Cite rules={citations} of="divisor" />}
+              options={DIVISORS}
+              value={rules.divisor}
+              onSelect={(v) => onChange({ ...rules, divisor: v })}
+            />
+            <Toggle
+              label={S.geography}
+              cite={<Cite rules={citations} of="dapil" />}
+              options={GEOGRAPHIES}
+              value={rules.geography}
+              onSelect={(v) => onChange({ ...rules, geography: v })}
+            />
+            <button
+              type="button"
+              className="transport__reset small link"
+              disabled={atDefault}
+              onClick={() => onChange({ ...RULES_2024 })}
+            >
+              {S.reset}
+            </button>
+          </div>
         </div>
 
         {rules.geography === 'national-pool' && (
@@ -186,17 +196,19 @@ function Toggle<T extends string>({
         {label}
         {cite}
       </legend>
-      {options.map((option) => (
-        <button
-          key={option.value}
-          type="button"
-          className={`toggle__option small${value === option.value ? ' toggle__option--on' : ''}`}
-          aria-pressed={value === option.value}
-          onClick={() => onSelect(option.value)}
-        >
-          {option.label}
-        </button>
-      ))}
+      <span className="toggle__options">
+        {options.map((option) => (
+          <button
+            key={option.value}
+            type="button"
+            className={`toggle__option small${value === option.value ? ' toggle__option--on' : ''}`}
+            aria-pressed={value === option.value}
+            onClick={() => onSelect(option.value)}
+          >
+            {option.label}
+          </button>
+        ))}
+      </span>
     </fieldset>
   );
 }

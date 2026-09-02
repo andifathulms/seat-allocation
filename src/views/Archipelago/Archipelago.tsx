@@ -139,9 +139,9 @@ export function Archipelago({
   });
 
   return (
-    <div className="archipelago">
+    <div className="archipelago stage">
       <p className="archipelago__count">
-        <span className="figure">{changedCount}</span>{' '}
+        <span className="figure-lg">{changedCount}</span>
         <span className="small">{S.changedDapil}</span>
       </p>
 

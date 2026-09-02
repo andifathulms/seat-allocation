@@ -1,15 +1,25 @@
+/*
+ * DESIGN.md §4.2. The controls are a transport bar rather than a form, because
+ * the app's whole interaction model is drag and watch, and a transport is the
+ * vocabulary people already have for that. It also keeps the control under the
+ * thumb on a phone while the chamber stays at eye level.
+ */
 .transport {
   position: sticky;
   bottom: 0;
-  z-index: 10;
-  background: var(--paper);
+  z-index: 20;
+  background: var(--paper-raise);
   border-top: 1px solid var(--ink);
+  /* The one shadow in the app. It is not decoration: this surface floats over
+     the instruments and has to read as being in front of them, and it cannot
+     do that by value alone against a ground that is nearly its own. */
+  box-shadow: 0 -12px 32px -20px rgb(0 0 0 / 45%);
 }
 
 .transport__inner {
-  padding-block: var(--s3) var(--s4);
+  padding-block: var(--s4) var(--s5);
   display: grid;
-  gap: var(--s3);
+  gap: var(--s4);
 }
 
 /* The bar grows to accommodate the statement rather than overlaying anything. */
@@ -25,9 +35,18 @@
   color: var(--ink-soft);
 }
 
+/* The scrubber is the instrument; the three discrete rules are its settings.
+   Sizing them 3:2 says which is which before either is read. */
+.transport__console {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+  gap: var(--s5) var(--s7);
+  align-items: start;
+}
+
 .transport__scrub {
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: auto minmax(0, 1fr);
   grid-template-areas:
     'label value'
     'track track';
@@ -42,19 +61,49 @@
 
 .transport__value {
   grid-area: value;
+  font-family: var(--font-narrow);
   font-size: var(--t-figure);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.01em;
 }
 
 .transport__track {
   grid-area: track;
   position: relative;
-  padding-bottom: var(--s6);
+  margin-top: var(--s3);
+  padding-bottom: 4.8rem;
+}
+
+/* The rail, the filled portion and the thumb are three layers: the input draws
+   the thumb and the hit area, the two divs beneath draw the track, because a
+   single runnable-track cannot be split at the value in every engine. */
+.transport__track::before {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: 11px;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--rule-strong);
+}
+
+.transport__fill {
+  position: absolute;
+  left: 0;
+  top: 11px;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--ink);
+  pointer-events: none;
 }
 
 .transport__track input[type='range'] {
+  position: relative;
   appearance: none;
+  display: block;
   width: 100%;
-  height: 24px;
+  height: 28px;
   margin: 0;
   background: none;
   cursor: ew-resize;
@@ -62,39 +111,46 @@
 
 .transport__track input[type='range']:disabled {
   cursor: default;
-  opacity: 0.4;
+}
+
+.transport__track input[type='range']:disabled ~ .transport__ticks,
+.transport__scrub:has(input:disabled) .transport__fill {
+  opacity: 0.35;
 }
 
 .transport__track input[type='range']::-webkit-slider-runnable-track {
-  height: 2px;
-  background: var(--ink);
+  height: 28px;
+  background: none;
 }
 
 .transport__track input[type='range']::-moz-range-track {
-  height: 2px;
-  background: var(--ink);
+  height: 28px;
+  background: none;
 }
 
 .transport__track input[type='range']::-webkit-slider-thumb {
   appearance: none;
-  width: 4px;
-  height: 24px;
-  margin-top: -11px;
-  border-radius: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: 4px;
+  border-radius: 50%;
   background: var(--ink);
+  border: 3px solid var(--paper-raise);
+  box-shadow: 0 0 0 1px var(--ink);
 }
 
 .transport__track input[type='range']::-moz-range-thumb {
-  width: 4px;
-  height: 24px;
-  border: none;
-  border-radius: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
   background: var(--ink);
+  border: 3px solid var(--paper-raise);
+  box-shadow: 0 0 0 1px var(--ink);
 }
 
 .transport__ticks {
   position: absolute;
-  inset: 22px 0 auto;
+  inset: 30px 0 auto;
   pointer-events: none;
 }
 
@@ -102,17 +158,52 @@
   position: absolute;
   transform: translateX(-50%);
   display: grid;
+  grid-template-areas:
+    'mark mark'
+    'value note';
   justify-items: center;
+  align-items: baseline;
+  column-gap: 4px;
   color: var(--ink-soft);
   white-space: nowrap;
 }
 
 .transport__tick::before {
   content: '';
+  grid-area: mark;
   width: 1px;
   height: 5px;
-  background: var(--rule);
-  margin-bottom: 2px;
+  background: var(--rule-strong);
+  margin-bottom: 3px;
+}
+
+.transport__tick > span:first-of-type {
+  grid-area: value;
+}
+
+/* 2,5 · 3,5 · 4,0 sit inside the first fifth of a ten-point scale, so their
+   labels overlap at every width the app supports. Ticks step down three rows in
+   turn, which clears all three and leaves the fourth back on the first row where
+   there is nothing near it. The stagger does not depend on the viewport: one
+   that did would change the bar's height as the window is resized. */
+.transport__tick:nth-child(3n + 2) {
+  padding-top: 1.55em;
+}
+
+.transport__tick:nth-child(3n) {
+  padding-top: 3.1em;
+}
+
+/* A stepped-down tick keeps its mark attached to the track by growing it back
+   up through the offset, so the label is still visibly anchored to a value. */
+.transport__tick:nth-child(3n + 2)::before {
+  height: calc(1.55em + 5px);
+  margin-top: -1.55em;
+}
+
+.transport__tick:nth-child(3n)::before {
+  height: calc(3.1em + 5px);
+  margin-top: -3.1em;
 }
 
 .transport__tick--right {
@@ -139,34 +230,48 @@
 
 .transport__tick--on::before {
   background: var(--ink);
-  height: 8px;
+  height: 9px;
 }
 
 .transport__tick-note {
+  grid-area: note;
   font-weight: 400;
+  color: var(--ink-faint);
+}
+
+.transport__tick-note::before {
+  content: '·';
+  margin-right: 4px;
 }
 
 .transport__rules {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  gap: var(--s3) var(--s5);
+  display: grid;
+  gap: var(--s3);
+  align-content: start;
 }
 
+/* Inline text toggles, not dropdowns and not segmented pills. DESIGN.md §4.2. */
 .toggle {
   border: none;
   margin: 0;
   padding: 0;
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 9.5rem minmax(0, 1fr);
   align-items: baseline;
-  gap: var(--s2);
+  column-gap: var(--s3);
 }
 
 .toggle__legend {
   color: var(--ink-soft);
   padding: 0;
-  margin-right: var(--s1);
+  float: left;
+}
+
+.toggle__options {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s1) var(--s3);
 }
 
 .toggle__option {
@@ -176,6 +281,10 @@
   transition: color var(--d-control) linear;
 }
 
+.toggle__option:hover {
+  color: var(--ink);
+}
+
 .toggle__option--on {
   color: var(--ink);
   border-bottom-color: var(--ink);
@@ -183,38 +292,41 @@
 }
 
 .transport__reset {
-  margin-left: auto;
-  color: var(--ink);
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  justify-self: start;
+  margin-top: var(--s1);
 }
 
 .transport__reset:disabled {
-  color: var(--ink-soft);
+  color: var(--ink-faint);
   text-decoration: none;
   cursor: default;
-  opacity: 0.5;
 }
 
 .transport__sheet {
   display: none;
 }
 
+@media (max-width: 960px) {
+  .transport__console {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s5);
+  }
+}
+
 @media (max-width: 720px) {
+  .transport__inner {
+    padding-block: var(--s3) var(--s4);
+    gap: var(--s3);
+  }
+
   /* The value alone still reads at this width; the year note does not fit
      between neighbouring ticks and is dropped rather than overlapped. */
   .transport__tick-note {
     display: none;
   }
 
-  /* 3,5% and 4,0% are five pixels apart on a 380 px track, so alternate ticks
-     drop to a second row rather than printing over each other. */
-  .transport__tick:nth-child(even) {
-    padding-top: 1.15em;
-  }
-
   .transport__track {
-    padding-bottom: var(--s6);
+    padding-bottom: 4.4rem;
   }
 
   .transport__sheet {
@@ -224,22 +336,21 @@
   .transport__sheet summary {
     color: var(--ink);
     text-decoration: underline;
-    text-underline-offset: 3px;
+    text-underline-offset: 4px;
     cursor: pointer;
+    width: fit-content;
   }
 
   .transport__rules {
     display: none;
-    gap: var(--s3) var(--s4);
   }
 
   .transport__sheet[open] ~ .transport__rules {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    display: grid;
   }
 
-  .transport__reset {
-    margin-left: 0;
+  .toggle {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: var(--s1);
   }
 }

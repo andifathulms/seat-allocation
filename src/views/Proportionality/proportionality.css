@@ -1,32 +1,36 @@
 .proportionality {
   margin: 0;
-  padding: var(--s5);
-  background: var(--stage);
-  border-radius: var(--r-sm);
+  padding: var(--s6) var(--s5) var(--s5);
 }
 
 .proportionality__svg {
   display: block;
   width: 100%;
-  max-width: 38rem;
+  max-width: 46rem;
   margin: 0 auto;
 }
 
 .proportionality__grid {
   stroke: var(--rule-stage);
   stroke-width: 0.15;
-  opacity: 0.6;
 }
 
+/* Perfect proportionality. No label — the geometry explains itself. */
 .proportionality__parity {
-  stroke: var(--rule-stage);
-  stroke-width: 0.4;
+  stroke: var(--on-stage-soft);
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
   vector-effect: non-scaling-stroke;
 }
 
-.proportionality__tick,
+.proportionality__tick {
+  fill: var(--on-stage-soft);
+  font-family: var(--font-narrow);
+  font-size: 3.2px;
+}
+
 .proportionality__axis-name {
-  fill: var(--on-stage);
+  fill: var(--on-stage-soft);
   font-family: var(--font-ui);
   font-size: 3.2px;
 }
@@ -37,6 +41,7 @@
   font-size: 3.4px;
   font-weight: 600;
   paint-order: stroke;
-  stroke: rgb(0 0 0 / 30%);
-  stroke-width: 0.8px;
+  stroke: var(--stage);
+  stroke-width: 1.1px;
+  stroke-linejoin: round;
 }

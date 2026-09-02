@@ -43,13 +43,15 @@ const MIGRATE = 420;
 const ARRIVE = 300;
 
 /**
- * Width of a block label's chip in viewBox units. The label is set at 0.048 and
- * the count beneath it at 0.062, so the count is never the wider of the two for
- * a short name; measuring the name at its own size with a per-character advance
- * that suits Archivo's caps is close enough at this scale and costs no layout.
+ * Size of a block label's chip in viewBox units. The name is set at 0.048 and
+ * the count beneath it at 0.062 in the narrow face, so either can be the wider
+ * of the two; both are measured with a per-character advance that suits the
+ * face, which is close enough at this scale and costs no layout pass.
  */
-function chipWidth(short: string): number {
-  return Math.max(0.13, short.length * 0.031 + 0.028);
+function chipWidth(short: string, count: number): number {
+  const name = short.length * 0.027;
+  const figure = String(count).length * 0.037;
+  return Math.max(name, figure) + 0.036;
 }
 
 /**
@@ -268,11 +270,11 @@ export function Chamber({ parties, seatsByParty, total, animate }: Props) {
                   the block rather than as text floating over it. */}
               <rect
                 className="chamber__chip"
-                x={l.centroid.x - chipWidth(l.short) / 2}
-                y={l.centroid.y - 0.058}
-                width={chipWidth(l.short)}
-                height={0.098}
-                rx={0.014}
+                x={l.centroid.x - chipWidth(l.short, l.count) / 2}
+                y={l.centroid.y - 0.064}
+                width={chipWidth(l.short, l.count)}
+                height={0.132}
+                rx={0.016}
               />
               <text x={l.centroid.x} y={l.centroid.y - 0.014} textAnchor="middle">
                 {l.short}

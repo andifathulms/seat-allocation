@@ -54,16 +54,19 @@ export function MetricStrip({ metrics, baseline, rules, animate }: Props) {
       />
       <div className="metric">
         <p className="metric__label small">{S.enp}</p>
-        <p className="metric__value figure">
+        <p className="metric__value figure-lg">
           <Counted value={metrics.enpVotes} format={(n) => decimal(n, 2)} animate={animate} />
           <span className="metric__arrow" aria-hidden="true"> → </span>
           <Counted value={metrics.enpSeats} format={(n) => decimal(n, 2)} animate={animate} />
         </p>
         <p className="metric__note small">{S.votesToSeats}</p>
         <p className="metric__baseline small">
-          {S.under2024} {decimal(baseline.enpVotes, 2)} → {decimal(baseline.enpSeats, 2)}
+          <span>{S.under2024}</span>
+          <span className="metric__baseline-value">
+            {decimal(baseline.enpVotes, 2)} → {decimal(baseline.enpSeats, 2)}
+          </span>
         </p>
-        <p className="metric__definition small">{S.enpDef}</p>
+        <p className="metric__definition micro">{S.enpDef}</p>
       </div>
     </div>
   );
@@ -97,15 +100,18 @@ function Metric({
         {label}
         {cite}
       </p>
-      <p className="metric__value figure">
+      <p className="metric__value figure-lg">
         <Counted value={value} format={format} animate={animate} />
       </p>
-      {note && <p className="metric__note small">{note}</p>}
+      {/* Always rendered, so the five rows line up across all four columns
+          through the subgrid in metric-strip.css. */}
+      <p className="metric__note small">{note ?? ''}</p>
       <p className="metric__baseline small">
-        {S.under2024} {format(baseline)}
-        {change && <span className="metric__delta"> · {change}</span>}
+        <span>{S.under2024}</span>
+        <span className="metric__baseline-value">{format(baseline)}</span>
+        {change && <span className="metric__delta">· {change}</span>}
       </p>
-      <p className="metric__definition small">{definition}</p>
+      <p className="metric__definition micro">{definition}</p>
     </div>
   );
 }

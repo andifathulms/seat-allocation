@@ -1,41 +1,111 @@
+/*
+ * Four measures, read across. Each shows its current value and its value under
+ * the 2024 statutory rules, so the delta is always visible, and each carries a
+ * one-sentence definition beside it rather than behind a question mark — PRD §8.
+ *
+ * Separated by hairlines rather than set in cards: these are four readings off
+ * one instrument, not four objects.
+ */
 .metrics {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
-  gap: var(--s5);
-  padding: var(--s5) 0;
-  border-block: 1px solid var(--rule);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  /* label · value · note · baseline · definition. The five rows are shared, so
+     the four readings line up across the strip however long each label runs. */
+  grid-template-rows: repeat(5, auto);
+  border-top: 1px solid var(--ink);
+}
+
+.metric {
+  display: grid;
+  grid-row: span 5;
+  grid-template-rows: subgrid;
+  align-content: start;
+  gap: var(--s2);
+  padding: var(--s5) var(--s5) var(--s6) 0;
+  border-left: 1px solid var(--rule);
+  padding-left: var(--s5);
+}
+
+.metric:first-child {
+  border-left: none;
+  padding-left: 0;
 }
 
 .metric__label {
   color: var(--ink-soft);
+  text-wrap: pretty;
 }
 
 .metric__value {
-  margin-top: var(--s1);
   /* Right-aligned numerals are for columns; a metric value heads its own block
      and reads left, in line with everything else on the page. DESIGN.md §1. */
+  font-size: var(--t-figure-lg);
+  line-height: 1;
   overflow-wrap: anywhere;
 }
 
 .metric__arrow {
   color: var(--ink-soft);
+  font-family: var(--font-ui);
+  font-weight: 400;
 }
 
-.metric__note,
+.metric__note {
+  color: var(--ink-soft);
+  font-family: var(--font-narrow);
+  margin-top: calc(var(--s1) * -1);
+}
+
+/* The baseline sits on its own rule so the current value and the 2024 value are
+   never mistaken for one another at a glance. */
 .metric__baseline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s1) var(--s2);
+  margin-top: var(--s2);
+  padding-top: var(--s3);
+  border-top: 1px solid var(--rule);
   color: var(--ink-soft);
 }
 
-.metric__baseline {
-  margin-top: var(--s1);
-}
-
+.metric__baseline-value,
 .metric__delta {
+  font-family: var(--font-narrow);
   color: var(--ink);
 }
 
 .metric__definition {
-  margin-top: var(--s2);
   color: var(--ink-soft);
-  max-width: 34ch;
+  text-wrap: pretty;
+}
+
+@media (max-width: 960px) {
+  .metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .metric:nth-child(odd) {
+    border-left: none;
+    padding-left: 0;
+  }
+
+  .metric:nth-child(n + 3) {
+    border-top: 1px solid var(--rule);
+    padding-top: var(--s5);
+  }
+}
+
+@media (max-width: 560px) {
+  .metrics {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .metric {
+    border-left: none;
+    padding: var(--s5) 0;
+  }
+
+  .metric + .metric {
+    border-top: 1px solid var(--rule);
+  }
 }

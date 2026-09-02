@@ -97,6 +97,7 @@ export const S = {
   voteBarNote:
     'Satu batang untuk seluruh suara sah. Bagian kiri menjadi kursi, bagian kanan ' +
     'tidak. Batas di antaranya bergerak mengikuti ambang batas.',
+  unconvertedBreakdown: 'Bagian kanan, per partai',
   converted: 'menjadi kursi',
   notConverted: 'tidak menjadi kursi',
 

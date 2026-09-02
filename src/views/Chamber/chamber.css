@@ -29,7 +29,7 @@
 
 .chamber__chip {
   fill: var(--stage);
-  fill-opacity: 0.88;
+  fill-opacity: 0.9;
 }
 
 .chamber__label text {

@@ -99,7 +99,8 @@ export function VoteBar({ parties, seatsByParty, totalValidVotes, animate }: Pro
   });
 
   return (
-    <figure className="vote-bar">
+    <figure className="vote-bar stage">
+      <div className="vote-bar__track">
       <svg
         className="vote-bar__svg"
         viewBox="0 0 100 8"
@@ -136,11 +137,12 @@ export function VoteBar({ parties, seatsByParty, totalValidVotes, animate }: Pro
           x2={boundaryFrom * 100}
           y1={-0.6}
           y2={8.6}
-          stroke="var(--ink)"
-          strokeWidth={1.5}
+          stroke="var(--on-stage)"
+          strokeWidth={2}
           vectorEffect="non-scaling-stroke"
         />
       </svg>
+      </div>
 
       <figcaption className="vote-bar__caption">
         <span className="vote-bar__side">
@@ -158,6 +160,8 @@ export function VoteBar({ parties, seatsByParty, totalValidVotes, animate }: Pro
       </figcaption>
 
       {/* The unconverted segment is not one undifferentiated mass. */}
+      <div className="vote-bar__breakdown">
+      <p className="vote-bar__breakdown-head micro">{S.unconvertedBreakdown}</p>
       <ul className="vote-bar__parties">
         {segments
           .filter((s) => !s.converted)
@@ -168,6 +172,7 @@ export function VoteBar({ parties, seatsByParty, totalValidVotes, animate }: Pro
             </li>
           ))}
       </ul>
+      </div>
     </figure>
   );
 }
