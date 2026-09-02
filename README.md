@@ -8,6 +8,11 @@ chamber recompose on the same votes.
 how it is built. `DECISIONS.md` lists every place this build departs from those
 three, and why.
 
+Reading matter sits on paper; every instrument sits on a near-black stage, which
+is the one ground any party colour is drawn on and the ground the palette was
+solved against. Both colour schemes ship. DESIGN.md §0.1 records why the first
+attempt at a single mid-value ground had to be abandoned.
+
 ## The state of the data, up front
 
 The certified dapil × party recapitulation was not available to this build. Three
@@ -77,7 +82,13 @@ controls, whenever any control is off its 2024 default.
   budget.
 - Dragging the threshold from 4,0% to 0 on the production build: 60 fps median,
   p95 frame 17,6 ms, 1,3% of frames over 20 ms, no recomputation stall.
-- 433 KB shipped — code, data and the two font files — against a 1 MB budget.
-- Zero axe-core violations at 380, 720 and 1400 px, on default and changed rules.
+- 440 KB shipped — code, data and the two font files — against a 1 MB budget.
+- Zero axe-core violations against WCAG 2.1 A and AA at 380, 720 and 1400 px, in
+  both colour schemes, with every table, disclosure and popover expanded.
 - Reduced motion measured, not assumed: every instrument lands in one write.
-- No horizontal overflow at 380 px; the hemicycle is legible there.
+- No horizontal overflow at 380, 480, 720, 900, 1200 or 1600 px; the hemicycle is
+  legible at the narrowest of them.
+- Every party colour clears 3,5:1 against the one ground it is ever drawn on, and
+  seven parties — including the four largest — carry their logo colour unchanged.
+  `npx tsx scripts/extract/solve-colors.ts` prints the whole table and exits
+  non-zero if any colour falls under the floor.
