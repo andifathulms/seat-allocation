@@ -2,7 +2,7 @@ import { useMemo, useRef } from 'react';
 import type { DapilResult, Party, PartyId } from '../../engine/types';
 import type { Dapil } from '../../engine/types';
 import { S } from '../../copy/strings.id';
-import { easeMigrate, mix, useProgress } from '../../ui/motion';
+import { easeMigrate, mix, useCommitted, useProgress } from '../../ui/motion';
 import './archipelago.css';
 
 interface Props {
@@ -85,30 +85,37 @@ export function Archipelago({
   // per cell, so the wash completes in about 250 ms and reads as one gesture
   // rather than as a sequence.
   const groups = useRef<(SVGGElement | null)[]>([]);
-  const previous = useRef<Map<string, Array<{ id: PartyId; from: number; seats: number }>>>(
-    new Map(),
-  );
 
-  const plan = useMemo(() => {
-    const built = cells.map((cell) => {
-      const before = previous.current.get(cell.dapil.code) ?? [];
-      return {
-        cell,
-        bars: cell.bars.map((bar) => {
-          const was = before.find((b) => b.id === bar.id);
-          return {
-            ...bar,
-            fromFrom: was?.from ?? bar.from,
-            fromSeats: was?.seats ?? 0,
-          };
-        }),
-      };
-    });
-    previous.current = new Map(
-      cells.map((c) => [c.dapil.code, c.bars.map((b) => ({ id: b.id, from: b.from, seats: b.seats }))]),
-    );
-    return built;
-  }, [cells]);
+  const layout = useMemo(
+    () =>
+      new Map<string, Map<PartyId, { from: number; seats: number }>>(
+        cells.map((c) => [
+          c.dapil.code,
+          new Map(c.bars.map((b) => [b.id, { from: b.from, seats: b.seats }])),
+        ]),
+      ),
+    [cells],
+  );
+  const before = useCommitted(layout, layout);
+
+  const plan = useMemo(
+    () =>
+      cells.map((cell) => {
+        const was = before.get(cell.dapil.code);
+        return {
+          cell,
+          bars: cell.bars.map((bar) => {
+            const previous = was?.get(bar.id);
+            return {
+              ...bar,
+              fromFrom: previous?.from ?? bar.from,
+              fromSeats: previous?.seats ?? 0,
+            };
+          }),
+        };
+      }),
+    [cells, before],
+  );
 
   useProgress(plan, animate ? 420 + 84 * 3 : 0, (raw) => {
     const total = 420 + plan.length * 3;

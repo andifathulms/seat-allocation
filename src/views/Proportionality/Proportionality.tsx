@@ -3,7 +3,7 @@ import { scaleLinear } from 'd3-scale';
 import type { Metrics, Party } from '../../engine/types';
 import { S } from '../../copy/strings.id';
 import { percent } from '../../ui/format';
-import { easeMigrate, mix, useProgress } from '../../ui/motion';
+import { easeMigrate, mix, useCommitted, useProgress } from '../../ui/motion';
 import './proportionality.css';
 
 interface Props {
@@ -48,24 +48,30 @@ export function Proportionality({ parties, metrics, animate }: Props) {
   );
 
   const nodes = useRef<(SVGGElement | null)[]>([]);
-  const previous = useRef<Map<string, { x: number; y: number }>>(new Map());
 
-  const plan = useMemo(() => {
-    const built = points.map((p) => {
-      const before = previous.current.get(p.id);
-      return {
-        point: p,
-        fromX: before?.x ?? x(p.voteShare),
-        fromY: before?.y ?? y(p.seatShare),
-        toX: x(p.voteShare),
-        toY: y(p.seatShare),
-      };
-    });
-    previous.current = new Map(
-      points.map((p) => [p.id, { x: x(p.voteShare), y: y(p.seatShare) }]),
-    );
-    return built;
-  }, [points, x, y]);
+  const layout = useMemo(
+    () =>
+      new Map<string, { x: number; y: number }>(
+        points.map((p) => [p.id, { x: x(p.voteShare), y: y(p.seatShare) }]),
+      ),
+    [points, x, y],
+  );
+  const before = useCommitted(layout, layout);
+
+  const plan = useMemo(
+    () =>
+      points.map((p) => {
+        const was = before.get(p.id);
+        return {
+          point: p,
+          fromX: was?.x ?? x(p.voteShare),
+          fromY: was?.y ?? y(p.seatShare),
+          toX: x(p.voteShare),
+          toY: y(p.seatShare),
+        };
+      }),
+    [points, before, x, y],
+  );
 
   useProgress(plan, animate ? 420 : 0, (raw) => {
     const eased = easeMigrate(raw);

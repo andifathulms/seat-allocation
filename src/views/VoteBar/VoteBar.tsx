@@ -2,7 +2,7 @@ import { useMemo, useRef } from 'react';
 import type { Party, PartyId } from '../../engine/types';
 import { S } from '../../copy/strings.id';
 import { count, percent } from '../../ui/format';
-import { easeMigrate, mix, useProgress } from '../../ui/motion';
+import { easeMigrate, mix, useCommitted, useProgress } from '../../ui/motion';
 import './vote-bar.css';
 
 interface Props {
@@ -64,28 +64,24 @@ export function VoteBar({ parties, seatsByParty, totalValidVotes, animate }: Pro
     .reduce((t, s) => t + s.votes, 0);
 
   const nodes = useRef<(SVGRectElement | null)[]>([]);
-  const previous = useRef<Map<PartyId, { from: number; converted: boolean }>>(new Map());
   const marker = useRef<SVGLineElement>(null);
-  const previousBoundary = useRef(boundary);
 
-  const plan = useMemo(() => {
-    const built = segments.map((segment) => {
-      const before = previous.current.get(segment.id);
-      return {
+  const layout = useMemo(
+    () => new Map<PartyId, number>(segments.map((s) => [s.id, s.from])),
+    [segments],
+  );
+  const before = useCommitted(layout, layout);
+  const boundaryFrom = useCommitted(boundary, boundary);
+
+  const plan = useMemo(
+    () =>
+      segments.map((segment) => ({
         segment,
-        fromX: before?.from ?? segment.from,
+        fromX: before.get(segment.id) ?? segment.from,
         toX: segment.from,
-        wasConverted: before?.converted ?? segment.converted,
-      };
-    });
-    previous.current = new Map(
-      segments.map((s) => [s.id, { from: s.from, converted: s.converted }]),
-    );
-    return built;
-  }, [segments]);
-
-  const boundaryFrom = previousBoundary.current;
-  previousBoundary.current = boundary;
+      })),
+    [segments, before],
+  );
 
   useProgress(plan, animate ? 420 : 0, (raw) => {
     const eased = easeMigrate(raw);

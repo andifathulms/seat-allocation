@@ -75,22 +75,46 @@ export function useProgress(
   const frame = useRef(0);
   const callback = useRef(onFrame);
   callback.current = onFrame;
+  // The check lives here rather than in each instrument. Five views drive this
+  // hook, and a reduced-motion preference that any one of them can forget to
+  // honour is not honoured at all.
+  const reduced = useReducedMotion();
+  const effective = reduced ? 0 : duration;
 
   useEffect(() => {
-    if (duration <= 0) {
+    if (effective <= 0) {
       callback.current(1);
       return;
     }
     const started = performance.now();
     const tick = (now: number) => {
-      const progress = Math.min((now - started) / duration, 1);
+      const progress = Math.min((now - started) / effective, 1);
       callback.current(progress);
       if (progress < 1) frame.current = requestAnimationFrame(tick);
     };
     callback.current(0);
     frame.current = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame.current);
-  }, [key, duration]);
+  }, [key, effective]);
+}
+
+/**
+ * The value as of the last commit.
+ *
+ * Instruments interpolate from where they were to where they are going, which
+ * means the render needs the previous target. Recording it inside the useMemo
+ * that computes the new one is a side effect in render: StrictMode renders
+ * twice, the second pass reads back what the first just wrote, and every
+ * animation collapses to no movement at all. Committing it in an effect instead
+ * makes the render pure and the previous value stable across both passes.
+ */
+export function useCommitted<T>(value: T, initial: T): T {
+  const ref = useRef<T>(initial);
+  const committed = ref.current;
+  useEffect(() => {
+    ref.current = value;
+  }, [value]);
+  return committed;
 }
 
 export function mix(a: number, b: number, t: number): number {

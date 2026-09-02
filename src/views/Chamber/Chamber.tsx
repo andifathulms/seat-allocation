@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import type { Party, PartyId } from '../../engine/types';
 import { easeMigrate, mix, mixHex, useProgress } from '../../ui/motion';
 import { blockCentroid, blockOrder, matchSeats, seatParties } from './assign';
@@ -50,60 +50,55 @@ export function Chamber({ parties, seatsByParty, total, animate }: Props) {
   );
 
   const circles = useRef<(SVGCircleElement | null)[]>([]);
-  const seats = useRef<SeatState[]>([]);
-  const current = useRef<PartyId[]>([]);
 
-  // Rebuild the migration plan whenever the target assignment changes. The seats
-  // that keep their party barely move; the ones left over are the seats that
-  // changed hands, and they travel.
-  const plan = useMemo(() => {
-    const previous = current.current;
+  /**
+   * A stable set of 580 tokens. Token i is the same seat from one rule change to
+   * the next; what changes is the party it belongs to and the position it
+   * occupies. Holding identity this way is what lets a seat travel rather than
+   * cross-fade.
+   *
+   * The committed state is read during render and written in an effect. Writing
+   * it inside the useMemo would be a side effect in render: StrictMode renders
+   * twice, the second pass would read back what the first had just written, and
+   * every migration would collapse to no movement at all.
+   */
+  const commit = useRef<{ parties: PartyId[]; positions: number[] } | null>(null);
+  const committed = commit.current;
+
+  const { plan, positions } = useMemo(() => {
     const points = geometry.seats;
-    const built: SeatState[] = [];
+    const usable = committed !== null && committed.parties.length === total;
+    const previousParties = usable ? committed.parties : nextParties;
+    const previousPositions = usable
+      ? committed.positions
+      : Array.from({ length: total }, (_, i) => i);
 
-    if (previous.length !== total) {
-      for (let i = 0; i < total; i++) {
-        const point = points[i];
-        const party = nextParties[i] as PartyId;
-        const color = colors.get(party) ?? '#000000';
-        built.push({
-          party,
-          fromX: point?.x ?? 0,
-          fromY: point?.y ?? 0,
-          fromColor: color,
-          toX: point?.x ?? 0,
-          toY: point?.y ?? 0,
-          toColor: color,
-        });
-      }
-    } else {
-      const targets = matchSeats(previous, nextParties);
-      const existing = seats.current;
-      for (let s = 0; s < total; s++) {
-        const target = targets[s] as number;
-        const point = points[target];
-        const previousSeat = existing[s];
-        const fromParty = previous[s] as PartyId;
-        const toParty = nextParties[target] as PartyId;
-        built.push({
-          party: toParty,
-          fromX: previousSeat?.toX ?? point?.x ?? 0,
-          fromY: previousSeat?.toY ?? point?.y ?? 0,
-          fromColor: colors.get(fromParty) ?? '#000000',
-          toX: point?.x ?? 0,
-          toY: point?.y ?? 0,
-          toColor: colors.get(toParty) ?? '#000000',
-        });
-      }
-      // Keep the token order aligned with the positions so the next diff starts
-      // from where this one landed.
-      built.sort((a, b) => a.toX - b.toX || a.toY - b.toY);
+    const targets = matchSeats(previousParties, nextParties);
+    const built: SeatState[] = new Array(total);
+
+    for (let i = 0; i < total; i++) {
+      const to = targets[i] ?? i;
+      const from = previousPositions[i] ?? i;
+      const fromPoint = points[from];
+      const toPoint = points[to];
+      const fromParty = previousParties[i] as PartyId;
+      const toParty = nextParties[to] as PartyId;
+      built[i] = {
+        party: toParty,
+        fromX: fromPoint?.x ?? 0,
+        fromY: fromPoint?.y ?? 0,
+        fromColor: colors.get(fromParty) ?? '#000000',
+        toX: toPoint?.x ?? 0,
+        toY: toPoint?.y ?? 0,
+        toColor: colors.get(toParty) ?? '#000000',
+      };
     }
+    return { plan: built, positions: targets };
+  }, [committed, nextParties, geometry, colors, total]);
 
-    seats.current = built;
-    current.current = built.map((s) => s.party);
-    return built;
-  }, [nextParties, geometry, colors, total]);
+  useEffect(() => {
+    commit.current = { parties: plan.map((seat) => seat.party), positions };
+  }, [plan, positions]);
 
   const duration = animate ? 420 : 0;
 
