@@ -4,6 +4,7 @@ import { loadDataset } from './data/load';
 import { reproduce, type Reproduction } from './data/reproduction';
 import type { Dataset } from './data/schema';
 import { useAllocation } from './state/useAllocation';
+import { Archipelago } from './views/Archipelago/Archipelago';
 import { Chamber } from './views/Chamber/Chamber';
 import { Legend } from './ui/Legend';
 import { MetricStrip } from './ui/MetricStrip';
@@ -54,6 +55,9 @@ function Loaded({ data }: { data: Dataset }) {
   const [scrubbing, setScrubbing] = useState(false);
 
   const averageMagnitude = data.official.totalSeats / data.dapil.dapil.length;
+  const [selectedDapil, setSelectedDapil] = useState<string>(
+    () => data.dapil.dapil[0]?.code ?? '',
+  );
 
   return (
     <>
@@ -99,6 +103,20 @@ function Loaded({ data }: { data: Dataset }) {
             parties={data.parties.parties}
             seatsByParty={allocation.seatsByParty}
             totalValidVotes={data.parties.totalValidVotes}
+            animate={!scrubbing}
+          />
+        </section>
+
+        <section className="section">
+          <h2 className="h2">{S.archipelago}</h2>
+          <p className="prose small">{S.archipelagoNote}</p>
+          <Archipelago
+            parties={data.parties.parties}
+            dapil={data.dapil.dapil}
+            results={allocation.byDapil}
+            baseline={reproduction.baseline.byDapil}
+            selected={selectedDapil}
+            onSelect={setSelectedDapil}
             animate={!scrubbing}
           />
         </section>
