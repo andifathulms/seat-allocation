@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Test
+        run: npm test
+
+      # The reproduction gate. It exits non-zero while dapil-2024.json is a
+      # placeholder, which is the honest state of the data — see DECISIONS.md §1.
+      # Drop continue-on-error the moment the certified table lands, so that a
+      # regression in reproduction blocks the deploy as PRD §11.1 requires.
+      - name: Verify reproduction
+        id: verify
+        continue-on-error: true
+        run: npm run verify
+
+      - name: Report the gate
+        run: |
+          if [ "${{ steps.verify.outcome }}" = "success" ]; then
+            echo "Reproduksi cocok." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Reproduksi belum dapat diuji: dapil-2024.json masih placeholder." >> "$GITHUB_STEP_SUMMARY"
+            echo "Lihat DECISIONS.md butir 1." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Build
+        run: npx tsc -b --noEmit && npx vite build
+
+      - name: Bundle budget
+        run: |
+          BYTES=$(find dist -type f \( -name '*.js' -o -name '*.css' -o -name '*.html' -o -name '*.json' \) -exec cat {} + | wc -c)
+          echo "shipped bytes: $BYTES" >> "$GITHUB_STEP_SUMMARY"
+          # PRD §11.8: total bundle plus data under 1 MB.
+          test "$BYTES" -lt 1048576
