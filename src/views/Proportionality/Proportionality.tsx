@@ -93,13 +93,20 @@ export function Proportionality({ parties, metrics, animate }: Props) {
    * two tenths of a point apart, PPP and PSI both sit on the axis — so each
    * label takes the lowest tier whose box clears every label already placed.
    * Larger parties are placed first and therefore sit closest to their dot.
+   *
+   * The test has to run in absolute plot coordinates, not in tiers. A tier is an
+   * offset from the dot it belongs to, so two dots at different heights can take
+   * different tiers and still land on the same line — which is exactly what
+   * Golkar and PDI-P did, four points apart on the x axis and eight apart on the
+   * y, both labelled at tier zero and printed over each other.
    */
   const labelled = useMemo(() => {
     const CHAR = 2.05;
     // One and a half times the label's own size, so two stacked labels have
     // clear air between them rather than touching strokes.
     const TIER = 5.2;
-    const placed: Array<{ x1: number; x2: number; tier: number }> = [];
+    const LINE = 4.4;
+    const placed: Array<{ x1: number; x2: number; y: number }> = [];
     const out = new Map<string, number>();
 
     for (const point of [...points]
@@ -111,20 +118,24 @@ export function Proportionality({ parties, metrics, animate }: Props) {
         point.voteShare > MAX * 0.8 ? 'end' : point.voteShare < MAX * 0.12 ? 'start' : 'middle';
       const x1 = anchor === 'end' ? cx - width : anchor === 'start' ? cx : cx - width / 2;
       const box = { x1: x1 - 0.6, x2: x1 + width + 0.6 };
+      const base = y(point.seatShare) - point.r - 1.8;
 
       let tier = 0;
       while (
         placed.some(
-          (other) => other.tier === tier && other.x1 < box.x2 && box.x1 < other.x2,
+          (other) =>
+            other.x1 < box.x2 &&
+            box.x1 < other.x2 &&
+            Math.abs(other.y - (base - tier * TIER)) < LINE,
         )
       ) {
         tier++;
       }
-      placed.push({ ...box, tier });
+      placed.push({ ...box, y: base - tier * TIER });
       out.set(point.id, tier * TIER);
     }
     return out;
-  }, [points, x]);
+  }, [points, x, y]);
 
   return (
     <figure className="proportionality stage">
