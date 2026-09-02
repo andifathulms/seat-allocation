@@ -236,7 +236,7 @@
 .transport__tick-note {
   grid-area: note;
   font-weight: 400;
-  color: var(--ink-faint);
+  color: var(--ink-soft);
 }
 
 .transport__tick-note::before {

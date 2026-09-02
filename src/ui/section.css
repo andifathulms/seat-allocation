@@ -16,7 +16,7 @@
 .section__index {
   font-family: var(--font-narrow);
   font-size: var(--t-small);
-  color: var(--ink-faint);
+  color: var(--ink-soft);
   padding-top: 0.35em;
   border-top: 1px solid var(--rule);
   align-self: stretch;

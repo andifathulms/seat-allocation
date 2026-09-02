@@ -17,7 +17,8 @@
   --paper-raise: #fbfaf7;
   --ink: #16181b;
   --ink-soft: #565a60;
-  /* Decoration and disabled states only — below 4,5:1 and never load-bearing. */
+  /* Disabled controls only — below 4,5:1, and nothing it marks is information
+     that is not also stated by the control's own disabled state. */
   --ink-faint: #878c93;
   --rule: #dad7d0;
   --rule-strong: #b9b5ac;

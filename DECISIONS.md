@@ -43,29 +43,39 @@ header switches to the reproduction line on its own.
 
 ---
 
-## 2. Party colours do not reach 3:1 against the panel
+## 2. Party colours reach 3,5:1 against the stage — resolved, and how
 
-**Rule affected:** DESIGN.md §2.2, third bullet; §8.
+**Rule affected:** DESIGN.md §2.3, second bullet; §8.
 
-DESIGN.md §2.1 fixes `--panel` at `#6E7370` because a mid ground is the only one
-against which both Golkar's yellow and NasDem's navy hold. §2.2 then requires
-every party colour to reach 3:1 against that panel.
+This entry used to record an unsatisfiable requirement. It is worth keeping as a
+record of which premise failed.
 
-These cannot both hold. `#6E7370` has a relative luminance of 0,167, so 3:1
-against it requires a colour above 0,602 or below 0,023 — pastel or near-black.
-Every saturated mid-lightness hue in the palette is excluded by construction. The
-requirement is unsatisfiable for the reason the panel was chosen.
+The original DESIGN.md §2.1 fixed the instrument ground at `#6E7370` because a
+mid ground is the only one against which both Golkar's yellow and NasDem's navy
+hold, and then required every party colour to reach 3:1 against it. Those cannot
+both hold. `#6E7370` has a relative luminance of 0,167, so 3:1 against it
+requires a colour above 0,602 or below 0,023 — pastel or near-black. Every
+saturated mid-lightness hue in the palette is excluded by construction. The
+requirement was unsatisfiable for the reason the ground was chosen.
 
-**What is done instead.** `scripts/extract/solve-colors.ts` enforces the hue
-family separation, which is the constraint that carries real meaning — telling
-four greens and five blues apart — and prints each party's actual contrast ratio
-so the figure is auditable rather than assumed. Party marks additionally carry a
-`--panel-deep` hairline, which delivers the boundary that the contrast ratio was
-there to deliver.
+The build shipped with the constraint dropped and the actual ratios printed, and
+that was the wrong repair. The unsatisfiable contrast rule was a symptom: the
+same mid ground was also forcing the hue-family solve to spread colours in both
+directions, and five parties had landed somewhere their party is not — PKS peach,
+Demokrat pale blue, PKB mint. The palette was legible and no longer recognisable,
+which trades away the entire reason for using these colours.
 
-Colour is never the only channel anyway: DESIGN.md §5.1 puts labels at block
+**What is done instead.** The ground moved to `#16191D`. A deep ground has the
+whole upper range available and imposes one floor rather than a two-sided
+squeeze, so `scripts/extract/solve-colors.ts` now enforces both constraints at
+once: hue is untouched, every colour clears 3,5:1 against the stage, and hue
+families separate by 11 points of Lab lightness with the largest party in each
+family holding its brand lightness exactly. Seven parties carry their logo colour
+unchanged, including the four largest. The lowest ratio in the palette is 3,65:1.
+
+Colour is still never the only channel: DESIGN.md §5.1 puts labels at block
 centroids, §5.3 marks changed dapil with a shape, and PRD §11.7 requires a table
-equivalent for every instrument. Those are what carry the content.
+equivalent for every instrument.
 
 ---
 
@@ -148,29 +158,39 @@ is not what the named formula produces.
 
 ---
 
-## 7. Two chrome values move a few units for contrast
+## 7. Chrome values are set by the contrast floor, not adjusted toward it
 
-**Rules affected:** DESIGN.md §2.1, `--panel` and `--warn`; §7.
+**Rules affected:** DESIGN.md §2.1; §7; §8.
 
-DESIGN.md §8 requires 4,5:1 for text. Two of §2.1's own values do not reach it:
+DESIGN.md §8 requires 4,5:1 for text. In the mid-ground design two of §2.1's own
+values missed it and were nudged a few units — the panel five units darker, the
+warn colour two units cooler. Both nudges are gone with the ground they were
+compensating for. The current values are chosen from the floor rather than
+adjusted toward it: `--ink-soft` on `--paper` is 6,14:1, `--on-stage-soft` on
+`--stage` is 7,98:1, `--warn` on `--paper` is 5,22:1.
 
-- `--ink-panel` `#F2F3F1` on `--panel` `#6E7370` gives 4,34:1. `--panel` moves to
-  `#696E6B`, five units darker, which gives 4,67:1 and is still the mid-value
-  ground §0 argues for.
-- `--warn` `#B4472E` on `--paper` gives 4,44:1. It moves to `#AE442C` on the same
-  hue, giving 4,70:1.
+One token sits below the floor deliberately. `--ink-faint` at 3,47:1 is used for
+disabled controls only, where the `:disabled` state itself carries the meaning
+and nothing it marks is information that is not also stated elsewhere. Three
+places that used it for real information — the section number, the tick year
+notes and the citation marker — were raised to `--ink-soft` when the audit caught
+them.
 
-Two consequences follow from the same arithmetic:
+Two consequences of the deep ground, both the reverse of the mid-ground ones:
 
-**Secondary text on panels carries no opacity.** A mid-value panel leaves no
-contrast to spare, so any faded label falls below 4,5:1. Rank on panels comes
-from the type scale — size and weight — which is what §3.1 provides anyway.
+**Secondary text on the stage still carries no opacity.** Rank comes from the
+colour token — `--on-stage-soft` is a value, not a fade — because a fade is
+computed against whatever happens to be behind it and stops being auditable.
 
-**The reproduction-failure state desaturates rather than fades.** §7 asks for the
-instruments to be dimmed. Reducing their opacity pulls every label inside them
-below 4,5:1 for the same reason. `filter: saturate(0.5)` drains the party colour,
-leaves every neutral exactly where it was, and still reads at a glance as a
-provisional state.
+**The reproduction-failure state no longer dims the instruments.** DESIGN.md §7
+used to ask for it, and `filter: saturate(0.5)` was the only dimming that did not
+push labels below 4,5:1. But draining the colour degrades the data itself in
+order to say something the sentence above it already says, and it does so on
+exactly the build a reader is most likely to be scrutinising. The claim now
+carries its own weight — a margin marker that is a shape as well as a colour, a
+headline clause, and the full list of checks one disclosure away — and the
+instruments render at full strength.
 
-Verified with axe-core: zero violations at 380, 720 and 1400 px, on the default
-rules and on changed ones, with every table and popover expanded.
+Verified with axe-core against WCAG 2.1 A and AA: zero violations at 380, 720 and
+1400 px, in both colour schemes, with every table, disclosure and popover
+expanded.
