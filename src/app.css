@@ -1,42 +1,24 @@
-.masthead {
-  padding-top: var(--s6);
+/* Loading and load-failure states, before the shell exists. */
+.state {
+  padding-block: var(--s8);
 }
 
-.masthead > .prose {
-  margin-top: var(--s2);
-  margin-bottom: var(--s5);
+/* The chamber and its legend are one instrument, not two: the legend names the
+   blocks in the arc directly above it, and both need the stage ground because
+   every swatch in the legend is a party colour. DESIGN.md §5.1. */
+.chamber-stage {
+  padding: var(--s6) var(--s5) var(--s5);
+  display: grid;
+  gap: var(--s6);
 }
 
-.masthead__intro {
-  margin-top: var(--s5);
-  color: var(--ink);
+main {
+  padding-bottom: var(--s8);
 }
 
-/* DESIGN.md §7: on a reproduction failure the instruments are dimmed, not
-   hidden. The numbers stay reachable; the claim to have reproduced does not.
-   The dimming drains the colour rather than fading the drawing. Opacity would
-   pull the labels inside these instruments below the 4,5:1 §8 requires, since
-   they sit on a mid-value panel with no contrast to spare; desaturation leaves
-   every neutral exactly where it was and still reads at a glance as a
-   provisional state. */
-.page--unverified .chamber__svg,
-.page--unverified .archipelago__bar,
-.page--unverified .vote-bar__svg,
-.page--unverified .proportionality__svg,
-.page--unverified .cascade__columns {
-  filter: saturate(0.5);
-}
-
-.section {
-  margin-top: var(--s7);
-}
-
-/* Clearance so the sticky transport never covers the last instrument. */
-.page:last-of-type {
-  padding-bottom: var(--s7);
-}
-
-.section > .prose {
-  margin-top: var(--s2);
-  margin-bottom: var(--s4);
+@media (max-width: 720px) {
+  .chamber-stage {
+    padding: var(--s5) var(--s4) var(--s4);
+    gap: var(--s5);
+  }
 }

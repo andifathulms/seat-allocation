@@ -1,0 +1,77 @@
+.masthead {
+  padding-top: var(--s8);
+  padding-bottom: var(--s5);
+}
+
+.masthead__title {
+  /* Optical alignment: the S overshoots its left sidebearing at this size. */
+  margin-left: -0.02em;
+}
+
+.masthead__subtitle {
+  max-width: 28ch;
+  margin-top: var(--s4);
+  color: var(--ink-soft);
+  font-weight: 400;
+}
+
+.masthead__intro {
+  margin-top: var(--s6);
+  color: var(--ink);
+}
+
+.masthead__figures {
+  margin-top: var(--s7);
+  padding-top: var(--s4);
+  border-top: 1px solid var(--ink);
+}
+
+.masthead__figures-label {
+  color: var(--ink-soft);
+}
+
+/* The premise, four across. The unconverted figure is the widest and the only
+   one that needs a second line, so it takes two columns and closes the row. */
+.masthead__grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--s5) var(--s4);
+  margin: var(--s5) 0 0;
+}
+
+.masthead__figure--wide {
+  grid-column: span 2;
+}
+
+.masthead__figure-label {
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+.masthead__figure-note {
+  font-family: var(--font-narrow);
+}
+
+.masthead__figure-value {
+  margin: var(--s2) 0 0;
+}
+
+@media (max-width: 860px) {
+  .masthead {
+    padding-top: var(--s7);
+  }
+
+  .masthead__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 460px) {
+  .masthead__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .masthead__figure--wide {
+    grid-column: span 1;
+  }
+}

@@ -160,7 +160,7 @@ export function Cascade({ parties, dapil, code, rules, onSelect }: Props) {
         </div>
       </div>
 
-      <div className="cascade__board panel">
+      <div className="cascade__board stage">
         {/* The ghost list scrolls sideways below 720 px, so it must be focusable
             or a keyboard user cannot reach the parties past the edge. */}
         {eliminated.length > 0 && (

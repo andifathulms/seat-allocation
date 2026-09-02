@@ -4,35 +4,80 @@
 
 .legend {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
-  gap: var(--s1) var(--s4);
-  margin-top: var(--s4);
+  gap: var(--s5);
+}
+
+.legend__group-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s2);
+  padding-bottom: var(--s2);
+  border-bottom: 1px solid var(--rule-stage);
+  color: var(--on-stage-soft);
+  font-weight: 400;
+}
+
+.legend__group-count {
+  font-family: var(--font-narrow);
+  font-weight: 600;
+  color: var(--on-stage);
+}
+
+.legend__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+  gap: var(--s1) var(--s2);
+  margin-top: var(--s3);
+}
+
+.legend__list--zero {
+  grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
 }
 
 .legend__item {
   display: grid;
-  grid-template-columns: 12px 1fr auto;
+  grid-template-columns: 6px minmax(0, 1fr) auto;
   grid-template-areas:
-    'swatch name seats'
-    '.      share delta';
+    'swatch name  seats'
+    'swatch share delta';
   align-items: baseline;
-  column-gap: var(--s2);
+  column-gap: var(--s3);
   width: 100%;
-  padding: var(--s1) var(--s2);
-  border: 2px solid transparent;
+  padding: var(--s2) var(--s2) var(--s2) 0;
   border-radius: var(--r-sm);
   text-align: left;
+  /* Selection is an outline and an offset, never a colour. DESIGN.md §2.1. */
+  box-shadow: inset 0 0 0 0 var(--on-stage);
+  transition:
+    background var(--d-control) linear,
+    box-shadow var(--d-control) linear;
 }
 
-/* Selection is an outline and an offset, never a colour. DESIGN.md §2.1. */
+.legend__item:hover {
+  background: var(--stage-sub);
+}
+
 .legend__item--on {
-  border-color: var(--ink);
-  transform: translateX(2px);
+  background: var(--stage-sub);
+  box-shadow: inset 0 0 0 2px var(--on-stage);
+}
+
+.legend__swatch {
+  grid-area: swatch;
+  align-self: stretch;
+  display: block;
+  line-height: 0;
+}
+
+.legend__swatch svg {
+  width: 6px;
+  height: 100%;
+  border-radius: 1px;
 }
 
 .legend__fill,
 .legend__hatch {
-  transition: opacity var(--d-migrate) cubic-bezier(0.32, 0.72, 0, 1);
+  transition: opacity var(--d-migrate) var(--e-migrate);
 }
 
 /* The hatch resolves only after the seats have arrived, so the legend and the
@@ -41,31 +86,38 @@
   transition-delay: var(--d-migrate);
 }
 
-.legend__swatch {
-  grid-area: swatch;
-  display: block;
-  line-height: 0;
-  align-self: center;
-}
-
 .legend__name {
   grid-area: name;
   font-weight: 600;
+  font-size: var(--t-small);
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .legend__seats {
   grid-area: seats;
-  font-size: 1.4rem;
   text-align: right;
+  font-size: 1.55rem;
+}
+
+.legend__item--zero .legend__seats {
+  font-size: 1.15rem;
+  color: var(--on-stage-soft);
 }
 
 .legend__share {
   grid-area: share;
-  color: var(--ink-soft);
+  font-family: var(--font-narrow);
+  color: var(--on-stage-soft);
+  padding-top: 2px;
 }
 
 .legend__delta {
   grid-area: delta;
   text-align: right;
-  color: var(--ink);
+  font-family: var(--font-narrow);
+  color: var(--on-stage);
+  padding-top: 2px;
 }

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef } from 'react';
 import type { Party, PartyId } from '../../engine/types';
 import { easeMigrate, mix, mixHex, useProgress } from '../../ui/motion';
 import { blockCentroid, blockOrder, matchSeats, seatParties } from './assign';
+import { S } from '../../copy/strings.id';
 import { hemicycle } from './layout';
 import './chamber.css';
 
@@ -40,6 +41,16 @@ const MIGRATE = 420;
  * crosses, it is the crossing that earns the beat.
  */
 const ARRIVE = 300;
+
+/**
+ * Width of a block label's chip in viewBox units. The label is set at 0.048 and
+ * the count beneath it at 0.062, so the count is never the wider of the two for
+ * a short name; measuring the name at its own size with a per-character advance
+ * that suits Archivo's caps is close enough at this scale and costs no layout.
+ */
+function chipWidth(short: string): number {
+  return Math.max(0.13, short.length * 0.031 + 0.028);
+}
 
 /**
  * 580 seats, one array of records, one rAF loop writing transforms in a single
@@ -231,19 +242,44 @@ export function Chamber({ parties, seatsByParty, total, animate }: Props) {
             cy={seat.fromY}
             r={geometry.seatRadius}
             fill={seat.fromColor}
-            stroke="var(--stage-sub)"
+            stroke="var(--stage)"
             strokeWidth={geometry.seatRadius * 0.14}
           />
         ))}
+        {/* The seat total sits in the hemicycle's own void. DESIGN.md §3.1
+            reserves the hero size for this figure and gives it one instance;
+            this is it, and putting it inside the arc means the number and the
+            thing it counts are read as one object. */}
+        <g className="chamber__total" aria-hidden="true">
+          <text x={0} y={-0.035} textAnchor="middle" className="chamber__total-value">
+            {total}
+          </text>
+          <text x={0} y={0.055} textAnchor="middle" className="chamber__total-label">
+            {S.seats}
+          </text>
+        </g>
         {labels.map((l) =>
           l.inside ? (
             <g key={l.id} className="chamber__label">
-              <text x={l.centroid.x} y={l.centroid.y - 0.012} textAnchor="middle">
+              {/* A chip, not a halo. The label sits on top of its own party's
+                  colour, and against eighteen hues of every lightness a stroked
+                  outline holds at some and fails at others. A chip in the stage
+                  colour holds against all of them, and reads as a tag pinned to
+                  the block rather than as text floating over it. */}
+              <rect
+                className="chamber__chip"
+                x={l.centroid.x - chipWidth(l.short) / 2}
+                y={l.centroid.y - 0.058}
+                width={chipWidth(l.short)}
+                height={0.098}
+                rx={0.014}
+              />
+              <text x={l.centroid.x} y={l.centroid.y - 0.014} textAnchor="middle">
                 {l.short}
               </text>
               <text
                 x={l.centroid.x}
-                y={l.centroid.y + 0.062}
+                y={l.centroid.y + 0.052}
                 textAnchor="middle"
                 className="chamber__count"
               >

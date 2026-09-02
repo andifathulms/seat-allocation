@@ -1,0 +1,58 @@
+.section {
+  margin-top: var(--s8);
+  scroll-margin-top: 5.5rem;
+}
+
+.section__head {
+  display: grid;
+  grid-template-columns: 3.5rem minmax(0, 1fr) auto;
+  align-items: start;
+  column-gap: var(--s5);
+  row-gap: var(--s3);
+  padding-bottom: var(--s5);
+}
+
+/* The spine. Narrow tabular figures, aligned with the heading's cap height. */
+.section__index {
+  font-family: var(--font-narrow);
+  font-size: var(--t-small);
+  color: var(--ink-faint);
+  padding-top: 0.35em;
+  border-top: 1px solid var(--rule);
+  align-self: stretch;
+}
+
+.section__note {
+  margin-top: var(--s3);
+}
+
+.section__aside {
+  justify-self: end;
+  align-self: end;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s4);
+}
+
+/* A block container, not a grid: .page and .bleed centre themselves with auto
+   margins, and auto margins on a grid item disable stretching and collapse the
+   instrument to its content width. */
+.section__body > * + * {
+  margin-top: var(--s5);
+}
+
+@media (max-width: 860px) {
+  .section__head {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .section__index {
+    border-top: none;
+    padding-top: 0;
+  }
+
+  .section__aside {
+    justify-self: start;
+  }
+}

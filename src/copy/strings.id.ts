@@ -9,10 +9,22 @@ export const S = {
   title: 'Suara ke Kursi',
   subtitle: 'Bagaimana suara Pemilu 2024 menjadi 580 kursi DPR',
 
-  verified: (seats: number, seatsTotal: number, dapil: number, dapilTotal: number) =>
-    `Hasil resmi 2024 direproduksi: ${seats} dari ${seatsTotal} kursi, ${dapil} dari ${dapilTotal} dapil.`,
+  contents: 'Isi halaman',
+  changed: 'aturan diubah',
+
+  verifiedHead: 'Hasil resmi 2024 direproduksi.',
+  verifiedDetail: (seats: number, seatsTotal: number, dapil: number, dapilTotal: number) =>
+    `${seats} dari ${seatsTotal} kursi cocok, ${dapil} dari ${dapilTotal} dapil cocok.`,
   notVerified: 'Hasil resmi 2024 belum dapat direproduksi.',
   failed: 'Reproduksi hasil resmi 2024 gagal.',
+  failedDetail:
+    'Alokasi yang dihitung berbeda dari alokasi resmi. Rincian per pemeriksaan ada di bawah.',
+  checkDetail: 'Rincian pemeriksaan',
+
+  officialResult: 'Hasil resmi Pemilu 2024',
+  seatsInPlay: 'kursi DPR',
+  contesting: 'partai peserta',
+  qualified: 'partai melewati ambang batas',
 
   intro:
     'Delapan belas partai bertanding pada Pemilu 2024. Delapan melewati ambang batas ' +
@@ -25,13 +37,17 @@ export const S = {
     'Setiap lingkaran satu kursi. Partai diurutkan menurut jumlah kursi, terbesar di ' +
     'kiri; urutan ini tidak menyatakan posisi politik.',
 
-  legend: 'Kursi per partai',
-  legendZero: 'Partai tanpa kursi',
+  legend: 'Memperoleh kursi',
+  legendZero: 'Tanpa kursi',
   seats: 'kursi',
   votes: 'suara',
   ofVotes: 'suara sah nasional',
 
   metrics: 'Angka ringkas',
+  metricsNote:
+    'Empat ukuran sebaran suara dan kursi. Masing-masing ditampilkan bersama nilainya ' +
+    'di bawah aturan 2024, sehingga selisihnya selalu terlihat.',
+  skipToInstruments: 'Lewati ke instrumen',
   unconverted: 'Suara yang tidak menjadi kursi',
   unconvertedDef:
     'Jumlah suara sah untuk partai yang tidak memperoleh satu kursi pun.',
@@ -91,6 +107,7 @@ export const S = {
   changedDapil: 'dapil berubah dari hasil 2024',
 
   cascade: 'Pembagian kursi langkah demi langkah',
+  cascadeShort: 'Langkah demi langkah',
   cascadeNote:
     'Suara tiap partai di dapil ini dibagi 1, 3, 5, 7, dan seterusnya. Kursi jatuh ' +
     'pada hasil bagi terbesar, satu per satu.',
@@ -103,6 +120,7 @@ export const S = {
   chooseDapil: 'Pilih dapil',
 
   proportionality: 'Pangsa suara dan pangsa kursi',
+  proportionalityShort: 'Pangsa',
   proportionalityNote:
     'Satu titik per partai. Garis 45 derajat adalah proporsionalitas sempurna: titik ' +
     'di atasnya memperoleh pangsa kursi lebih besar dari pangsa suaranya, titik di ' +

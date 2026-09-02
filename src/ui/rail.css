@@ -1,0 +1,91 @@
+.rail {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: color-mix(in srgb, var(--paper) 86%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid transparent;
+  /* Held out of the way until the masthead has been read, then dropped in. */
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform var(--d-step) var(--e-step),
+    opacity var(--d-step) linear,
+    border-color var(--d-step) linear;
+}
+
+.rail--shown {
+  transform: none;
+  opacity: 1;
+  pointer-events: auto;
+  border-bottom-color: var(--rule);
+}
+
+.rail__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s5);
+  height: 3.5rem;
+}
+
+.rail__mark {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s3);
+  white-space: nowrap;
+}
+
+.rail__title {
+  font-weight: 600;
+}
+
+.rail__state {
+  font-family: var(--font-narrow);
+  color: var(--ink-soft);
+}
+
+.rail__changed {
+  font-family: var(--font-ui);
+}
+
+.rail__list {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s4);
+  overflow-x: auto;
+  scrollbar-width: none;
+  /* The rail scrolls sideways on a narrow viewport rather than wrapping, so its
+     height never changes and the content below never shifts. */
+  mask-image: linear-gradient(90deg, transparent, #000 var(--s4));
+}
+
+.rail__list::-webkit-scrollbar {
+  display: none;
+}
+
+.rail__link {
+  display: block;
+  padding: var(--s1) 0;
+  color: var(--ink-soft);
+  text-decoration: none;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: color var(--d-control) linear;
+}
+
+.rail__link:hover {
+  color: var(--ink);
+}
+
+.rail__link--on {
+  color: var(--ink);
+  border-bottom-color: var(--ink);
+}
+
+@media (max-width: 860px) {
+  .rail__mark {
+    display: none;
+  }
+}

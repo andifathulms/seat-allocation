@@ -1,5 +1,5 @@
 .archipelago {
-  background: var(--panel);
+  background: var(--stage);
   color: var(--on-stage);
   border-radius: var(--r-sm);
   padding: var(--s4);

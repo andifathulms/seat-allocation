@@ -82,7 +82,7 @@
   background-image: repeating-linear-gradient(
     45deg,
     transparent 0 2px,
-    var(--panel) 2px 3px
+    var(--stage) 2px 3px
   );
 }
 

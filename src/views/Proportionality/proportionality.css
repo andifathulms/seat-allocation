@@ -1,7 +1,7 @@
 .proportionality {
   margin: 0;
   padding: var(--s5);
-  background: var(--panel);
+  background: var(--stage);
   border-radius: var(--r-sm);
 }
 
