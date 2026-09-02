@@ -4,11 +4,16 @@
 }
 
 .cite__marker {
-  color: var(--ink-soft);
+  color: var(--ink-faint);
   font-size: var(--t-small);
-  padding: 0 2px;
+  padding: 0 3px;
   vertical-align: super;
   line-height: 1;
+  transition: color var(--d-control) linear;
+}
+
+.cite__marker:hover {
+  color: var(--ink);
 }
 
 .cite__marker[aria-expanded='true'] {
@@ -22,19 +27,21 @@
 /* Dismissible and keyboard-reachable, never a hover tooltip. */
 .cite__popover {
   position: absolute;
-  z-index: 20;
+  z-index: 40;
   bottom: calc(100% + var(--s2));
   left: 0;
-  width: min(30rem, calc(100vw - var(--s5) * 2));
+  width: min(32rem, calc(100vw - var(--s5) * 2));
   display: grid;
-  gap: var(--s2);
-  padding: var(--s4);
-  background: var(--paper);
+  gap: var(--s3);
+  padding: var(--s5);
+  background: var(--paper-raise);
   color: var(--ink);
   border: 1px solid var(--ink);
-  border-radius: var(--r-sm);
+  border-radius: var(--r);
+  box-shadow: 0 16px 40px -24px rgb(0 0 0 / 55%);
   text-align: left;
-  animation: cite-in var(--d-popover) cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: var(--t-small);
+  animation: cite-in var(--d-popover) var(--e-step);
 }
 
 @keyframes cite-in {
@@ -46,6 +53,8 @@
 
 .cite__pasal {
   font-weight: 600;
+  padding-bottom: var(--s2);
+  border-bottom: 1px solid var(--rule);
 }
 
 /* Source Serif 4, and nowhere else in the app: the law gets its own voice so

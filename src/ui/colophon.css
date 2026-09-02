@@ -1,21 +1,29 @@
 .colophon {
-  display: grid;
-  gap: var(--s7);
-  margin-top: var(--s8);
-  padding-top: var(--s6);
-  padding-bottom: var(--s7);
-  border-top: 1px solid var(--rule);
+  margin-top: var(--s9);
+  padding-block: var(--s7) var(--s8);
+  background: var(--paper-sub);
+  border-top: 1px solid var(--rule-strong);
 }
 
-.colophon > section > .prose {
-  margin-top: var(--s2);
+/* The legal standard on the left, the documents it rests on at the right. The
+   quote is the widest thing here and the sources are a list, so the split is
+   asymmetric rather than even. */
+.colophon__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: var(--s7);
+  align-items: start;
+}
+
+.colophon > * > section > .prose {
+  margin-top: var(--s3);
 }
 
 .colophon__quote {
-  margin: var(--s4) 0 0;
-  padding-left: var(--s4);
-  border-left: 2px solid var(--rule);
-  max-width: 62ch;
+  margin: var(--s5) 0 0;
+  padding-left: var(--s5);
+  border-left: 2px solid var(--rule-strong);
+  max-width: 58ch;
 }
 
 /* The law keeps its own voice here as it does inside the citation popovers. */
@@ -26,32 +34,49 @@
 }
 
 .colophon__attribution {
-  margin-top: var(--s2);
+  margin-top: var(--s4);
   color: var(--ink-soft);
 }
 
 .colophon__sources {
   display: grid;
-  gap: var(--s2);
-  margin-top: var(--s3);
-  margin-bottom: var(--s4);
-  max-width: var(--measure);
+  margin-top: var(--s4);
+  border-top: 1px solid var(--rule);
 }
 
 .colophon__sources li {
   display: grid;
-  gap: 2px;
+  gap: var(--s1);
+  padding: var(--s3) 0;
+  border-bottom: 1px solid var(--rule);
 }
 
 .colophon__sources a {
   color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--rule-strong);
   text-underline-offset: 3px;
+}
+
+.colophon__sources a:hover {
+  text-decoration-color: currentcolor;
 }
 
 .colophon__meta {
   color: var(--ink-soft);
 }
 
+.colophon__provenance-note {
+  margin-top: var(--s4);
+}
+
 .colophon__warn {
   color: var(--warn);
+}
+
+@media (max-width: 860px) {
+  .colophon__inner {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s7);
+  }
 }

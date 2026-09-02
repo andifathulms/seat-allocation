@@ -236,8 +236,32 @@ export function Cascade({ parties, dapil, code, rules, onSelect }: Props) {
           ))}
         </div>
         )}
-      </div>
 
+        {/* The arithmetic for the current step, printed in full so it can be
+            checked by hand. It belongs inside the instrument: it is the readout
+            of the sweep line above it, not a caption on the section.
+            DESIGN.md §5.2. */}
+        <p className="cascade__arithmetic">
+          {current ? (
+            <>
+              <strong>{parties.find((p) => p.id === current.winner)?.shortName}</strong>{' '}
+              {count(selected.votes[current.winner] ?? 0)} ÷{' '}
+              {count(
+                Math.round(current.table.find((c) => c.party === current.winner)?.divisor ?? 1),
+              )}{' '}
+              = {isQuota ? decimal(current.quotient, 4) : count(Math.round(current.quotient))}
+              {current.tied && (
+                <span className="cascade__tie">
+                  {' '}
+                  · {S.tie}: {current.tied.join(', ')}
+                </span>
+              )}
+            </>
+          ) : (
+            <span className="small cascade__prompt">{S.cascadePrompt}</span>
+          )}
+        </p>
+      </div>
       <TableView
         caption={`${S.cascade}: ${selected.name}`}
         columns={[
@@ -261,25 +285,6 @@ export function Cascade({ parties, dapil, code, rules, onSelect }: Props) {
         }))}
       />
 
-      {/* The arithmetic for the current step, printed in full so it can be
-          checked by hand. DESIGN.md §5.2. */}
-      <p className="cascade__arithmetic">
-        {current ? (
-          <>
-            <strong>{parties.find((p) => p.id === current.winner)?.shortName}</strong>{' '}
-            {count(selected.votes[current.winner] ?? 0)} ÷{' '}
-            {count(
-              Math.round(current.table.find((c) => c.party === current.winner)?.divisor ?? 1),
-            )}{' '}
-            = {isQuota ? decimal(current.quotient, 4) : count(Math.round(current.quotient))}
-            {current.tied && (
-              <span className="cascade__tie"> · {S.tie}: {current.tied.join(', ')}</span>
-            )}
-          </>
-        ) : (
-          <span className="small">{S.cascadeNote}</span>
-        )}
-      </p>
     </div>
   );
 }

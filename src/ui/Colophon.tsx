@@ -13,9 +13,10 @@ export function Colophon({ data }: { data: Dataset }) {
   const synthetic = data.dapil.provenance !== 'certified';
 
   return (
-    <footer className="page colophon">
-      <section>
-        <h2 className="h2">{S.context}</h2>
+    <footer className="colophon">
+      <div className="page colophon__inner">
+      <section className="colophon__legal">
+        <h2 className="h3">{S.context}</h2>
         <p className="prose small">{S.contextNote}</p>
         {putusan && (
           <blockquote className="colophon__quote">
@@ -28,24 +29,25 @@ export function Colophon({ data }: { data: Dataset }) {
         )}
       </section>
 
-      <section>
-        <h2 className="h2">{S.sources}</h2>
+      <section className="colophon__provenance">
+        <h2 className="h3">{S.sources}</h2>
         <ul className="colophon__sources small">
           {Object.entries(data.rules.documents).map(([id, doc]) => (
             <li key={id}>
               <a href={doc.url} rel="noreferrer noopener">
                 {doc.title}
               </a>
-              <span className="colophon__meta">
-                {doc.publisher}, {doc.date}
+              <span className="colophon__meta micro">
+                {doc.publisher} · {doc.date}
               </span>
             </li>
           ))}
         </ul>
-        <p className={`prose small${synthetic ? ' colophon__warn' : ''}`}>
+        <p className={`prose small colophon__provenance-note${synthetic ? ' colophon__warn' : ''}`}>
           {synthetic ? S.provenanceSynthetic : S.provenanceCertified}
         </p>
       </section>
+      </div>
     </footer>
   );
 }

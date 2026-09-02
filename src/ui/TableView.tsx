@@ -24,7 +24,7 @@ export function TableView({ caption, columns, rows }: Props) {
     <div className="table-view">
       <button
         type="button"
-        className="table-view__toggle small"
+        className="table-view__toggle small link"
         aria-expanded={open}
         aria-controls={id}
         onClick={() => setOpen((v) => !v)}

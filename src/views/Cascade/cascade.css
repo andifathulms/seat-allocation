@@ -3,18 +3,27 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: var(--s3);
-  margin-bottom: var(--s3);
+  gap: var(--s3) var(--s5);
+  margin-bottom: var(--s4);
+}
+
+.cascade__head label {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  color: var(--ink-soft);
 }
 
 .cascade__head select {
   font: inherit;
   font-size: var(--t-small);
+  font-weight: 600;
   color: var(--ink);
-  background: var(--paper);
-  border: 1px solid var(--ink);
+  background: var(--paper-sub);
+  border: 1px solid var(--rule-strong);
   border-radius: var(--r-sm);
-  padding: 2px var(--s2);
+  padding: var(--s1) var(--s2);
+  max-width: 18rem;
 }
 
 .cascade__transport {
@@ -24,19 +33,30 @@
 }
 
 .cascade__transport button {
-  border-bottom: 2px solid var(--ink);
-  padding-bottom: 1px;
+  min-width: 2rem;
+  padding: var(--s1) var(--s2);
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--r-sm);
   font-size: var(--t-small);
+  text-align: center;
+  transition:
+    border-color var(--d-control) linear,
+    background var(--d-control) linear;
+}
+
+.cascade__transport button:hover:not(:disabled) {
+  border-color: var(--ink);
+  background: var(--paper-sub);
 }
 
 .cascade__transport button:disabled {
-  color: var(--ink-soft);
-  border-bottom-color: var(--rule);
+  color: var(--ink-faint);
+  border-color: var(--rule);
   cursor: default;
 }
 
 .cascade__transport input[type='range'] {
-  width: 12rem;
+  width: 10rem;
   accent-color: var(--ink);
 }
 
@@ -47,9 +67,9 @@
 
 .cascade__board {
   display: grid;
-  grid-template-columns: auto 1fr;
-  gap: var(--s4);
-  padding: var(--s4);
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--s5);
+  padding: var(--s5);
 }
 
 .cascade__ghosts {
@@ -192,18 +212,29 @@
 }
 
 .cascade__arithmetic {
+  grid-column: 1 / -1;
   margin-top: var(--s4);
+  padding-top: var(--s4);
+  border-top: 1px solid var(--rule-stage);
+  color: var(--on-stage);
   font-family: var(--font-narrow);
-  font-size: 1.25rem;
+  font-size: var(--t-figure);
+  line-height: 1.2;
 }
 
 .cascade__arithmetic strong {
   font-family: var(--font-ui);
   font-size: var(--t-body);
+  font-weight: 600;
+}
+
+.cascade__prompt {
+  font-family: var(--font-ui);
+  color: var(--on-stage-soft);
 }
 
 .cascade__tie {
-  color: var(--warn);
+  color: var(--warn-stage);
   font-family: var(--font-ui);
   font-size: var(--t-small);
 }

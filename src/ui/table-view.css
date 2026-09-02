@@ -1,19 +1,25 @@
-.table-view {
-  margin-top: var(--s3);
+/*
+ * PRD §11.7 and DESIGN.md §8: every instrument has a table equivalent reachable
+ * by keyboard. The toggle lives in the section head beside the instrument's
+ * title, so the table is offered before the instrument is read rather than
+ * found after it.
+ */
+.table-view__toggle::after {
+  content: ' ↓';
+  font-family: var(--font-narrow);
 }
 
-.table-view__toggle {
-  color: var(--ink);
-  text-decoration: underline;
-  text-underline-offset: 3px;
+.table-view__toggle[aria-expanded='true']::after {
+  content: ' ↑';
 }
 
 .table-view__scroll {
-  margin-top: var(--s3);
+  margin-top: var(--s4);
   max-height: 30rem;
   overflow: auto;
+  background: var(--paper-raise);
   border: 1px solid var(--rule);
-  border-radius: var(--r-sm);
+  border-radius: var(--r);
 }
 
 .table-view table {
@@ -23,18 +29,31 @@
 
 .table-view th,
 .table-view td {
-  padding: var(--s1) var(--s3);
+  padding: var(--s2) var(--s4);
   text-align: left;
   border-bottom: 1px solid var(--rule);
   font-weight: 400;
+  white-space: nowrap;
+}
+
+.table-view tbody tr:last-child th,
+.table-view tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table-view tbody tr:hover th,
+.table-view tbody tr:hover td {
+  background: var(--paper-sub);
 }
 
 .table-view thead th {
   position: sticky;
   top: 0;
-  background: var(--paper);
+  z-index: 1;
+  background: var(--paper-sub);
+  color: var(--ink-soft);
   font-weight: 600;
-  border-bottom-color: var(--ink);
+  border-bottom: 1px solid var(--ink);
 }
 
 .table-view tbody th {

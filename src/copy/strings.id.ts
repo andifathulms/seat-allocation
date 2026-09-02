@@ -112,6 +112,8 @@ export const S = {
   cascadeNote:
     'Suara tiap partai di dapil ini dibagi 1, 3, 5, 7, dan seterusnya. Kursi jatuh ' +
     'pada hasil bagi terbesar, satu per satu.',
+  cascadePrompt:
+    'Tekan jalankan, panah, atau geser langkah untuk membagikan kursi satu per satu.',
   step: 'Langkah',
   play: 'Jalankan',
   pause: 'Jeda',
