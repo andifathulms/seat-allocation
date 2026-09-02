@@ -5,6 +5,7 @@ import { reproduce, type Reproduction } from './data/reproduction';
 import type { Dataset } from './data/schema';
 import { useAllocation } from './state/useAllocation';
 import { Archipelago } from './views/Archipelago/Archipelago';
+import { Cascade } from './views/Cascade/Cascade';
 import { Chamber } from './views/Chamber/Chamber';
 import { Legend } from './ui/Legend';
 import { MetricStrip } from './ui/MetricStrip';
@@ -118,6 +119,18 @@ function Loaded({ data }: { data: Dataset }) {
             selected={selectedDapil}
             onSelect={setSelectedDapil}
             animate={!scrubbing}
+          />
+        </section>
+
+        <section className="section">
+          <h2 className="h2">{S.cascade}</h2>
+          <p className="prose small">{S.cascadeNote}</p>
+          <Cascade
+            parties={data.parties.parties}
+            dapil={data.dapil.dapil}
+            code={selectedDapil}
+            rules={rules}
+            onSelect={setSelectedDapil}
           />
         </section>
       </main>

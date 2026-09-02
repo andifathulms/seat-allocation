@@ -1,0 +1,225 @@
+.cascade__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s3);
+  margin-bottom: var(--s3);
+}
+
+.cascade__head select {
+  font: inherit;
+  font-size: var(--t-small);
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--ink);
+  border-radius: var(--radius);
+  padding: 2px var(--s2);
+}
+
+.cascade__transport {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+}
+
+.cascade__transport button {
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 1px;
+  font-size: var(--t-small);
+}
+
+.cascade__transport button:disabled {
+  color: var(--ink-soft);
+  border-bottom-color: var(--rule);
+  cursor: default;
+}
+
+.cascade__transport input[type='range'] {
+  width: 12rem;
+  accent-color: var(--ink);
+}
+
+.cascade__step {
+  color: var(--ink-soft);
+  font-family: var(--font-narrow);
+}
+
+.cascade__board {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--s4);
+  padding: var(--s4);
+}
+
+.cascade__ghosts {
+  display: grid;
+  align-content: start;
+  gap: var(--s2);
+  padding-right: var(--s4);
+  border-right: 1px solid var(--rule-panel);
+  min-width: 9rem;
+}
+
+.cascade__ghost-label {
+  color: var(--ink-panel);
+  opacity: 0.75;
+  max-width: none;
+}
+
+.cascade__ghost {
+  display: grid;
+  grid-template-columns: 8px 1fr;
+  gap: 2px var(--s2);
+  align-items: center;
+}
+
+/* A party with real votes here, holding no cards. DESIGN.md §5.2. */
+.cascade__ghost-swatch {
+  width: 8px;
+  height: 22px;
+  grid-row: span 2;
+  opacity: 0.4;
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent 0 2px,
+    var(--panel) 2px 3px
+  );
+}
+
+.cascade__ghost-votes {
+  font-family: var(--font-narrow);
+  opacity: 0.75;
+}
+
+.cascade__columns {
+  position: relative;
+  display: flex;
+  gap: var(--s2);
+  height: 24rem;
+  padding: 0 var(--s2) 1.6rem 0;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+}
+
+.cascade__sweep {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--sweep);
+  height: 0;
+  border-top: 2px solid var(--ink-panel);
+  transition: top var(--d-step) cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.cascade__column {
+  position: relative;
+  flex: 1 0 5.5rem;
+  min-width: 5.5rem;
+  scroll-snap-align: start;
+}
+
+.cascade__card {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: baseline;
+  gap: var(--s1);
+  padding: 2px var(--s1);
+  border: 1px solid;
+  border-radius: var(--radius);
+  background: var(--panel-deep);
+  color: var(--ink-panel);
+  transition:
+    background var(--d-step) linear,
+    color var(--d-step) linear;
+}
+
+.cascade__card--claimed {
+  color: var(--ink);
+}
+
+.cascade__divisor {
+  opacity: 0.75;
+}
+
+.cascade__quotient {
+  font-family: var(--font-narrow);
+  text-align: right;
+}
+
+.cascade__ordinal {
+  font-family: var(--font-narrow);
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--ink-panel);
+  border-radius: 50%;
+  min-width: 1.35em;
+  padding: 0 2px;
+  text-align: center;
+}
+
+.cascade__column-name {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  color: var(--ink-panel);
+}
+
+.cascade__quota {
+  display: grid;
+  gap: var(--s1);
+  align-content: start;
+}
+
+.cascade__quota li {
+  display: grid;
+  grid-template-columns: 2rem 7rem 8rem 1fr;
+  gap: var(--s2);
+  align-items: baseline;
+}
+
+.cascade__quota-ordinal,
+.cascade__quota-value {
+  font-family: var(--font-narrow);
+}
+
+.cascade__quota-phase {
+  opacity: 0.75;
+}
+
+.cascade__arithmetic {
+  margin-top: var(--s4);
+  font-family: var(--font-narrow);
+  font-size: 1.25rem;
+}
+
+.cascade__arithmetic strong {
+  font-family: var(--font-ui);
+  font-size: var(--t-body);
+}
+
+.cascade__tie {
+  color: var(--warn);
+  font-family: var(--font-ui);
+  font-size: var(--t-small);
+}
+
+@media (max-width: 720px) {
+  .cascade__board {
+    grid-template-columns: 1fr;
+  }
+
+  .cascade__ghosts {
+    border-right: none;
+    border-bottom: 1px solid var(--rule-panel);
+    padding: 0 0 var(--s3);
+    grid-auto-flow: column;
+    grid-auto-columns: max-content;
+    overflow-x: auto;
+  }
+}
