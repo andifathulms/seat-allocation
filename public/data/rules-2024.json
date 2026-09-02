@@ -1,0 +1,94 @@
+{
+  "election": "2024",
+  "provenance": "certified",
+  "documents": {
+    "uu-7-2017": {
+      "title": "Undang-Undang Nomor 7 Tahun 2017 tentang Pemilihan Umum",
+      "publisher": "Pemerintah Republik Indonesia",
+      "date": "2017-08-16",
+      "url": "https://peraturan.go.id/id/uu-no-7-tahun-2017"
+    },
+    "putusan-116": {
+      "title": "Putusan Mahkamah Konstitusi Nomor 116/PUU-XXI/2023",
+      "publisher": "Mahkamah Konstitusi Republik Indonesia",
+      "date": "2024-02-29",
+      "url": "https://www.mkri.id/"
+    },
+    "pkpu-6-2023": {
+      "title": "Peraturan KPU Nomor 6 Tahun 2023 tentang Daerah Pemilihan dan Alokasi Kursi Anggota DPR dan DPRD",
+      "publisher": "Komisi Pemilihan Umum Republik Indonesia",
+      "date": "2023-02-09",
+      "url": "https://jdih.kpu.go.id/"
+    },
+    "kepkpu-1206-2024": {
+      "title": "Keputusan KPU Nomor 1206 Tahun 2024 tentang Penetapan Calon Terpilih Anggota DPR RI Pemilu 2024",
+      "publisher": "Komisi Pemilihan Umum Republik Indonesia",
+      "date": "2024-08-25",
+      "url": "https://jdih.kpu.go.id/"
+    }
+  },
+  "rules": [
+    {
+      "id": "threshold",
+      "document": "uu-7-2017",
+      "pasal": "Pasal 414 ayat (1)",
+      "text": "Partai Politik Peserta Pemilu harus memenuhi ambang batas perolehan suara paling sedikit 4% (empat persen) dari jumlah suara sah secara nasional untuk diikutkan dalam penentuan perolehan kursi anggota DPR.",
+      "summary": "Ambang batas 4% dari suara sah nasional. Partai yang tidak memenuhinya tidak diikutkan dalam penentuan kursi DPR di dapil mana pun."
+    },
+    {
+      "id": "divisor",
+      "document": "uu-7-2017",
+      "pasal": "Pasal 415 ayat (2)",
+      "text": "Dalam hal penghitungan perolehan kursi DPR, setiap Partai Politik Peserta Pemilu yang memenuhi ambang batas perolehan suara dibagi dengan bilangan pembagi 1 dan diikuti secara berurutan oleh bilangan ganjil 3, 5, 7, dan seterusnya.",
+      "summary": "Metode Sainte-Laguë. Suara tiap partai di satu dapil dibagi 1, 3, 5, 7, dan seterusnya; kursi jatuh pada hasil bagi terbesar berurutan."
+    },
+    {
+      "id": "dapil",
+      "document": "pkpu-6-2023",
+      "pasal": "Lampiran I",
+      "text": "Daerah pemilihan anggota DPR dan alokasi kursi setiap daerah pemilihan untuk Pemilu tahun 2024.",
+      "summary": "84 daerah pemilihan dengan alokasi 3 sampai 10 kursi, seluruhnya 580 kursi."
+    },
+    {
+      "id": "putusan",
+      "document": "putusan-116",
+      "pasal": "Amar putusan",
+      "text": "Menyatakan norma Pasal 414 ayat (1) Undang-Undang Nomor 7 Tahun 2017 konstitusional untuk Pemilu tahun 2024 dan konstitusional bersyarat untuk Pemilu tahun 2029 dan seterusnya sepanjang telah dilakukan perubahan terhadap besaran angka ambang batas sebelum dimulainya tahapan Pemilu 2029.",
+      "summary": "Mahkamah Konstitusi menyatakan ambang batas 4% berlaku untuk Pemilu 2024 dan mewajibkan pembentuk undang-undang merumuskan ulang angkanya sebelum tahapan Pemilu 2029 dimulai."
+    },
+    {
+      "id": "putusan-syarat",
+      "document": "putusan-116",
+      "pasal": "Pertimbangan hukum",
+      "text": "Perumusan norma ambang batas parlemen dilakukan dengan memenuhi antara lain: didesain untuk digunakan secara berkelanjutan; perubahan dilakukan sebelum tahapan Pemilu dimulai; dan besaran angka ambang batas ditetapkan dengan tetap menjaga proporsionalitas sistem pemilu proporsional serta meminimalkan jumlah suara yang tidak dapat dikonversi menjadi kursi.",
+      "summary": "Di antara syarat yang dilekatkan Mahkamah: angka ambang batas harus menjaga proporsionalitas sistem proporsional dan meminimalkan suara yang tidak dapat dikonversi menjadi kursi."
+    },
+    {
+      "id": "kursi-terpilih",
+      "document": "kepkpu-1206-2024",
+      "pasal": "Lampiran",
+      "text": "Penetapan calon terpilih anggota DPR RI hasil Pemilu tahun 2024, seluruhnya 580 kursi.",
+      "summary": "Hasil resmi: 580 kursi, diperoleh 8 partai politik."
+    }
+  ],
+  "figures": [
+    {
+      "id": "suara-sah-nasional",
+      "document": "kepkpu-1206-2024",
+      "label": "Suara sah nasional Pemilu DPR 2024",
+      "value": 151796631
+    },
+    {
+      "id": "kursi-dpr",
+      "document": "pkpu-6-2023",
+      "label": "Jumlah kursi DPR",
+      "value": 580
+    },
+    {
+      "id": "jumlah-dapil",
+      "document": "pkpu-6-2023",
+      "label": "Jumlah daerah pemilihan DPR",
+      "value": 84
+    }
+  ]
+}

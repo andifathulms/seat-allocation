@@ -1,0 +1,33 @@
+{
+  "election": "2024",
+  "provenance": "certified",
+  "totalSeats": 580,
+  "source": {
+    "title": "Keputusan KPU RI Nomor 1206 Tahun 2024 tentang Penetapan Calon Terpilih Anggota DPR RI Pemilu 2024",
+    "publisher": "Komisi Pemilihan Umum Republik Indonesia",
+    "date": "2024-08-25",
+    "url": "https://www.kpu.go.id/"
+  },
+  "seatsByParty": {
+    "pkb": 68,
+    "gerindra": 86,
+    "pdip": 110,
+    "golkar": 102,
+    "nasdem": 69,
+    "buruh": 0,
+    "gelora": 0,
+    "pks": 53,
+    "pkn": 0,
+    "hanura": 0,
+    "garuda": 0,
+    "pan": 48,
+    "pbb": 0,
+    "demokrat": 44,
+    "psi": 0,
+    "perindo": 0,
+    "ppp": 0,
+    "ummat": 0
+  },
+  "byDapil": null,
+  "byDapilNote": "Alokasi kursi per dapil belum diekstraksi dari salinan Keputusan KPU 1206/2024. Lihat DECISIONS.md butir 1."
+}

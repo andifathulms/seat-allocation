@@ -1,0 +1,158 @@
+{
+  "election": "2024",
+  "provenance": "certified",
+  "totalValidVotes": 151796631,
+  "source": {
+    "title": "Keputusan KPU RI tentang penetapan hasil Pemilu 2024 secara nasional",
+    "publisher": "Komisi Pemilihan Umum Republik Indonesia",
+    "date": "2024-03-20",
+    "url": "https://www.kpu.go.id/",
+    "note": "Suara sah nasional per partai. Nomor urut 18 sampai 23 dipakai partai lokal Aceh, sehingga Partai Ummat bernomor 24."
+  },
+  "parties": [
+    {
+      "id": "pkb",
+      "ballotNumber": 1,
+      "shortName": "PKB",
+      "fullName": "Partai Kebangkitan Bangsa",
+      "color": "#62E58A",
+      "nationalVotes": 16115655
+    },
+    {
+      "id": "gerindra",
+      "ballotNumber": 2,
+      "shortName": "Gerindra",
+      "fullName": "Partai Gerakan Indonesia Raya",
+      "color": "#BB9437",
+      "nationalVotes": 20071708
+    },
+    {
+      "id": "pdip",
+      "ballotNumber": 3,
+      "shortName": "PDI-P",
+      "fullName": "Partai Demokrasi Indonesia Perjuangan",
+      "color": "#DC1F17",
+      "nationalVotes": 25387279
+    },
+    {
+      "id": "golkar",
+      "ballotNumber": 4,
+      "shortName": "Golkar",
+      "fullName": "Partai Golongan Karya",
+      "color": "#F5C400",
+      "nationalVotes": 23208654
+    },
+    {
+      "id": "nasdem",
+      "ballotNumber": 5,
+      "shortName": "NasDem",
+      "fullName": "Partai NasDem",
+      "color": "#27428E",
+      "nationalVotes": 14660516
+    },
+    {
+      "id": "buruh",
+      "ballotNumber": 6,
+      "shortName": "Buruh",
+      "fullName": "Partai Buruh",
+      "color": "#FF712E",
+      "nationalVotes": 972910
+    },
+    {
+      "id": "gelora",
+      "ballotNumber": 7,
+      "shortName": "Gelora",
+      "fullName": "Partai Gelombang Rakyat Indonesia",
+      "color": "#00A0DF",
+      "nationalVotes": 1281991
+    },
+    {
+      "id": "pks",
+      "ballotNumber": 8,
+      "shortName": "PKS",
+      "fullName": "Partai Keadilan Sejahtera",
+      "color": "#FFBD90",
+      "nationalVotes": 12781353
+    },
+    {
+      "id": "pkn",
+      "ballotNumber": 9,
+      "shortName": "PKN",
+      "fullName": "Partai Kebangkitan Nusantara",
+      "color": "#83A8F3",
+      "nationalVotes": 326800
+    },
+    {
+      "id": "hanura",
+      "ballotNumber": 10,
+      "shortName": "Hanura",
+      "fullName": "Partai Hati Nurani Rakyat",
+      "color": "#970011",
+      "nationalVotes": 1094588
+    },
+    {
+      "id": "garuda",
+      "ballotNumber": 11,
+      "shortName": "Garuda",
+      "fullName": "Partai Garda Republik Indonesia",
+      "color": "#866700",
+      "nationalVotes": 406883
+    },
+    {
+      "id": "pan",
+      "ballotNumber": 12,
+      "shortName": "PAN",
+      "fullName": "Partai Amanat Nasional",
+      "color": "#5087D9",
+      "nationalVotes": 10984003
+    },
+    {
+      "id": "pbb",
+      "ballotNumber": 13,
+      "shortName": "PBB",
+      "fullName": "Partai Bulan Bintang",
+      "color": "#005328",
+      "nationalVotes": 484486
+    },
+    {
+      "id": "demokrat",
+      "ballotNumber": 14,
+      "shortName": "Demokrat",
+      "fullName": "Partai Demokrat",
+      "color": "#B5CCFF",
+      "nationalVotes": 11283160
+    },
+    {
+      "id": "psi",
+      "ballotNumber": 15,
+      "shortName": "PSI",
+      "fullName": "Partai Solidaritas Indonesia",
+      "color": "#E5007D",
+      "nationalVotes": 4260169
+    },
+    {
+      "id": "perindo",
+      "ballotNumber": 16,
+      "shortName": "Perindo",
+      "fullName": "Partai Persatuan Indonesia",
+      "color": "#3962B8",
+      "nationalVotes": 1955154
+    },
+    {
+      "id": "ppp",
+      "ballotNumber": 17,
+      "shortName": "PPP",
+      "fullName": "Partai Persatuan Pembangunan",
+      "color": "#39B25F",
+      "nationalVotes": 5878777
+    },
+    {
+      "id": "ummat",
+      "ballotNumber": 24,
+      "shortName": "Ummat",
+      "fullName": "Partai Ummat",
+      "color": "#15805D",
+      "nationalVotes": 642545
+    }
+  ]
+}
