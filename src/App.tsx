@@ -6,6 +6,7 @@ import type { Dataset } from './data/schema';
 import { useAllocation } from './state/useAllocation';
 import { Chamber } from './views/Chamber/Chamber';
 import { Legend } from './ui/Legend';
+import { Transport } from './ui/Transport';
 import { Verification } from './ui/Verification';
 import './app.css';
 
@@ -40,7 +41,17 @@ export function App() {
 
 function Loaded({ data }: { data: Dataset }) {
   const [reproduction] = useState<Reproduction>(() => reproduce(data));
-  const { allocation } = useAllocation(data);
+  const { rules, setRules, allocation } = useAllocation(data);
+
+  /**
+   * DESIGN.md §6.1. While the scrubber is under the pointer the chamber follows
+   * it with no easing and no delay; a discrete rule change animates so the user
+   * can see what moved. Getting this distinction right is most of what makes the
+   * app feel like an instrument rather than a website.
+   */
+  const [scrubbing, setScrubbing] = useState(false);
+
+  const averageMagnitude = data.official.totalSeats / data.dapil.dapil.length;
 
   return (
     <>
@@ -48,6 +59,7 @@ function Loaded({ data }: { data: Dataset }) {
         <h1 className="h1">{S.title}</h1>
         <p className="prose">{S.subtitle}</p>
         <Verification reproduction={reproduction} />
+        <p className="prose masthead__intro">{S.intro}</p>
       </header>
 
       <main className={`page${reproduction.reproduced ? '' : ' page--unverified'}`}>
@@ -58,7 +70,7 @@ function Loaded({ data }: { data: Dataset }) {
             parties={data.parties.parties}
             seatsByParty={allocation.seatsByParty}
             total={data.official.totalSeats}
-            animate
+            animate={!scrubbing}
           />
           <Legend
             parties={data.parties.parties}
@@ -68,6 +80,13 @@ function Loaded({ data }: { data: Dataset }) {
           />
         </section>
       </main>
+
+      <Transport
+        rules={rules}
+        onChange={setRules}
+        onScrub={setScrubbing}
+        averageMagnitude={averageMagnitude}
+      />
     </>
   );
 }

@@ -140,8 +140,11 @@ export function Chamber({ parties, seatsByParty, total, animate }: Props) {
     });
   }, [order, seatsByParty, geometry, parties, total]);
 
+  // Room for the seat stroke on every side, plus enough below the axis for a
+  // block label whose centroid sits in the innermost row.
   const pad = geometry.seatRadius * 2;
-  const viewBox = `${-1 - pad} ${-1 - pad} ${2 + pad * 2} ${1 + pad * 2}`;
+  const below = 0.09;
+  const viewBox = `${-1 - pad} ${-1 - pad} ${2 + pad * 2} ${1 + pad + below}`;
 
   return (
     <figure className="chamber">

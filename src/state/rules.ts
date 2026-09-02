@@ -65,11 +65,14 @@ export function searchFromRules(rules: RuleSet): string {
 }
 
 /**
- * Snap points on the scrubber. The effective threshold is Laakso–Taagepera's
- * approximation 75 / (M + 1) for an average district magnitude of about 6,9.
+ * Snap points on the scrubber.
+ *
+ * The effective threshold uses Taagepera's approximation T = 75% / (M + 1),
+ * which is a per-district figure: at Indonesia's average magnitude of about 6,9
+ * it lands near 9,5%, not the ~1% PRD §7.1 expects. The tick therefore carries
+ * the computed value and says which district it applies to. See DECISIONS.md §6.
  */
 export const SNAP_POINTS: Array<{ value: number; label: string; note: string }> = [
-  { value: 0.0075, label: '0,75%', note: 'ambang efektif' },
   { value: 0.025, label: '2,5%', note: '2009' },
   { value: 0.035, label: '3,5%', note: '2014' },
   { value: 0.04, label: '4,0%', note: '2019 · 2024' },

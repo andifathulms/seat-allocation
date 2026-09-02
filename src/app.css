@@ -2,9 +2,14 @@
   padding-top: var(--s6);
 }
 
-.masthead .prose {
+.masthead > .prose {
   margin-top: var(--s2);
   margin-bottom: var(--s5);
+}
+
+.masthead__intro {
+  margin-top: var(--s5);
+  color: var(--ink);
 }
 
 /* DESIGN.md §7: on a reproduction failure the instruments are dimmed, not
@@ -15,6 +20,11 @@
 
 .section {
   margin-top: var(--s7);
+}
+
+/* Clearance so the sticky transport never covers the last instrument. */
+.page:last-of-type {
+  padding-bottom: var(--s7);
 }
 
 .section > .prose {

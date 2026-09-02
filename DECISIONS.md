@@ -113,3 +113,26 @@ Until then the numeral treatment still holds: `font-variant-numeric:
 tabular-nums lining-nums` is set on `body` and on `svg text`, so figures do not
 jitter when they animate, which is what DESIGN.md §3.1 calls non-negotiable.
 The narrow width and the serif voice for pasal text are what is missing.
+
+---
+
+## 6. The effective-threshold tick reads 9,5%, not ~1%
+
+**Rule affected:** PRD §7.1.
+
+PRD §7.1 asks for a snap point at "the ~1% effective threshold implied by the
+Laakso–Taagepera formula for Indonesia's average district magnitude".
+
+Taagepera's approximation is T = 75% / (M + 1), and it is a **per-district**
+figure. Indonesia's 580 seats over 84 dapil give an average magnitude of 6,90,
+so T computes to 9,5%. There is no reading of that formula at that magnitude
+that yields 1%.
+
+The tick therefore carries the computed value and is labelled *ambang efektif
+dapil*, so it says which district it applies to. The figure is derived from the
+loaded data rather than hardcoded, so it follows if the composition changes.
+
+A party evenly spread across the country does need roughly that share to take a
+seat anywhere; a regionally concentrated one needs far less nationally, which is
+plausibly where a ~1% figure comes from, but that is a different calculation and
+is not what the named formula produces.
