@@ -1,0 +1,43 @@
+/*
+ * Self-hosted, served from the app's own origin. CLAUDE.md non-negotiable 3
+ * forbids a CDN, and there is no request here to any other origin.
+ *
+ * One Archivo file carries both faces DESIGN.md §3 asks for: it is a variable
+ * font with a weight axis of 100–900 and a width axis of 62–125%. Declaring a
+ * second family over the same file with a pinned width gives Archivo Narrow
+ * without a second download, which is what makes the narrow numerals affordable
+ * at this bundle size.
+ *
+ * Latin subset only. Indonesian needs nothing above U+00FF, and the two
+ * non-ASCII strings in the interface — Sainte-Laguë and Laakso–Taagepera — are
+ * both inside it.
+ */
+
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  font-display: swap;
+  src: url('/fonts/archivo-latin-variable.woff2') format('woff2-variations');
+}
+
+@font-face {
+  font-family: 'Archivo Narrow';
+  font-style: normal;
+  font-weight: 100 900;
+  /* A single value pins the width axis: every glyph from this family is drawn
+     at 75% width, which is the condensed cut the tally columns need. */
+  font-stretch: 75%;
+  font-display: swap;
+  src: url('/fonts/archivo-latin-variable.woff2') format('woff2-variations');
+}
+
+/* Pasal text only, and nowhere else in the app. */
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: normal;
+  font-weight: 200 900;
+  font-display: swap;
+  src: url('/fonts/source-serif-4-latin-variable.woff2') format('woff2-variations');
+}

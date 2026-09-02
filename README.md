@@ -36,7 +36,8 @@ npm test           # engine tests, node environment, no DOM
 npm run verify     # the reproduction gate
 npm run typecheck
 npm run build      # verify → typecheck → vite build
-npm run data:build # regenerates the dapil placeholder
+npm run data:build  # regenerates the dapil placeholder
+npm run fonts:build # copies the two self-hosted font files into public/fonts
 ```
 
 ## Layout
@@ -76,7 +77,7 @@ controls, whenever any control is off its 2024 default.
   budget.
 - Dragging the threshold from 4,0% to 0 on the production build: 60 fps median,
   p95 frame 17,6 ms, 1,3% of frames over 20 ms, no recomputation stall.
-- 289 KB shipped, code and data together, against a 1 MB budget.
+- 433 KB shipped — code, data and the two font files — against a 1 MB budget.
 - Zero axe-core violations at 380, 720 and 1400 px, on default and changed rules.
 - Reduced motion measured, not assumed: every instrument lands in one write.
 - No horizontal overflow at 380 px; the hemicycle is legible there.

@@ -24,9 +24,8 @@
   --warn: #ae442c;
 
   /* -- type, DESIGN.md §3 ------------------------------------------------
-   * Archivo and Source Serif 4 are named first so that dropping the self-hosted
-   * files into public/fonts picks them up with no further change. Until then the
-   * stacks fall back to system faces. See DECISIONS.md §5.
+   * Self-hosted from public/fonts; the @font-face rules are in fonts.css. The
+   * system stacks remain as the fallback while the face loads and if it fails.
    */
   --font-ui: 'Archivo', ui-sans-serif, system-ui, 'Helvetica Neue', Arial, sans-serif;
   --font-narrow: 'Archivo Narrow', 'Archivo', ui-sans-serif, system-ui,

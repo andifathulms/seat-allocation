@@ -95,24 +95,33 @@ is used only to break exact quotient ties, where the ordering is what matters.
 
 ---
 
-## 5. Archivo and Source Serif 4 are named but not self-hosted
+## 5. Archivo and Source Serif 4 are self-hosted — resolved
 
-**Rule affected:** CLAUDE.md non-negotiable 3 ("no fonts from a CDN — self-host");
-DESIGN.md §3.
+**Rule affected:** none, now. Recorded because it was a departure for part of the
+build and the resolution is worth stating.
 
-DESIGN.md specifies Archivo, Archivo Narrow and Source Serif 4, self-hosted and
-subset. The font files were not available to this build and CLAUDE.md forbids
-fetching them from a CDN, so nothing is fetched.
+This entry previously recorded that the three families DESIGN.md §3 specifies
+were named in the font stacks but not shipped, so the app fell back to system
+faces. They now ship.
 
-`--font-ui`, `--font-narrow` and `--font-law` in `src/styles/tokens.css` name
-those three families first and fall back to system faces. Dropping the subset
-`.woff2` files into `public/fonts/` and adding the `@font-face` rules is the
-whole change; no other file refers to a family name.
+`public/fonts/` holds two files, served from the app's own origin. Nothing is
+fetched from a CDN, which CLAUDE.md non-negotiable 3 forbids.
 
-Until then the numeral treatment still holds: `font-variant-numeric:
-tabular-nums lining-nums` is set on `body` and on `svg text`, so figures do not
-jitter when they animate, which is what DESIGN.md §3.1 calls non-negotiable.
-The narrow width and the serif voice for pasal text are what is missing.
+Both faces DESIGN.md §3 asks for come from one Archivo file. It is a variable
+font with a weight axis of 100–900 and a width axis of 62–125%, so a second
+`@font-face` over the same file with `font-stretch: 75%` pins the width and gives
+Archivo Narrow with no second download. Measured: the same nine digits set at
+60 px are 22,1% narrower in the narrow face. That is what makes the condensed
+numerals of §3.1 affordable inside the bundle budget.
+
+Only the latin subset ships. Indonesian needs nothing above U+00FF, and the two
+non-ASCII strings in the interface — Sainte-Laguë and Laakso–Taagepera — are
+both inside it. The two files come to 141 KB, taking the total shipped payload to
+433 KB against PRD §11.8's 1 MB.
+
+`scripts/extract/copy-fonts.ts` copies them out of the `@fontsource-variable`
+packages, which are kept as devDependencies purely so the copy is reproducible
+and the provenance of the binaries is recorded rather than assumed.
 
 ---
 

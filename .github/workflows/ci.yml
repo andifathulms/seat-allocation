@@ -45,7 +45,7 @@ jobs:
 
       - name: Bundle budget
         run: |
-          BYTES=$(find dist -type f \( -name '*.js' -o -name '*.css' -o -name '*.html' -o -name '*.json' \) -exec cat {} + | wc -c)
+          BYTES=$(find dist -type f \( -name '*.js' -o -name '*.css' -o -name '*.html' -o -name '*.json' -o -name '*.woff2' \) -exec cat {} + | wc -c)
           echo "shipped bytes: $BYTES" >> "$GITHUB_STEP_SUMMARY"
           # PRD §11.8: total bundle plus data under 1 MB.
           test "$BYTES" -lt 1048576
