@@ -6,6 +6,7 @@ import type { Dataset } from './data/schema';
 import { useAllocation } from './state/useAllocation';
 import { Chamber } from './views/Chamber/Chamber';
 import { Legend } from './ui/Legend';
+import { MetricStrip } from './ui/MetricStrip';
 import { Transport } from './ui/Transport';
 import { Verification } from './ui/Verification';
 import './app.css';
@@ -77,6 +78,16 @@ function Loaded({ data }: { data: Dataset }) {
             seatsByParty={allocation.seatsByParty}
             baselineSeats={reproduction.baseline.seatsByParty}
             totalValidVotes={data.parties.totalValidVotes}
+          />
+        </section>
+
+        <section className="section">
+          <h2 className="visually-hidden">{S.metrics}</h2>
+          <MetricStrip
+            metrics={allocation.metrics}
+            baseline={reproduction.baseline.metrics}
+            rules={data.rules}
+            animate={!scrubbing}
           />
         </section>
       </main>

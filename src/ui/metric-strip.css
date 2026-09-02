@@ -1,0 +1,41 @@
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: var(--s5);
+  padding: var(--s5) 0;
+  border-block: 1px solid var(--rule);
+}
+
+.metric__label {
+  color: var(--ink-soft);
+}
+
+.metric__value {
+  margin-top: var(--s1);
+  /* Right-aligned numerals are for columns; a metric value heads its own block
+     and reads left, in line with everything else on the page. DESIGN.md §1. */
+  overflow-wrap: anywhere;
+}
+
+.metric__arrow {
+  color: var(--ink-soft);
+}
+
+.metric__note,
+.metric__baseline {
+  color: var(--ink-soft);
+}
+
+.metric__baseline {
+  margin-top: var(--s1);
+}
+
+.metric__delta {
+  color: var(--ink);
+}
+
+.metric__definition {
+  margin-top: var(--s2);
+  color: var(--ink-soft);
+  max-width: 34ch;
+}

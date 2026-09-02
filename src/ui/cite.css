@@ -1,0 +1,68 @@
+.cite {
+  position: relative;
+  display: inline-block;
+}
+
+.cite__marker {
+  color: var(--ink-soft);
+  font-size: var(--t-small);
+  padding: 0 2px;
+  vertical-align: super;
+  line-height: 1;
+}
+
+.cite__marker[aria-expanded='true'] {
+  color: var(--ink);
+}
+
+.panel .cite__marker {
+  color: var(--ink-panel);
+}
+
+/* Dismissible and keyboard-reachable, never a hover tooltip. */
+.cite__popover {
+  position: absolute;
+  z-index: 20;
+  bottom: calc(100% + var(--s2));
+  left: 0;
+  width: min(30rem, calc(100vw - var(--s5) * 2));
+  display: grid;
+  gap: var(--s2);
+  padding: var(--s4);
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--ink);
+  border-radius: var(--radius);
+  text-align: left;
+  animation: cite-in var(--d-popover) cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes cite-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+.cite__pasal {
+  font-weight: 600;
+}
+
+/* Source Serif 4, and nowhere else in the app: the law gets its own voice so
+   that what the law says stays visibly separate from what the computation
+   produced. DESIGN.md §3. */
+.cite__law {
+  font-family: var(--font-law);
+  font-size: var(--t-law);
+  line-height: 1.7;
+  max-width: 62ch;
+}
+
+.cite__source,
+.cite__link {
+  color: var(--ink-soft);
+}
+
+.cite__link {
+  overflow-wrap: anywhere;
+}
