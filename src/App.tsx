@@ -9,6 +9,7 @@ import { Legend } from './ui/Legend';
 import { MetricStrip } from './ui/MetricStrip';
 import { Transport } from './ui/Transport';
 import { Verification } from './ui/Verification';
+import { VoteBar } from './views/VoteBar/VoteBar';
 import './app.css';
 
 export function App() {
@@ -87,6 +88,17 @@ function Loaded({ data }: { data: Dataset }) {
             metrics={allocation.metrics}
             baseline={reproduction.baseline.metrics}
             rules={data.rules}
+            animate={!scrubbing}
+          />
+        </section>
+
+        <section className="section">
+          <h2 className="h2">{S.voteBar}</h2>
+          <p className="prose small">{S.voteBarNote}</p>
+          <VoteBar
+            parties={data.parties.parties}
+            seatsByParty={allocation.seatsByParty}
+            totalValidVotes={data.parties.totalValidVotes}
             animate={!scrubbing}
           />
         </section>
