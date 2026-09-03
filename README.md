@@ -15,7 +15,6 @@ change the rules and watch the chamber recompose on the same votes.
 [![CI](https://github.com/andifathulms/seat-allocation/actions/workflows/ci.yml/badge.svg)](https://github.com/andifathulms/seat-allocation/actions/workflows/ci.yml)
 [![Deploy](https://github.com/andifathulms/seat-allocation/actions/workflows/deploy.yml/badge.svg)](https://github.com/andifathulms/seat-allocation/actions/workflows/deploy.yml)
 ![No backend](https://img.shields.io/badge/backend-none-2A9D8F)
-![Bundle](https://img.shields.io/badge/shipped-440%20KB-2A9D8F)
 
 </div>
 
@@ -31,7 +30,7 @@ seats through two rules almost nobody can actually perform: a 4% national thresh
 This app performs both rules in front of you, cites the pasal for each, and then lets
 you change them.
 
-## ⚠ The state of the data, up front
+## The state of the data, up front
 
 > The certified dapil × party recapitulation was not available to this build.
 
@@ -51,13 +50,13 @@ green and switches the header on its own. No code changes. See [DECISIONS.md](DE
 
 ## The five instruments
 
-| | View | What it shows |
-|---|---|---|
-| 🏛 | **Chamber** | A 580-seat hemicycle. Move the threshold and seats migrate between parties in one animation pass. |
-| 🗺 | **Archipelago** | All 84 dapil as small multiples; a shape marks each one whose composition differs from the 2024 result. |
-| 📊 | **Vote bar** | The 151.796.631 valid votes, and the share of them that converts to nothing. |
-| 🪜 | **Cascade** | The divisor table for one dapil, seat by seat, in the order each was claimed. |
-| 📈 | **Proportionality** | Vote share against seat share, with Gallagher, Loosemore–Hanby and ENP. |
+| View | What it shows |
+|---|---|
+| **Chamber** | A 580-seat hemicycle. Move the threshold and seats migrate between parties in one animation pass. |
+| **Archipelago** | All 84 dapil as small multiples; a shape marks each one whose composition differs from the 2024 result. |
+| **Vote bar** | The 151.796.631 valid votes, and the share of them that converts to nothing. |
+| **Cascade** | The divisor table for one dapil, seat by seat, in the order each was claimed. |
+| **Proportionality** | Vote share against seat share, with Gallagher, Loosemore–Hanby and ENP. |
 
 Every instrument has a keyboard-reachable table equivalent. Colour is never the only
 channel.
