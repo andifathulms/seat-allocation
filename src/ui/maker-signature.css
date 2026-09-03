@@ -1,0 +1,71 @@
+/* The author credit. It borrows the colophon's muted register entirely — no
+   new colour, size or spacing token — because it is the quietest line on the
+   page and should read as a signature rather than a badge. */
+.maker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s3) var(--s5);
+}
+
+.maker__line {
+  color: var(--ink-soft);
+}
+
+/* The app has no brand accent (tokens.css), so the name brightens to ink and
+   its rule to currentcolor, exactly as .link does elsewhere. */
+.maker__name {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--rule-strong);
+  transition: text-decoration-color var(--d-control) linear;
+}
+
+.maker__name:hover {
+  text-decoration-color: currentcolor;
+}
+
+/* Narrow tabular figures, as every other numeral in the app. */
+.maker__year {
+  font-family: var(--font-narrow);
+  white-space: nowrap;
+}
+
+.maker__links {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  /* Pulled back by the tap target's own padding so the row still aligns to the
+     column edge above it. */
+  margin-right: calc(var(--s2) * -1);
+}
+
+.maker__icon {
+  display: flex;
+  padding: var(--s2);
+  border-radius: var(--r-sm);
+  color: var(--ink-soft);
+  transition:
+    color var(--d-control) linear,
+    background-color var(--d-control) linear;
+}
+
+.maker__icon:hover {
+  color: var(--ink);
+  background: var(--rule);
+}
+
+@media (max-width: 560px) {
+  .maker {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .maker__links {
+    margin-left: calc(var(--s2) * -1);
+    margin-right: 0;
+  }
+}

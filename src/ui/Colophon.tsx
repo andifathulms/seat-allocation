@@ -1,6 +1,7 @@
 import type { Dataset } from '../data/schema';
 import { S } from '../copy/strings.id';
 import { Cite } from './Cite';
+import { MakerSignature } from './MakerSignature';
 import './colophon.css';
 
 /**
@@ -47,6 +48,10 @@ export function Colophon({ data }: { data: Dataset }) {
           {synthetic ? S.provenanceSynthetic : S.provenanceCertified}
         </p>
       </section>
+
+      <div className="colophon__bottom">
+        <MakerSignature />
+      </div>
       </div>
     </footer>
   );

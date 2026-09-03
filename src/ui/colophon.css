@@ -80,3 +80,13 @@
     gap: var(--s7);
   }
 }
+
+/* The single seam at the foot of the page. The maker's mark is personal credit,
+   so it sits below the legal standard and the sources rather than inside them,
+   and it reuses this one rule instead of adding another. */
+.colophon__bottom {
+  grid-column: 1 / -1;
+  margin-top: var(--s7);
+  padding-top: var(--s4);
+  border-top: 1px solid var(--rule);
+}
