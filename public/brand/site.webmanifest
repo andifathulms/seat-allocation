@@ -1,0 +1,24 @@
+{
+  "name": "Suara ke Kursi",
+  "short_name": "Suara ke Kursi",
+  "description": "Bagaimana suara Pemilu 2024 menjadi 580 kursi DPR: ambang batas 4 persen, metode Sainte-Laguë, dan 84 daerah pemilihan.",
+  "lang": "id",
+  "dir": "ltr",
+  "start_url": "../",
+  "scope": "../",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#F2F1ED",
+  "theme_color": "#0D0E10",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml" },
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    {
+      "src": "icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
