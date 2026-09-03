@@ -8,6 +8,7 @@
   position: sticky;
   bottom: 0;
   z-index: 20;
+  padding-block: var(--s1);
   background: var(--paper-raise);
   border-top: 1px solid var(--ink);
   /* The one shadow in the app. It is not decoration: this surface floats over
@@ -273,6 +274,9 @@
 }
 
 .toggle__option {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
   color: var(--ink-soft);
   border-bottom: 2px solid transparent;
   padding-bottom: 1px;
@@ -292,6 +296,9 @@
 .transport__reset {
   justify-self: start;
   margin-top: var(--s1);
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
 }
 
 .transport__reset:disabled {

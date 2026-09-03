@@ -114,7 +114,8 @@ export function Transport({ rules, onChange, onScrub, averageMagnitude, citation
                 onPointerDown={() => onScrub(true)}
                 onPointerUp={() => onScrub(false)}
                 onPointerCancel={() => onScrub(false)}
-                onKeyDown={() => onScrub(false)}
+                onKeyDown={() => onScrub(true)}
+                onKeyUp={() => onScrub(false)}
                 onChange={(e) => onChange({ ...rules, threshold: Number(e.currentTarget.value) })}
                 aria-valuetext={percent(rules.threshold, 1)}
               />

@@ -52,6 +52,7 @@
 }
 
 .colophon__sources a {
+  padding-block: var(--s0);
   color: var(--ink);
   text-decoration: underline;
   text-decoration-color: var(--rule-strong);

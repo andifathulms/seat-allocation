@@ -40,12 +40,12 @@
   gap: var(--s1);
   /* Pulled back by the tap target's own padding so the row still aligns to the
      column edge above it. */
-  margin-right: calc(var(--s2) * -1);
+  margin-right: calc(var(--s3) * -1);
 }
 
 .maker__icon {
   display: flex;
-  padding: var(--s2);
+  padding: var(--s3);
   border-radius: var(--r-sm);
   color: var(--ink-soft);
   transition:
@@ -65,7 +65,7 @@
   }
 
   .maker__links {
-    margin-left: calc(var(--s2) * -1);
+    margin-left: calc(var(--s3) * -1);
     margin-right: 0;
   }
 }

@@ -4,6 +4,12 @@
  * title, so the table is offered before the instrument is read rather than
  * found after it.
  */
+.table-view__toggle {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+}
+
 .table-view__toggle::after {
   content: ' ↓';
   font-family: var(--font-narrow);

@@ -68,7 +68,9 @@
 }
 
 .rail__link {
-  display: block;
+  display: flex;
+  align-items: center;
+  min-height: 24px;
   padding: var(--s1) 0;
   color: var(--ink-soft);
   text-decoration: none;
