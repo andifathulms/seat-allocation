@@ -106,15 +106,11 @@ function Item({
   const changed = seats - baseline;
   const zero = seats === 0;
 
-  return (
-    <button
-      type="button"
-      className={`legend__item${selected ? ' legend__item--on' : ''}${
-        zero ? ' legend__item--zero' : ''
-      }`}
-      aria-pressed={selected}
-      onClick={() => onSelect?.(party.id)}
-    >
+  /* The visible spans are marked away from the accessibility tree and the
+     hidden line is the single announced string. Both were being read before,
+     so every row was announced roughly twice. */
+  const content = (
+    <>
       <span className="legend__swatch" aria-hidden="true">
         <svg viewBox="0 0 6 24" width="6" height="24" preserveAspectRatio="none">
           {/* DESIGN.md §6.4: when a party crosses back in, the hatch resolves to
@@ -135,12 +131,18 @@ function Item({
           />
         </svg>
       </span>
-      <span className="legend__name">{party.shortName}</span>
-      <span className="legend__seats figure">{seats}</span>
-      <span className="legend__share micro">{percent(party.nationalVotes / totalValidVotes, 2)}</span>
+      <span className="legend__name" aria-hidden="true">
+        {party.shortName}
+      </span>
+      <span className="legend__seats figure" aria-hidden="true">
+        {seats}
+      </span>
+      <span className="legend__share micro" aria-hidden="true">
+        {percent(party.nationalVotes / totalValidVotes, 2)}
+      </span>
       {changed !== 0 && (
-        <span className="legend__delta micro">
-          {changed > 0 ? '↑' : '↓'}
+        <span className="legend__delta micro" aria-hidden="true">
+          {changed > 0 ? '\u2191' : '\u2193'}
           {Math.abs(changed)}
         </span>
       )}
@@ -150,6 +152,28 @@ function Item({
           ? `, ${Math.abs(changed)} ${changed > 0 ? 'lebih' : 'kurang'} dari hasil 2024`
           : ''}
       </span>
+    </>
+  );
+
+  const className = `legend__item${selected ? ' legend__item--on' : ''}${
+    zero ? ' legend__item--zero' : ''
+  }`;
+
+  /* Only a legend that can actually select a party is made of buttons. Without
+     an onSelect handler these were eighteen controls that announced as toggles,
+     pressed with no effect, and never changed state. */
+  if (!onSelect) {
+    return <div className={className}>{content}</div>;
+  }
+
+  return (
+    <button
+      type="button"
+      className={className}
+      aria-pressed={selected}
+      onClick={() => onSelect(party.id)}
+    >
+      {content}
     </button>
   );
 }

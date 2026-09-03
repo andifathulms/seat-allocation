@@ -64,7 +64,7 @@ export function Rail({ sections, threshold, atDefault }: Props) {
       <div className="rail__inner page">
         <p className="rail__mark small">
           <span className="rail__title">{S.title}</span>
-          <span className="rail__state" aria-hidden="true">
+          <span className="rail__state" aria-live="polite">
             {percent(threshold, 1)}
             {atDefault ? '' : ' ·'}
             {atDefault ? '' : <span className="rail__changed"> {S.changed}</span>}

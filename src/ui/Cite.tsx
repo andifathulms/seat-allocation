@@ -19,6 +19,7 @@ export function Cite({ rules, of, label }: Props) {
   const id = useId();
   const [open, setOpen] = useState(false);
   const wrapper = useRef<HTMLSpanElement>(null);
+  const marker = useRef<HTMLButtonElement>(null);
 
   const rule = rules.rules.find((r) => r.id === of);
   const figure = rules.figures.find((f) => f.id === of);
@@ -28,7 +29,11 @@ export function Cite({ rules, of, label }: Props) {
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(false);
+      if (e.key !== 'Escape') return;
+      setOpen(false);
+      /* Escape from inside the popover would otherwise drop focus on a removed
+         node and send the next Tab back to the top of the document. */
+      marker.current?.focus();
     };
     const onPointer = (e: PointerEvent) => {
       if (!wrapper.current?.contains(e.target as Node)) setOpen(false);
@@ -48,6 +53,7 @@ export function Cite({ rules, of, label }: Props) {
       <button
         type="button"
         className="cite__marker"
+        ref={marker}
         aria-expanded={open}
         aria-controls={id}
         onClick={() => setOpen((v) => !v)}
@@ -58,7 +64,7 @@ export function Cite({ rules, of, label }: Props) {
         </span>
       </button>
       {open && (
-        <span className="cite__popover" id={id} role="dialog" aria-label="Sumber">
+        <span className="cite__popover" id={id} role="group" aria-label="Sumber">
           {rule && <span className="cite__pasal small">{rule.pasal}</span>}
           {rule && <q className="cite__law">{rule.text}</q>}
           {figure && (

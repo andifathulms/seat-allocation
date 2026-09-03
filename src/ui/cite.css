@@ -4,12 +4,27 @@
 }
 
 .cite__marker {
+  position: relative;
   color: var(--ink-soft);
   font-size: var(--t-small);
   padding: 0 3px;
   vertical-align: super;
   line-height: 1;
   transition: color var(--d-control) linear;
+}
+
+/* The mark stays small; the target grows to the 24px WCAG 2.5.8 floor. It is
+   deliberately not 44px: these sit inline in running prose, where a target that
+   large would cover the words on either side and take their clicks. Inline
+   targets are exempt from the minimum for exactly that reason. */
+.cite__marker::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 24px;
+  height: 24px;
+  transform: translate(-50%, -50%);
 }
 
 .cite__marker:hover {
