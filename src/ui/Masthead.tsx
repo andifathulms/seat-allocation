@@ -27,6 +27,22 @@ export function Masthead({ data, reproduction }: Props) {
   return (
     <header className="masthead" id="masthead">
       <div className="page masthead__inner">
+        {/* The mark states nothing the h1 does not, so it is decorative here.
+            Its teal cluster is the group the threshold admits — the app's
+            control, never a party. */}
+        <picture>
+          <source
+            srcSet={`${import.meta.env.BASE_URL}brand/icon-chamber.svg`}
+            media="(prefers-color-scheme: dark)"
+          />
+          <img
+            className="masthead__mark"
+            src={`${import.meta.env.BASE_URL}brand/icon.svg`}
+            width={44}
+            height={44}
+            alt=""
+          />
+        </picture>
         <h1 className="display masthead__title">{S.title}</h1>
         <p className="masthead__subtitle h3">{S.subtitle}</p>
         <p className="prose masthead__intro">{S.intro}</p>

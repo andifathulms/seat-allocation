@@ -3,6 +3,17 @@
   padding-bottom: var(--s5);
 }
 
+/* The one piece of brand colour on paper, and it is a mark rather than
+   interface chrome: DESIGN.md §1.1 reserves every saturated interface pixel
+   for data, and this tile carries its own ground — bone on paper, chamber
+   black in the dark scheme, so it never glares. The tile rounds itself. */
+.masthead__mark {
+  display: block;
+  width: 44px;
+  height: 44px;
+  margin-bottom: var(--s5);
+}
+
 .masthead__title {
   /* Optical alignment: the S overshoots its left sidebearing at this size. */
   margin-left: -0.02em;
