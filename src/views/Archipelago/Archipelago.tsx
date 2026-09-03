@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import type { DapilResult, Party, PartyId } from '../../engine/types';
 import type { Dapil } from '../../engine/types';
 import { S } from '../../copy/strings.id';
@@ -13,6 +13,13 @@ interface Props {
   selected: string | null;
   onSelect: (code: string) => void;
   animate: boolean;
+  /**
+   * True when the ruleset allocates from one national pool. The engine then
+   * returns a single district, so there are no 84 compositions to draw and no
+   * per-dapil comparison to make. Drawing the grid anyway produced 84 empty
+   * cells and the count "0 dapil berubah", which was false.
+   */
+  pooled: boolean;
 }
 
 const CELL_W = 100;
@@ -35,6 +42,7 @@ export function Archipelago({
   selected,
   onSelect,
   animate,
+  pooled,
 }: Props) {
   const colors = useMemo(() => {
     const map = new Map<PartyId, string>();
@@ -81,10 +89,23 @@ export function Archipelago({
 
   const changedCount = cells.filter((c) => c.changed).length;
 
+  const moveFocus = (from: number, delta: number, total: number) => {
+    const next = Math.min(Math.max(from + delta, 0), total - 1);
+    if (next === from) return;
+    setFocused(next);
+    cellRefs.current[next]?.focus();
+  };
+
   // One rAF loop drives the whole grid. The stagger runs west to east at 3 ms
   // per cell, so the wash completes in about 250 ms and reads as one gesture
   // rather than as a sequence.
   const groups = useRef<(SVGGElement | null)[]>([]);
+
+  /* A roving tabindex. The grid is one tab stop and the arrow keys move within
+     it; before this, reaching the transport bar from section 04 cost 84 tab
+     presses and the skip link only reaches the first instrument. */
+  const [focused, setFocused] = useState(0);
+  const cellRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   const layout = useMemo(
     () =>
@@ -138,6 +159,15 @@ export function Archipelago({
     }
   });
 
+  if (pooled) {
+    return (
+      <div className="archipelago stage archipelago--pooled">
+        <p className="archipelago__pooled-rule">{S.geographyNational}</p>
+        <p className="archipelago__pooled-note prose small">{S.geographyNationalNote}</p>
+      </div>
+    );
+  }
+
   return (
     <div className="archipelago stage">
       <p className="archipelago__count">
@@ -153,6 +183,32 @@ export function Archipelago({
             <li key={cell.dapil.code}>
               <button
                 type="button"
+                ref={(node) => {
+                  cellRefs.current[i] = node;
+                }}
+                tabIndex={i === Math.min(focused, plan.length - 1) ? 0 : -1}
+                onFocus={() => setFocused(i)}
+                onKeyDown={(e) => {
+                  /* Columns are laid out by the grid, so vertical movement uses
+                     the measured column count rather than a hardcoded one. */
+                  const cols = Math.max(
+                    1,
+                    Math.round(
+                      (e.currentTarget.parentElement?.parentElement?.clientWidth ?? 1) /
+                        Math.max(e.currentTarget.clientWidth, 1),
+                    ),
+                  );
+                  const map: Record<string, number> = {
+                    ArrowRight: 1,
+                    ArrowLeft: -1,
+                    ArrowDown: cols,
+                    ArrowUp: -cols,
+                  };
+                  const delta = map[e.key];
+                  if (delta === undefined) return;
+                  e.preventDefault();
+                  moveFocus(i, delta, plan.length);
+                }}
                 className={`archipelago__cell${
                   selected === cell.dapil.code ? ' archipelago__cell--on' : ''
                 }${firstOfProvince.has(cell.dapil.code) ? ' archipelago__cell--province' : ''}`}

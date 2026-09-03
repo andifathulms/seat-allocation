@@ -57,6 +57,7 @@
 
 .cascade__transport input[type='range'] {
   width: 10rem;
+  height: 24px;
   accent-color: var(--ink);
 }
 
@@ -293,4 +294,23 @@
     flex: 1 1 auto;
     max-width: none;
   }
+}
+
+/* One national pool: this view traces a single dapil, and there is no single
+   dapil to trace. See the note on Cascade's `pooled` prop. */
+.cascade--pooled {
+  display: grid;
+  gap: var(--s3);
+  align-content: center;
+  min-height: 12rem;
+}
+
+.cascade__pooled-rule {
+  font-family: var(--font-narrow);
+  font-size: var(--t-h3);
+  font-weight: 600;
+}
+
+.cascade__pooled-note {
+  color: var(--ink-soft);
 }

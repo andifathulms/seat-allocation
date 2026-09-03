@@ -6,7 +6,9 @@ interface Props {
   /** the section's place in the reading order, printed in the spine */
   index: string;
   title: string;
-  note: string;
+  /** Omitted when the section's standing description does not fit the current
+   *  ruleset, rather than printed and left contradicting the instrument. */
+  note?: string | undefined;
   /** controls belonging to the instrument, set at the right of the head */
   aside?: ReactNode;
   children: ReactNode;
@@ -29,7 +31,7 @@ export function Section({ id, index, title, note, aside, children }: Props) {
           <h2 className="h2" id={`${id}-title`}>
             {title}
           </h2>
-          <p className="prose small section__note">{note}</p>
+          {note && <p className="prose small section__note">{note}</p>}
         </div>
         {aside && <div className="section__aside">{aside}</div>}
       </div>

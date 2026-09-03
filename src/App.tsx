@@ -72,6 +72,10 @@ function Loaded({ data }: { data: Dataset }) {
    */
   const [scrubbing, setScrubbing] = useState(false);
 
+  /* One national pool returns a single district, so the two per-dapil views and
+     the archipelago's comparison column have nothing to say. */
+  const pooled = rules.geography === 'national-pool';
+
   const averageMagnitude = data.official.totalSeats / data.dapil.dapil.length;
   const [selectedDapil, setSelectedDapil] = useState<string>(() =>
     pickDefaultDapil(data.parties.parties, data.dapil.dapil),
@@ -188,8 +192,8 @@ function Loaded({ data }: { data: Dataset }) {
         <Section
           id="dapil"
           index="04"
-          title={S.archipelago}
-          note={S.archipelagoNote}
+          title={pooled ? S.geography : S.archipelago}
+          note={pooled ? undefined : S.archipelagoNote}
           aside={
             <TableView
               caption={S.archipelagoNote}
@@ -197,7 +201,7 @@ function Loaded({ data }: { data: Dataset }) {
                 { key: 'dapil', label: S.dapil },
                 { key: 'magnitude', label: S.magnitude, numeric: true },
                 { key: 'composition', label: S.legend },
-                { key: 'changed', label: S.changedDapil },
+                ...(pooled ? [] : [{ key: 'changed', label: S.changedDapil }]),
               ]}
               rows={allocation.byDapil.map((result) => {
                 const d = data.dapil.dapil.find((x) => x.code === result.dapil);
@@ -228,11 +232,17 @@ function Loaded({ data }: { data: Dataset }) {
               selected={selectedDapil}
               onSelect={setSelectedDapil}
               animate={!scrubbing}
+              pooled={pooled}
             />
           </div>
         </Section>
 
-        <Section id="langkah" index="05" title={S.cascade} note={S.cascadeNote}>
+        <Section
+          id="langkah"
+          index="05"
+          title={S.cascade}
+          note={pooled ? undefined : S.cascadeNote}
+        >
           <div className="bleed">
             <Cascade
               parties={data.parties.parties}
@@ -240,6 +250,7 @@ function Loaded({ data }: { data: Dataset }) {
               code={selectedDapil}
               rules={rules}
               onSelect={setSelectedDapil}
+              pooled={pooled}
             />
           </div>
         </Section>

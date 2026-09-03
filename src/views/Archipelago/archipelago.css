@@ -93,3 +93,24 @@
     height: 14px;
   }
 }
+
+/* One national pool: there are no 84 compositions to draw and no per-dapil
+   comparison to make, so the grid and its changed-count are replaced by the
+   statement of what the rule does. The copy is the transport's own, so the
+   control and the instrument cannot disagree. */
+.archipelago--pooled {
+  display: grid;
+  gap: var(--s3);
+  align-content: center;
+  min-height: 12rem;
+}
+
+.archipelago__pooled-rule {
+  font-family: var(--font-narrow);
+  font-size: var(--t-h3);
+  font-weight: 600;
+}
+
+.archipelago__pooled-note {
+  color: var(--on-stage-soft);
+}

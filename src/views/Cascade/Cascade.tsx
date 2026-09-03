@@ -13,6 +13,16 @@ interface Props {
   code: string;
   rules: RuleSet;
   onSelect: (code: string) => void;
+  /**
+   * True when the ruleset allocates from one national pool. This view traces a
+   * single dapil, and under that rule the engine's pool carries every party's
+   * national votes against the magnitude of whichever dapil is passed in. The
+   * quotients would therefore come from national votes while the dividend
+   * printed beside them is the dapil's own, and the arithmetic on screen would
+   * not survive being checked by hand. There is no per-dapil step to show, so
+   * the view says so instead.
+   */
+  pooled: boolean;
 }
 
 /**
@@ -20,7 +30,7 @@ interface Props {
  * recomputes a quotient for display, so the arithmetic on screen and the
  * arithmetic that produced the seats are the same object.
  */
-export function Cascade({ parties, dapil, code, rules, onSelect }: Props) {
+export function Cascade({ parties, dapil, code, rules, onSelect, pooled }: Props) {
   const reduced = useReducedMotion();
   const [step, setStep] = useState(0);
   const [playing, setPlaying] = useState(false);
@@ -30,18 +40,25 @@ export function Cascade({ parties, dapil, code, rules, onSelect }: Props) {
   // Only the selected dapil is traced. A full trace of all 84 is what
   // CLAUDE.md's trace: false option exists to avoid.
   const trace = useMemo<SeatAward[]>(() => {
-    if (!selected) return [];
+    if (!selected || pooled) return [];
     const one = allocate(parties, [selected], rules, { trace: true });
     return one.byDapil[0]?.trace ?? [];
-  }, [parties, selected, rules]);
+  }, [parties, selected, rules, pooled]);
 
   const eliminated = useMemo(() => {
-    if (!selected) return [];
+    if (!selected || pooled) return [];
     const one = allocate(parties, [selected], rules, { trace: false });
     return one.byDapil[0]?.eliminated ?? [];
-  }, [parties, selected, rules]);
+  }, [parties, selected, rules, pooled]);
 
-  useEffect(() => setStep(0), [code, rules]);
+  /* Depend on the rule values, not the object. setRules({...rules, threshold})
+     produces a new object on every scrub frame, so an identity dependency reset
+     the step on every tick and a user who had stepped to seat 4 lost their
+     place without touching this view. */
+  useEffect(
+    () => setStep(0),
+    [code, rules.threshold, rules.thresholdScope, rules.divisor, rules.geography],
+  );
 
   useEffect(() => {
     if (!playing || reduced) return;
@@ -99,6 +116,15 @@ export function Cascade({ parties, dapil, code, rules, onSelect }: Props) {
       })
       .sort((a, b) => b.votes - a.votes);
   }, [trace, parties, selected, rules, isQuota]);
+
+  if (pooled) {
+    return (
+      <div className="cascade cascade--pooled">
+        <p className="cascade__pooled-rule">{S.geographyNational}</p>
+        <p className="cascade__pooled-note prose small">{S.geographyNationalNote}</p>
+      </div>
+    );
+  }
 
   if (!selected || trace.length === 0) {
     return <p className="small">Tidak ada kursi untuk ditampilkan pada dapil ini.</p>;
