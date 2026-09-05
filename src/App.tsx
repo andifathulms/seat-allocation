@@ -4,9 +4,10 @@ import { loadDataset } from './data/load';
 import { pickDefaultDapil } from './data/defaultDapil';
 import { reproduce, type Reproduction } from './data/reproduction';
 import type { Dataset } from './data/schema';
-import { isDefault } from './state/rules';
+import { isDefault, THRESHOLD_MAX } from './state/rules';
 import { decompose } from './engine/decompose';
 import { ledger } from './engine/transfers';
+import { thresholdResponse } from './engine/response';
 import { useAllocation } from './state/useAllocation';
 import { count, decimal, percent } from './ui/format';
 import { Archipelago } from './views/Archipelago/Archipelago';
@@ -17,6 +18,7 @@ import { Legend } from './ui/Legend';
 import { Masthead } from './ui/Masthead';
 import { Premise } from './ui/Premise';
 import { Decomposition } from './ui/Decomposition';
+import { Response } from './views/Response/Response';
 import { MetricStrip } from './ui/MetricStrip';
 import { Rail, type RailSection } from './ui/Rail';
 import { Section } from './ui/Section';
@@ -29,6 +31,7 @@ import './app.css';
 const SECTIONS: readonly RailSection[] = [
   { id: 'ruang-sidang', label: S.chamber },
   { id: 'angka-ringkas', label: S.metrics },
+  { id: 'rentang', label: S.responseShort },
   { id: 'dua-aturan', label: S.decompositionShort },
   { id: 'suara-sah', label: S.voteBar },
   { id: 'dapil', label: S.archipelago },
@@ -83,6 +86,17 @@ function Loaded({ data }: { data: Dataset }) {
   const decomposition = useMemo(
     () => decompose(data.parties.parties, data.dapil.dapil, rules),
     [data, rules],
+  );
+
+  /**
+   * One pass per band, memo'd on everything except the threshold itself: moving
+   * the scrubber changes which band is current, never the bands.
+   */
+  const response = useMemo(
+    () =>
+      thresholdResponse(data.parties.parties, data.dapil.dapil, rules, THRESHOLD_MAX),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [data, rules.thresholdScope, rules.divisor, rules.geography],
   );
 
   /** What moved against 2024, itemised. Both allocations are already in hand. */
@@ -192,8 +206,56 @@ function Loaded({ data }: { data: Dataset }) {
         </Section>
 
         <Section
-          id="dua-aturan"
+          id="rentang"
           index="03"
+          title={S.response}
+          note={S.responseNote}
+          aside={
+            response && (
+              <TableView
+                caption={S.responseNote}
+                columns={[
+                  { key: 'band', label: S.responseBand },
+                  { key: 'lost', label: S.responseLost },
+                  { key: 'parties', label: S.partiesWithSeats, numeric: true },
+                  { key: 'unconverted', label: S.unconverted, numeric: true },
+                  { key: 'gallagher', label: S.gallagher, numeric: true },
+                  { key: 'composition', label: S.responseComposition },
+                ]}
+                rows={response.regimes.map((r) => ({
+                  band: `${percent(r.from, 2)} – ${percent(r.to, 2)}`,
+                  lost: r.lostHere ? short(data.parties.parties, r.lostHere) : '—',
+                  parties: r.partiesWithSeats,
+                  unconverted: count(r.unconvertedVotes),
+                  gallagher: decimal(r.gallagher, 2),
+                  composition: data.parties.parties
+                    .filter((p) => (r.seatsByParty[p.id] ?? 0) > 0)
+                    .map((p) => `${p.shortName} ${r.seatsByParty[p.id]}`)
+                    .join(', '),
+                }))}
+              />
+            )
+          }
+        >
+          <div className="bleed">
+            {response ? (
+              <Response
+                parties={data.parties.parties}
+                response={response}
+                threshold={rules.threshold}
+                onPick={(threshold) => setRules({ ...rules, threshold })}
+              />
+            ) : (
+              <div className="page">
+                <p className="prose small">{S.responseUnavailable}</p>
+              </div>
+            )}
+          </div>
+        </Section>
+
+        <Section
+          id="dua-aturan"
+          index="04"
           title={S.decomposition}
           note={S.decompositionNote}
         >
@@ -207,7 +269,7 @@ function Loaded({ data }: { data: Dataset }) {
 
         <Section
           id="suara-sah"
-          index="04"
+          index="05"
           title={S.voteBar}
           note={S.voteBarNote}
           aside={
@@ -242,7 +304,7 @@ function Loaded({ data }: { data: Dataset }) {
 
         <Section
           id="dapil"
-          index="05"
+          index="06"
           title={pooled ? S.geography : S.archipelago}
           note={pooled ? undefined : S.archipelagoNote}
           aside={
@@ -314,7 +376,7 @@ function Loaded({ data }: { data: Dataset }) {
 
         <Section
           id="langkah"
-          index="06"
+          index="07"
           title={S.cascade}
           note={pooled ? undefined : S.cascadeNote}
         >
@@ -332,7 +394,7 @@ function Loaded({ data }: { data: Dataset }) {
 
         <Section
           id="pangsa"
-          index="07"
+          index="08"
           title={S.proportionality}
           note={S.proportionalityNote}
           aside={

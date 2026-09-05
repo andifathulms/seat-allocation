@@ -85,6 +85,25 @@ export const S = {
   votesToSeats: 'suara → kursi',
   under2024: 'aturan 2024',
 
+  response: 'Seluruh rentang ambang batas',
+  responseShort: 'Rentang',
+  responseNote:
+    'Susunan 580 kursi pada setiap nilai ambang batas dari 0 sampai 10 persen. ' +
+    'Susunan hanya berubah ketika ambang batas melewati pangsa suara nasional ' +
+    'sebuah partai, sehingga rentangnya terbagi menjadi beberapa dataran ' +
+    'dengan susunan yang sama persis di sepanjang masing-masing.',
+  responseAria:
+    'Susunan kursi per partai pada setiap nilai ambang batas dari 0 sampai 10 persen.',
+  responseReading: (parties: number, from: string, to: string) =>
+    `Pada setelan sekarang, ${parties} partai memperoleh kursi. Susunan yang sama ` +
+    `berlaku di seluruh rentang di atas ${from} sampai ${to}.`,
+  responseUnavailable:
+    'Rentang hanya dapat dihitung untuk ambang batas nasional. Pada cakupan per ' +
+    'dapil batasnya adalah pangsa suara di tiap dapil, bukan satu deret nasional.',
+  responseJumps: 'Lompat ke batas',
+  responseBand: 'Rentang ambang batas',
+  responseLost: 'Partai yang gugur di batas ini',
+  responseComposition: 'Susunan kursi',
   decomposition: 'Dua aturan, diukur terpisah',
   decompositionShort: 'Dua aturan',
   decompositionNote:
