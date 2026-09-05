@@ -8,12 +8,17 @@
 
 .archipelago__count {
   display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
   gap: var(--s3);
   padding-bottom: var(--s4);
   margin-bottom: var(--s5);
   border-bottom: 1px solid var(--rule-stage);
   color: var(--on-stage-soft);
+}
+
+.archipelago__count-sep {
+  color: var(--rule-stage);
 }
 
 .archipelago__grid {
@@ -72,7 +77,11 @@
 }
 
 @media (max-width: 1100px) {
-  .archipelago__grid {
+  .archipelago__count-sep {
+  color: var(--rule-stage);
+}
+
+.archipelago__grid {
     grid-template-columns: repeat(8, minmax(0, 1fr));
   }
 }
@@ -82,7 +91,11 @@
     padding: var(--s5) var(--s4) var(--s4);
   }
 
-  .archipelago__grid {
+  .archipelago__count-sep {
+  color: var(--rule-stage);
+}
+
+.archipelago__grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: var(--s3) var(--s2);
     max-height: 70vh;

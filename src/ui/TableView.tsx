@@ -3,6 +3,10 @@ import { S } from '../copy/strings.id';
 import './table-view.css';
 
 interface Props {
+  /** Overrides the default toggle wording when a section carries two tables. */
+  label?: string;
+  /** Shown in place of the table when there are no rows. */
+  empty?: string;
   caption: string;
   columns: Array<{ key: string; label: string; numeric?: boolean }>;
   rows: Array<Record<string, string | number>>;
@@ -16,7 +20,7 @@ interface Props {
  * The table is collapsed rather than hidden, so it is one keystroke away and
  * always in the accessibility tree.
  */
-export function TableView({ caption, columns, rows }: Props) {
+export function TableView({ label, empty, caption, columns, rows }: Props) {
   const id = useId();
   const [open, setOpen] = useState(false);
 
@@ -29,7 +33,7 @@ export function TableView({ caption, columns, rows }: Props) {
         aria-controls={id}
         onClick={() => setOpen((v) => !v)}
       >
-        {open ? S.hideTable : S.showTable}
+        {label ?? (open ? S.hideTable : S.showTable)}
       </button>
       {/* The pane scrolls, so it must be focusable or a keyboard user cannot
           reach the rows below the fold. */}
@@ -41,6 +45,9 @@ export function TableView({ caption, columns, rows }: Props) {
         role="region"
         aria-label={caption}
       >
+        {rows.length === 0 && empty ? (
+          <p className="table-view__empty small">{empty}</p>
+        ) : (
         <table>
           <caption className="visually-hidden">{caption}</caption>
           <thead>
@@ -71,6 +78,7 @@ export function TableView({ caption, columns, rows }: Props) {
             ))}
           </tbody>
         </table>
+        )}
       </div>
     </div>
   );

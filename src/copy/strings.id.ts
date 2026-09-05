@@ -150,6 +150,18 @@ export const S = {
     'Setiap sel satu dapil, disusun kira-kira dari barat ke timur. Segitiga di sudut ' +
     'kiri atas menandai dapil yang susunan kursinya berbeda dari hasil 2024.',
   changedDapil: 'dapil berubah dari hasil 2024',
+  seatsMoved: 'kursi berpindah',
+  transferLedger: 'Kursi yang berpindah',
+  transferNote:
+    'Perbandingan susunan kursi pada aturan yang disetel dengan susunan pada ' +
+    'aturan 2024, dapil demi dapil. Pasangan partai disusun dari selisih ' +
+    'terbesar; pembagi tertinggi tidak mengenal kursi yang dimiliki lalu ' +
+    'diambil, jadi angka yang dikutip adalah jumlah kursi berpindah, bukan ' +
+    'pasangannya.',
+  transferFrom: 'Berkurang',
+  transferTo: 'Bertambah',
+  transferNet: 'Selisih bersih per partai',
+  noTransfers: 'Tidak ada kursi yang berpindah dari hasil 2024.',
 
   cascade: 'Pembagian kursi langkah demi langkah',
   cascadeShort: 'Langkah demi langkah',

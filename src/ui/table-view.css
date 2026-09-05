@@ -72,3 +72,8 @@
   text-align: right;
   font-family: var(--font-narrow);
 }
+
+.table-view__empty {
+  padding: var(--s4);
+  color: var(--ink-soft);
+}

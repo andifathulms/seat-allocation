@@ -20,6 +20,8 @@ interface Props {
    * cells and the count "0 dapil berubah", which was false.
    */
   pooled: boolean;
+  /** Seats that changed hands against the 2024 baseline, from the ledger. */
+  seatsMoved: number;
 }
 
 const CELL_W = 100;
@@ -43,6 +45,7 @@ export function Archipelago({
   onSelect,
   animate,
   pooled,
+  seatsMoved,
 }: Props) {
   const colors = useMemo(() => {
     const map = new Map<PartyId, string>();
@@ -173,6 +176,15 @@ export function Archipelago({
       <p className="archipelago__count">
         <span className="figure-lg">{changedCount}</span>
         <span className="small">{S.changedDapil}</span>
+        {seatsMoved > 0 && (
+          <>
+            <span className="archipelago__count-sep" aria-hidden="true">
+              ·
+            </span>
+            <span className="figure-lg">{seatsMoved}</span>
+            <span className="small">{S.seatsMoved}</span>
+          </>
+        )}
       </p>
 
       <ul className="archipelago__grid">

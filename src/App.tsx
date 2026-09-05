@@ -6,6 +6,7 @@ import { reproduce, type Reproduction } from './data/reproduction';
 import type { Dataset } from './data/schema';
 import { isDefault } from './state/rules';
 import { decompose } from './engine/decompose';
+import { ledger } from './engine/transfers';
 import { useAllocation } from './state/useAllocation';
 import { count, decimal, percent } from './ui/format';
 import { Archipelago } from './views/Archipelago/Archipelago';
@@ -64,6 +65,11 @@ export function App() {
   return <Loaded data={data} />;
 }
 
+/** A party's short name by id, for tables that carry ids rather than parties. */
+function short(parties: readonly Dataset['parties']['parties'][number][], id: string): string {
+  return parties.find((p) => p.id === id)?.shortName ?? id;
+}
+
 function Loaded({ data }: { data: Dataset }) {
   const [reproduction] = useState<Reproduction>(() => reproduce(data));
   const { rules, setRules, allocation } = useAllocation(data);
@@ -77,6 +83,12 @@ function Loaded({ data }: { data: Dataset }) {
   const decomposition = useMemo(
     () => decompose(data.parties.parties, data.dapil.dapil, rules),
     [data, rules],
+  );
+
+  /** What moved against 2024, itemised. Both allocations are already in hand. */
+  const transfers = useMemo(
+    () => ledger(allocation, reproduction.baseline, data.parties.parties, data.dapil.dapil),
+    [allocation, reproduction, data],
   );
 
   /**
@@ -234,32 +246,55 @@ function Loaded({ data }: { data: Dataset }) {
           title={pooled ? S.geography : S.archipelago}
           note={pooled ? undefined : S.archipelagoNote}
           aside={
-            <TableView
-              caption={S.archipelagoNote}
-              columns={[
-                { key: 'dapil', label: S.dapil },
-                { key: 'magnitude', label: S.magnitude, numeric: true },
-                { key: 'composition', label: S.legend },
-                ...(pooled ? [] : [{ key: 'changed', label: S.changedDapil }]),
-              ]}
-              rows={allocation.byDapil.map((result) => {
-                const d = data.dapil.dapil.find((x) => x.code === result.dapil);
-                const base = reproduction.baseline.byDapil.find((x) => x.dapil === result.dapil);
-                return {
-                  dapil: d?.name ?? result.dapil,
-                  magnitude: d?.magnitude ?? 0,
-                  composition: data.parties.parties
-                    .filter((p) => (result.seats[p.id] ?? 0) > 0)
-                    .map((p) => `${p.shortName} ${result.seats[p.id]}`)
-                    .join(', '),
-                  changed: data.parties.parties.some(
-                    (p) => (result.seats[p.id] ?? 0) !== (base?.seats[p.id] ?? 0),
-                  )
-                    ? 'ya'
-                    : '',
-                };
-              })}
-            />
+            <>
+              <TableView
+                caption={S.archipelagoNote}
+                columns={[
+                  { key: 'dapil', label: S.dapil },
+                  { key: 'magnitude', label: S.magnitude, numeric: true },
+                  { key: 'composition', label: S.legend },
+                  ...(pooled ? [] : [{ key: 'changed', label: S.changedDapil }]),
+                ]}
+                rows={allocation.byDapil.map((result) => {
+                  const d = data.dapil.dapil.find((x) => x.code === result.dapil);
+                  const base = reproduction.baseline.byDapil.find(
+                    (x) => x.dapil === result.dapil,
+                  );
+                  return {
+                    dapil: d?.name ?? result.dapil,
+                    magnitude: d?.magnitude ?? 0,
+                    composition: data.parties.parties
+                      .filter((p) => (result.seats[p.id] ?? 0) > 0)
+                      .map((p) => `${p.shortName} ${result.seats[p.id]}`)
+                      .join(', '),
+                    changed: data.parties.parties.some(
+                      (p) => (result.seats[p.id] ?? 0) !== (base?.seats[p.id] ?? 0),
+                    )
+                      ? 'ya'
+                      : '',
+                  };
+                })}
+              />
+              {!pooled && (
+                <TableView
+                  label={S.transferLedger}
+                  caption={S.transferNote}
+                  empty={S.noTransfers}
+                  columns={[
+                    { key: 'dapil', label: S.dapil },
+                    { key: 'from', label: S.transferFrom },
+                    { key: 'to', label: S.transferTo },
+                    { key: 'seats', label: S.seats, numeric: true },
+                  ]}
+                  rows={transfers.transfers.map((t) => ({
+                    dapil: t.dapilName,
+                    from: short(data.parties.parties, t.from),
+                    to: short(data.parties.parties, t.to),
+                    seats: t.seats,
+                  }))}
+                />
+              )}
+            </>
           }
         >
           <div className="bleed">
@@ -271,6 +306,7 @@ function Loaded({ data }: { data: Dataset }) {
               selected={selectedDapil}
               onSelect={setSelectedDapil}
               animate={!scrubbing}
+              seatsMoved={transfers.seatsMoved}
               pooled={pooled}
             />
           </div>
