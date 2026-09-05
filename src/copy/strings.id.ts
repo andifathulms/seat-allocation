@@ -7,7 +7,20 @@
  */
 export const S = {
   title: 'Suara ke Kursi',
-  subtitle: 'Bagaimana suara Pemilu 2024 menjadi 580 kursi DPR',
+  /*
+   * A promise with a verb, not a topic. The old subtitle named a subject —
+   * how votes became seats — and left a reader to discover from the third
+   * clause of a sixty-word paragraph that anything on the page could be moved.
+   *
+   * Stated as what the app does rather than as an instruction to the reader:
+   * the house rule in CLAUDE.md forbids second-person exhortation, and an
+   * affordance survives being described.
+   */
+  subtitle:
+    'Menghitung ulang 580 kursi DPR atas suara Pemilu 2024, pada ambang batas ' +
+    'dan metode pembagi mana pun.',
+  /** What it is not, before the first figure is read. PRD §10.1. */
+  lead: 'Hitung ulang atas suara yang sudah tetap, bukan ramalan.',
 
   contents: 'Isi halaman',
   changed: 'aturan diubah',
@@ -15,7 +28,13 @@ export const S = {
   verifiedHead: 'Hasil resmi 2024 direproduksi.',
   verifiedDetail: (seats: number, seatsTotal: number, dapil: number, dapilTotal: number) =>
     `${seats} dari ${seatsTotal} kursi cocok, ${dapil} dari ${dapilTotal} dapil cocok.`,
-  notVerified: 'Hasil resmi 2024 belum dapat direproduksi.',
+  /*
+   * Leads with what is certified rather than with what failed. Both sentences
+   * were already true; the old order put an unqualified failure above every
+   * working output on the page, which invited a reader to discount figures that
+   * are in fact the official ones.
+   */
+  notVerified: 'Angka nasional sesuai hasil resmi KPU.',
   failed: 'Reproduksi hasil resmi 2024 gagal.',
   failedDetail:
     'Alokasi yang dihitung berbeda dari alokasi resmi. Rincian per pemeriksaan ada di bawah.',
@@ -67,6 +86,13 @@ export const S = {
   under2024: 'aturan 2024',
 
   controls: 'Aturan',
+  /*
+   * The console names its own effect. Until this revision the only statement
+   * that the threshold could be moved sat in clause three of the masthead
+   * paragraph, which a reader reaches — if at all — long after meeting the
+   * control itself.
+   */
+  transportHint: 'Menggeser ambang batas menghitung ulang seluruh 580 kursi.',
   moreRules: 'Aturan lain',
   threshold: 'Ambang batas',
   thresholdScope: 'Cakupan ambang batas',

@@ -81,6 +81,17 @@ export function Transport({ rules, onChange, onScrub, averageMagnitude, citation
     },
   ].sort((a, b) => a.value - b.value);
 
+  /*
+   * The historic thresholds are marked as `--historic` rather than dropped on a
+   * phone, so the choice of what a narrow track can hold stays in CSS with the
+   * rest of the layout. Three of the four ticks fall inside the first fifth of
+   * the scale and need a three-row stagger to clear each other; on a 390 px
+   * track that stagger costs more height than the transport can spare, so the
+   * two historic marks give way and the statutory and effective figures — the
+   * two the app is actually about — keep a single row.
+   */
+  const HISTORIC = new Set(['2009', '2014']);
+
   return (
     <section className="transport" aria-label={S.controls} ref={bar}>
       <div className="transport__inner page">
@@ -97,6 +108,9 @@ export function Transport({ rules, onChange, onScrub, averageMagnitude, citation
             <output className="transport__value figure" htmlFor={sliderId}>
               {percent(rules.threshold, 1)}
             </output>
+            {/* Rides the label's own row on a wide viewport, so naming the
+                control's effect costs the bar no height at all. */}
+            <p className="transport__hint small">{S.transportHint}</p>
             <div className="transport__track">
               <div
                 className="transport__fill"
@@ -136,7 +150,9 @@ export function Transport({ rules, onChange, onScrub, averageMagnitude, citation
                     <li
                       key={tick.note}
                       style={{ left: `${at * 100}%` }}
-                      className={`transport__tick${on}${edge}`}
+                      className={`transport__tick${on}${edge}${
+                    HISTORIC.has(tick.note) ? ' transport__tick--historic' : ''
+                  }`}
                     >
                       <span className="micro">{tick.label}</span>
                       <span className="micro transport__tick-note">{tick.note}</span>

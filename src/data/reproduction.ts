@@ -33,10 +33,14 @@ export function reproduce(data: Dataset): Reproduction {
   let notAttempted: string | null = null;
   if (!isCertified(data)) {
     notAttempted =
-      'Tabel suara per dapil masih placeholder, bukan rekapitulasi bersertifikat KPU.';
+      'Total suara tiap partai dan susunan 580 kursi pada 84 dapil sesuai angka ' +
+      'resmi. Tabel suara per dapil masih placeholder, jadi reproduksi hasil ' +
+      'resmi belum dapat diuji.';
   } else if (data.official.byDapil === null) {
     notAttempted =
-      'Alokasi kursi per dapil pada Keputusan KPU 1206/2024 belum diekstraksi.';
+      'Total suara tiap partai dan susunan 580 kursi pada 84 dapil sesuai angka ' +
+      'resmi. Alokasi kursi per dapil pada Keputusan KPU 1206/2024 belum ' +
+      'diekstraksi, jadi reproduksi belum dapat diuji.';
   }
 
   let seatsMatched = 0;
