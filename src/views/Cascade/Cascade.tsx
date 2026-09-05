@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { allocate, divisorAt } from '../../engine';
 import type { Dapil, Party, RuleSet, SeatAward } from '../../engine/types';
 import { S } from '../../copy/strings.id';
+import { DownloadWorksheet } from '../../ui/DownloadWorksheet';
 import { count, decimal } from '../../ui/format';
 import { useReducedMotion } from '../../ui/motion';
 import { TableView } from '../../ui/TableView';
@@ -23,6 +24,8 @@ interface Props {
    * the view says so instead.
    */
   pooled: boolean;
+  /** The page's reproduction statement, carried into the exported worksheet. */
+  provenance: string;
 }
 
 /**
@@ -30,7 +33,15 @@ interface Props {
  * recomputes a quotient for display, so the arithmetic on screen and the
  * arithmetic that produced the seats are the same object.
  */
-export function Cascade({ parties, dapil, code, rules, onSelect, pooled }: Props) {
+export function Cascade({
+  parties,
+  dapil,
+  code,
+  rules,
+  onSelect,
+  pooled,
+  provenance,
+}: Props) {
   const reduced = useReducedMotion();
   const [step, setStep] = useState(0);
   const [playing, setPlaying] = useState(false);
@@ -151,6 +162,16 @@ export function Cascade({ parties, dapil, code, rules, onSelect, pooled }: Props
             ))}
           </select>
         </label>
+
+        {selected && (
+          <DownloadWorksheet
+            dapil={selected}
+            trace={trace}
+            parties={parties}
+            rules={rules}
+            provenance={provenance}
+          />
+        )}
 
         <div className="cascade__transport">
           <button type="button" onClick={() => setStep((s) => Math.max(s - 1, 0))} disabled={step === 0}>

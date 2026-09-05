@@ -18,6 +18,7 @@ import { Legend } from './ui/Legend';
 import { Masthead } from './ui/Masthead';
 import { Premise } from './ui/Premise';
 import { Decomposition } from './ui/Decomposition';
+
 import { Response } from './views/Response/Response';
 import { MetricStrip } from './ui/MetricStrip';
 import { Rail, type RailSection } from './ui/Rail';
@@ -388,6 +389,11 @@ function Loaded({ data }: { data: Dataset }) {
               rules={rules}
               onSelect={setSelectedDapil}
               pooled={pooled}
+              provenance={
+                reproduction.reproduced
+                  ? S.verifiedHead
+                  : `${S.notVerified} ${reproduction.notAttempted ?? S.failedDetail}`
+              }
             />
           </div>
         </Section>
