@@ -7,7 +7,7 @@
 .verification {
   margin-top: var(--s6);
   padding: var(--s4) var(--s5);
-  background: var(--paper-sub);
+  background: var(--paper);
   border-radius: var(--r);
   border-left: 3px solid var(--rule-strong);
 }

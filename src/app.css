@@ -7,7 +7,7 @@
    blocks in the arc directly above it, and both need the stage ground because
    every swatch in the legend is a party colour. DESIGN.md §5.1. */
 .chamber-stage {
-  padding: var(--s6) var(--s5) var(--s5);
+  padding: var(--s5) var(--s5);
   display: grid;
   gap: var(--s6);
 }

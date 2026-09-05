@@ -1,6 +1,12 @@
+/*
+ * Sized so the chamber clears the fold. The budget above the hemicycle is the
+ * whole design problem here: every rule in this file exists to keep this block
+ * under roughly 300 px on a laptop, which is what leaves the arc visible in the
+ * first viewport once the sticky transport has taken its share.
+ */
 .masthead {
-  padding-top: var(--s8);
-  padding-bottom: var(--s5);
+  padding-top: var(--s5);
+  padding-bottom: var(--s3);
 }
 
 /* The one piece of brand colour on paper, and it is a mark rather than
@@ -9,9 +15,9 @@
    black in the dark scheme, so it never glares. The tile rounds itself. */
 .masthead__mark {
   display: block;
-  width: 44px;
-  height: 44px;
-  margin-bottom: var(--s5);
+  width: 36px;
+  height: 36px;
+  margin-bottom: var(--s4);
 }
 
 .masthead__title {
@@ -19,70 +25,74 @@
   margin-left: -0.02em;
 }
 
+/* The promise. Wide enough to hold on two lines and no wider — a third line
+   here costs the chamber its place in the first viewport. */
 .masthead__subtitle {
-  max-width: 28ch;
-  margin-top: var(--s4);
+  max-width: 46ch;
+  margin-top: var(--s3);
   color: var(--ink-soft);
   font-weight: 400;
 }
 
-.masthead__intro {
-  margin-top: var(--s6);
-  color: var(--ink);
-}
-
-.masthead__figures {
-  margin-top: var(--s7);
-  padding-top: var(--s4);
-  border-top: 1px solid var(--ink);
-}
-
-.masthead__figures-label {
+.masthead__lead {
+  margin-top: var(--s3);
   color: var(--ink-soft);
 }
 
-/* The premise, four across. The unconverted figure is the widest and the only
-   one that needs a second line, so it takes two columns and closes the row. */
-.masthead__grid {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: var(--s5) var(--s4);
-  margin: var(--s5) 0 0;
+/*
+ * A short window cannot hold a full-size title block and a full-size
+ * hemicycle. The title yields: it is legible at any size, and the arc is the
+ * only thing on the page that stops meaning anything when it is cropped.
+ */
+@media (max-height: 820px) {
+  .masthead__mark {
+    width: 28px;
+    height: 28px;
+    margin-bottom: var(--s3);
+  }
+
+  .masthead__title {
+    font-size: clamp(34px, 4.4vw, 48px);
+  }
+
+  .masthead__subtitle {
+    margin-top: var(--s2);
+  }
+
+  .masthead__lead {
+    margin-top: var(--s2);
+  }
 }
 
-.masthead__figure--wide {
-  grid-column: span 2;
-}
+/*
+ * Below this the screen genuinely cannot hold the title block, the section's
+ * head and a readable arc at once. The masthead gives up its mark and its
+ * qualifying line rather than let the hero be cropped to a sliver: neither is
+ * lost, both are restated in the premise band directly below the chamber, and
+ * the counterfactual discipline of PRD §10.1 is carried by the transport's own
+ * statement the moment a control moves.
+ */
+@media (max-height: 700px) {
+  .masthead {
+    padding-top: var(--s4);
+  }
 
-.masthead__figure-label {
-  color: var(--ink-soft);
-  text-wrap: pretty;
-}
+  .masthead__mark,
+  .masthead__lead {
+    display: none;
+  }
 
-.masthead__figure-note {
-  font-family: var(--font-narrow);
-}
-
-.masthead__figure-value {
-  margin: var(--s2) 0 0;
+  .masthead__title {
+    font-size: clamp(28px, 3.6vw, 38px);
+  }
 }
 
 @media (max-width: 860px) {
   .masthead {
-    padding-top: var(--s7);
+    padding-top: var(--s5);
   }
 
-  .masthead__grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 380px) {
-  .masthead__grid {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .masthead__figure--wide {
-    grid-column: span 1;
+  .masthead__subtitle {
+    max-width: none;
   }
 }

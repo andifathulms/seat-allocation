@@ -1,5 +1,12 @@
 .section {
   margin-top: var(--s8);
+  /* The chamber shares the first screen with the masthead, so the first section
+     does not open a gap the way a section arriving after a long scroll does.
+     The space above the hero arc is the scarcest in the app. */
+}
+
+main > .section:first-of-type {
+  margin-top: var(--s5);
   scroll-margin-top: 5.5rem;
 }
 
@@ -52,7 +59,31 @@
     padding-top: 0;
   }
 
+  /* Stacked, the table toggle would sit between the note and the instrument it
+     belongs to and read as a stray link before the picture. It goes below the
+     head instead, where it trails the instrument the way it does on a wide
+     screen. */
   .section__aside {
     justify-self: start;
+    order: 3;
+    margin-top: calc(var(--s5) * -1);
+    padding-top: var(--s2);
+  }
+
+  .section__head {
+    padding-bottom: var(--s5);
+  }
+}
+
+/* Paired with the masthead's own short-viewport rule: on a screen this short the
+   chamber's note yields its two lines to the arc. The sentence is not lost — it
+   is the caption of this instrument's table and its accessible description. */
+@media (max-height: 700px) {
+  main > .section:first-of-type {
+    margin-top: var(--s4);
+  }
+
+  main > .section:first-of-type .section__note {
+    display: none;
   }
 }

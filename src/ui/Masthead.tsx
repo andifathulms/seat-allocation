@@ -1,29 +1,20 @@
-import type { Reproduction } from '../data/reproduction';
-import type { Dataset } from '../data/schema';
 import { S } from '../copy/strings.id';
-import { count, percent } from './format';
-import { Verification } from './Verification';
 import './masthead.css';
 
-interface Props {
-  data: Dataset;
-  reproduction: Reproduction;
-}
-
 /**
- * The premise, stated once. Four figures from the official 2024 result frame
- * everything below: the chamber being filled, the field that contested it, the
- * part of that field the threshold admitted, and the votes that produced no
- * seat.
+ * The premise, stated in the space above the chamber and no more.
  *
- * These four are deliberately the baseline and not the live allocation. They are
- * the fixed thing the rest of the page is measured against, and a reader who
- * scrolls back up after moving the scrubber needs the anchor to still be here.
+ * Until this revision the masthead was 813 px tall on a 900 px viewport and
+ * spent all of it on prose, which put the hemicycle 303 px below the fold on a
+ * desktop and 592 px below it on a phone. A visitor's first view of an app
+ * about the composition of a parliament contained no parliament.
+ *
+ * So this is now a title, a promise and one qualifying line. Everything that
+ * was here and is not one of those three — the four official figures and the
+ * reproduction notice — moves below the chamber into <Premise>, where it frames
+ * an instrument the reader has already seen rather than delaying it.
  */
-export function Masthead({ data, reproduction }: Props) {
-  const qualifying = reproduction.baseline.qualifying.length;
-  const contesting = data.parties.parties.length;
-
+export function Masthead() {
   return (
     <header className="masthead" id="masthead">
       <div className="page masthead__inner">
@@ -38,54 +29,15 @@ export function Masthead({ data, reproduction }: Props) {
           <img
             className="masthead__mark"
             src={`${import.meta.env.BASE_URL}brand/icon.svg`}
-            width={44}
-            height={44}
+            width={36}
+            height={36}
             alt=""
           />
         </picture>
         <h1 className="display masthead__title">{S.title}</h1>
         <p className="masthead__subtitle h3">{S.subtitle}</p>
-        <p className="prose masthead__intro">{S.intro}</p>
-
-        <div className="masthead__figures">
-          <p className="masthead__figures-label micro">{S.officialResult}</p>
-          <dl className="masthead__grid">
-            <Figure value={String(data.official.totalSeats)} label={S.seatsInPlay} />
-            <Figure value={String(contesting)} label={S.contesting} />
-            <Figure value={String(qualifying)} label={S.qualified} />
-            <Figure
-              value={count(reproduction.baseline.metrics.unconvertedVotes)}
-              label={S.unconverted}
-              note={percent(reproduction.baseline.metrics.unconvertedShare, 2)}
-              wide
-            />
-          </dl>
-        </div>
-
-        <Verification reproduction={reproduction} />
+        <p className="masthead__lead small">{S.lead}</p>
       </div>
     </header>
-  );
-}
-
-function Figure({
-  value,
-  label,
-  note,
-  wide,
-}: {
-  value: string;
-  label: string;
-  note?: string;
-  wide?: boolean;
-}) {
-  return (
-    <div className={`masthead__figure${wide ? ' masthead__figure--wide' : ''}`}>
-      <dt className="masthead__figure-label small">
-        {label}
-        {note && <span className="masthead__figure-note"> · {note}</span>}
-      </dt>
-      <dd className="masthead__figure-value figure-lg">{value}</dd>
-    </div>
   );
 }

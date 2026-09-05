@@ -12,21 +12,41 @@
   overflow: visible;
 
   /*
-   * The arc has to fit between the rail and the transport. Dragging the
-   * threshold and watching the chamber recompose is the app's core moment, and
-   * it does not happen at all if the arc is behind the control being dragged.
+   * The arc has to fit between whatever is above it and the transport.
+   * Dragging the threshold and watching the chamber recompose is the app's core
+   * moment, and it does not happen at all if the arc is behind the control
+   * being dragged or below the fold.
    *
-   * The reservation is the rail, this section's head, and the transport at
-   * whatever height it currently is — Transport.tsx measures it. `svh` rather
-   * than `vh` so a mobile browser's retracting chrome does not push the arc
-   * under the bar on first paint.
+   * Both reservations are measured rather than assumed. The transport changes
+   * height when the counterfactual statement appears (Transport.tsx), and the
+   * masthead above the arc changes height with the viewport (Chamber.tsx).
+   * A constant was wrong the moment the chamber moved into the first screen.
+   *
+   * Measuring the space above is safe against feedback: nothing below the arc
+   * affects that distance, so the value settles on the first pass.
+   *
+   * `svh` rather than `vh` so a mobile browser's retracting chrome does not
+   * push the arc under the bar on first paint.
    */
-  max-height: calc(100svh - var(--transport-h, 9rem) - 19rem);
+  /*
+   * The floor matters as much as the cap. On the shortest phones the space
+   * between the masthead and the transport goes to nothing, and an arc obeying
+   * the cap alone would compute to zero height — strictly worse than one that
+   * is partly behind the bar, because two thirds of a hemicycle still reads as
+   * a parliament and none of one reads as nothing.
+   */
+  max-height: max(
+    11rem,
+    calc(100svh - var(--transport-h, 9rem) - var(--chamber-top, 20rem) - var(--s5))
+  );
 }
 
 @supports not (height: 100svh) {
   .chamber__svg {
-    max-height: calc(100vh - var(--transport-h, 9rem) - 19rem);
+    max-height: max(
+      11rem,
+      calc(100vh - var(--transport-h, 9rem) - var(--chamber-top, 20rem) - var(--s5))
+    );
   }
 }
 

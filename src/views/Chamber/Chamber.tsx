@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import type { Party, PartyId } from '../../engine/types';
 import { easeMigrate, mix, mixHex, useProgress } from '../../ui/motion';
 import { blockCentroid, blockOrder, matchSeats, seatParties } from './assign';
@@ -61,6 +61,42 @@ function chipWidth(short: string, count: number): number {
  * on a phone.
  */
 export function Chamber({ parties, seatsByParty, total, animate }: Props) {
+  const root = useRef<HTMLElement>(null);
+
+  /**
+   * Publishes the arc's distance from the top of the document as
+   * `--chamber-top`, which chamber.css subtracts when capping the arc's height
+   * so it always fits between the masthead and the transport.
+   *
+   * Measured rather than assumed because that distance changes with the
+   * viewport: the masthead's title, subtitle and lead all rewrap, and a short
+   * window trims the whole block. It cannot feed back on itself — nothing below
+   * the arc contributes to the distance above it — so the value settles on the
+   * first pass and is only written when it actually moves.
+   */
+  useLayoutEffect(() => {
+    const el = root.current;
+    if (!el) return;
+
+    let last = -1;
+    const measure = () => {
+      const top = Math.round(el.getBoundingClientRect().top + window.scrollY);
+      if (top === last) return;
+      last = top;
+      document.documentElement.style.setProperty('--chamber-top', `${top}px`);
+    };
+
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(document.body);
+    window.addEventListener('resize', measure);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', measure);
+      document.documentElement.style.removeProperty('--chamber-top');
+    };
+  }, []);
+
   const geometry = useMemo(() => hemicycle(total), [total]);
   const colors = useMemo(() => {
     const map = new Map<PartyId, string>();
@@ -223,7 +259,7 @@ export function Chamber({ parties, seatsByParty, total, animate }: Props) {
   } ${1 + pad + below + outside * 0.5}`;
 
   return (
-    <figure className="chamber">
+    <figure className="chamber" ref={root}>
       <svg
         className="chamber__svg"
         viewBox={viewBox}

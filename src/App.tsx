@@ -13,6 +13,7 @@ import { Chamber } from './views/Chamber/Chamber';
 import { Colophon } from './ui/Colophon';
 import { Legend } from './ui/Legend';
 import { Masthead } from './ui/Masthead';
+import { Premise } from './ui/Premise';
 import { MetricStrip } from './ui/MetricStrip';
 import { Rail, type RailSection } from './ui/Rail';
 import { Section } from './ui/Section';
@@ -89,7 +90,7 @@ function Loaded({ data }: { data: Dataset }) {
 
       <Rail sections={SECTIONS} threshold={rules.threshold} atDefault={isDefault(rules)} />
 
-      <Masthead data={data} reproduction={reproduction} />
+      <Masthead />
 
       <main>
         <Section
@@ -142,6 +143,8 @@ function Loaded({ data }: { data: Dataset }) {
             </div>
           </div>
         </Section>
+
+        <Premise data={data} reproduction={reproduction} />
 
         <Section id="angka-ringkas" index="02" title={S.metrics} note={S.metricsNote}>
           <div className="page">

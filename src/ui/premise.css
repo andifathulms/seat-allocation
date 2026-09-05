@@ -1,0 +1,68 @@
+/*
+ * Calibration, below the instrument it calibrates. Set on the recessed ground
+ * so it reads as apparatus around the chamber rather than as another
+ * instrument.
+ */
+.premise {
+  margin-top: var(--s7);
+  padding-block: var(--s6);
+  background: var(--paper-sub);
+  border-block: 1px solid var(--rule);
+}
+
+.premise__intro {
+  color: var(--ink);
+}
+
+.premise__figures {
+  margin-top: var(--s6);
+  padding-top: var(--s4);
+  border-top: 1px solid var(--ink);
+}
+
+.premise__figures-label {
+  color: var(--ink-soft);
+  font-weight: 500;
+}
+
+/* The premise, four across. The unconverted figure is the widest and the only
+   one that needs a second line, so it takes two columns and closes the row. */
+.premise__grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--s5) var(--s4);
+  margin: var(--s5) 0 0;
+}
+
+.premise__figure--wide {
+  grid-column: span 2;
+}
+
+.premise__figure-label {
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+.premise__figure-note {
+  font-family: var(--font-narrow);
+}
+
+.premise__figure-value {
+  margin: var(--s2) 0 0;
+}
+
+@media (max-width: 860px) {
+  .premise__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 380px) {
+  .premise__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .premise__figure--wide {
+    grid-column: span 1;
+  }
+}
