@@ -85,6 +85,24 @@ export const S = {
   votesToSeats: 'suara → kursi',
   under2024: 'aturan 2024',
 
+  decomposition: 'Dua aturan, diukur terpisah',
+  decompositionShort: 'Dua aturan',
+  decompositionNote:
+    'Indeks Gallagher pada empat gabungan aturan: ambang batas seperti yang ' +
+    'disetel dan tanpa ambang batas, masing-masing di 84 dapil dan di satu ' +
+    'kumpulan nasional. Membandingkan baris memberi pengaruh ambang batas; ' +
+    'membandingkan kolom memberi pengaruh besaran dapil.',
+  decompositionCaveat:
+    'Kedua aturan saling memengaruhi, sehingga selisihnya tidak dijumlahkan ' +
+    'menjadi satu angka. Empat pengukuran ditampilkan sebagai empat pengukuran.',
+  withThreshold: 'ambang batas disetel',
+  withoutThreshold: 'tanpa ambang batas',
+  geo84: '84 dapil',
+  geoPool: 'satu dapil nasional',
+  partiesWithSeats: 'partai memperoleh kursi',
+  votesPerSeat: 'Suara per kursi',
+  votesPerSeatNone: 'tanpa kursi',
+
   controls: 'Aturan',
   /*
    * The console names its own effect. Until this revision the only statement

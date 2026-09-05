@@ -1,0 +1,59 @@
+.decomp {
+  display: grid;
+  gap: var(--s4);
+}
+
+.decomp__table {
+  width: 100%;
+  max-width: 44rem;
+  border-collapse: collapse;
+}
+
+.decomp__table thead th {
+  font-weight: 500;
+  color: var(--ink-soft);
+  text-align: left;
+  padding: 0 var(--s4) var(--s2);
+  border-bottom: 1px solid var(--ink);
+}
+
+.decomp__label {
+  font-weight: 400;
+  color: var(--ink-soft);
+  text-align: left;
+  vertical-align: baseline;
+  padding: var(--s4) var(--s4) var(--s4) 0;
+  white-space: nowrap;
+}
+
+.decomp__cell {
+  display: table-cell;
+  padding: var(--s4) var(--s4) var(--s4) 0;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: baseline;
+}
+
+.decomp__gallagher {
+  display: block;
+  line-height: 1;
+}
+
+.decomp__detail {
+  display: block;
+  margin-top: var(--s1);
+  color: var(--ink-soft);
+  font-family: var(--font-narrow);
+}
+
+.decomp__caveat {
+  max-width: var(--measure);
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+@media (max-width: 640px) {
+  .decomp__label,
+  .decomp__cell {
+    padding-right: var(--s3);
+  }
+}

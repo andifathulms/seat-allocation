@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { S } from './copy/strings.id';
 import { loadDataset } from './data/load';
 import { pickDefaultDapil } from './data/defaultDapil';
 import { reproduce, type Reproduction } from './data/reproduction';
 import type { Dataset } from './data/schema';
 import { isDefault } from './state/rules';
+import { decompose } from './engine/decompose';
 import { useAllocation } from './state/useAllocation';
 import { count, decimal, percent } from './ui/format';
 import { Archipelago } from './views/Archipelago/Archipelago';
@@ -14,6 +15,7 @@ import { Colophon } from './ui/Colophon';
 import { Legend } from './ui/Legend';
 import { Masthead } from './ui/Masthead';
 import { Premise } from './ui/Premise';
+import { Decomposition } from './ui/Decomposition';
 import { MetricStrip } from './ui/MetricStrip';
 import { Rail, type RailSection } from './ui/Rail';
 import { Section } from './ui/Section';
@@ -26,6 +28,7 @@ import './app.css';
 const SECTIONS: readonly RailSection[] = [
   { id: 'ruang-sidang', label: S.chamber },
   { id: 'angka-ringkas', label: S.metrics },
+  { id: 'dua-aturan', label: S.decompositionShort },
   { id: 'suara-sah', label: S.voteBar },
   { id: 'dapil', label: S.archipelago },
   { id: 'langkah', label: S.cascadeShort },
@@ -64,6 +67,17 @@ export function App() {
 function Loaded({ data }: { data: Dataset }) {
   const [reproduction] = useState<Reproduction>(() => reproduce(data));
   const { rules, setRules, allocation } = useAllocation(data);
+
+  /**
+   * Four extra engine passes. They depend on the rules but not on the threshold
+   * while it is being dragged past values that change nothing, so this is memo'd
+   * on the rule set rather than recomputed per frame — the scrubber's budget in
+   * PRD §6.5 covers one pass, not five.
+   */
+  const decomposition = useMemo(
+    () => decompose(data.parties.parties, data.dapil.dapil, rules),
+    [data, rules],
+  );
 
   /**
    * DESIGN.md §6.1. While the scrubber is under the pointer the chamber follows
@@ -107,6 +121,7 @@ function Loaded({ data }: { data: Dataset }) {
                 { key: 'voteShare', label: S.voteShare, numeric: true },
                 { key: 'seats', label: S.seats, numeric: true },
                 { key: 'seatShare', label: S.seatShare, numeric: true },
+                { key: 'perSeat', label: S.votesPerSeat, numeric: true },
                 { key: 'baseline', label: S.under2024, numeric: true },
               ]}
               rows={[...data.parties.parties]
@@ -121,6 +136,13 @@ function Loaded({ data }: { data: Dataset }) {
                   voteShare: percent(p.nationalVotes / data.parties.totalValidVotes, 2),
                   seats: allocation.seatsByParty[p.id] ?? 0,
                   seatShare: percent(allocation.metrics.shares[p.id]?.seatShare ?? 0, 2),
+                  // The concrete reading of the same gap the Gallagher index
+                  // states in the abstract. A party holding no seats has no
+                  // quotient here — the votes are not expensive, they are
+                  // unconverted, and a number would imply otherwise.
+                  perSeat: (allocation.seatsByParty[p.id] ?? 0) > 0
+                    ? count(Math.round(p.nationalVotes / (allocation.seatsByParty[p.id] as number)))
+                    : S.votesPerSeatNone,
                   baseline: reproduction.baseline.seatsByParty[p.id] ?? 0,
                 }))}
             />
@@ -158,8 +180,22 @@ function Loaded({ data }: { data: Dataset }) {
         </Section>
 
         <Section
-          id="suara-sah"
+          id="dua-aturan"
           index="03"
+          title={S.decomposition}
+          note={S.decompositionNote}
+        >
+          <div className="page">
+            <Decomposition
+              data={decomposition}
+              totalValidVotes={data.parties.totalValidVotes}
+            />
+          </div>
+        </Section>
+
+        <Section
+          id="suara-sah"
+          index="04"
           title={S.voteBar}
           note={S.voteBarNote}
           aside={
@@ -194,7 +230,7 @@ function Loaded({ data }: { data: Dataset }) {
 
         <Section
           id="dapil"
-          index="04"
+          index="05"
           title={pooled ? S.geography : S.archipelago}
           note={pooled ? undefined : S.archipelagoNote}
           aside={
@@ -242,7 +278,7 @@ function Loaded({ data }: { data: Dataset }) {
 
         <Section
           id="langkah"
-          index="05"
+          index="06"
           title={S.cascade}
           note={pooled ? undefined : S.cascadeNote}
         >
@@ -260,7 +296,7 @@ function Loaded({ data }: { data: Dataset }) {
 
         <Section
           id="pangsa"
-          index="06"
+          index="07"
           title={S.proportionality}
           note={S.proportionalityNote}
           aside={
