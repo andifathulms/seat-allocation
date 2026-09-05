@@ -50,7 +50,7 @@
 }
 
 .cascade__transport button:disabled {
-  color: var(--ink-faint);
+  color: var(--ink-disabled);
   border-color: var(--rule);
   cursor: default;
 }

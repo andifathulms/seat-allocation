@@ -47,10 +47,10 @@
 
 .transport__scrub {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-columns: auto auto minmax(0, 1fr);
   grid-template-areas:
-    'label value'
-    'track track';
+    'label value hint'
+    'track track track';
   align-items: baseline;
   column-gap: var(--s3);
 }
@@ -67,6 +67,15 @@
   font-weight: 600;
   line-height: 1;
   letter-spacing: -0.01em;
+}
+
+.transport__hint {
+  grid-area: hint;
+  justify-self: end;
+  text-align: right;
+  text-wrap: balance;
+  color: var(--ink-soft);
+  padding-left: var(--s4);
 }
 
 .transport__track {
@@ -302,7 +311,7 @@
 }
 
 .transport__reset:disabled {
-  color: var(--ink-faint);
+  color: var(--ink-disabled);
   text-decoration: none;
   cursor: default;
 }
@@ -340,10 +349,44 @@
   }
 }
 
+@media (max-width: 860px) {
+  .transport__scrub {
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas:
+      'label value'
+      'track track'
+      'hint  hint';
+  }
+
+  .transport__hint {
+    justify-self: start;
+    text-align: left;
+    padding-left: 0;
+  }
+}
+
 @media (max-width: 720px) {
   .transport__inner {
     padding-block: var(--s3) var(--s4);
     gap: var(--s3);
+  }
+
+  /* A 390 px track cannot hold four labels, and the stagger that would clear
+     them costs more height than the bar can spare on a phone. The statutory
+     figure and the effective one stay; the history goes. */
+  .transport__tick--historic {
+    display: none;
+  }
+
+  .transport__tick:nth-child(3n + 2),
+  .transport__tick:nth-child(3n) {
+    padding-top: 0;
+  }
+
+  .transport__tick:nth-child(3n + 2)::before,
+  .transport__tick:nth-child(3n)::before {
+    height: 5px;
+    margin-top: 0;
   }
 
   /* The value alone still reads at this width; the year note does not fit
@@ -353,7 +396,7 @@
   }
 
   .transport__track {
-    padding-bottom: 4.4rem;
+    padding-bottom: 1.9rem;
   }
 
   .transport__sheet {

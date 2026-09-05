@@ -17,9 +17,11 @@
   --paper-raise: #fbfaf7;
   --ink: #16181b;
   --ink-soft: #565a60;
-  /* Disabled controls only — below 4,5:1, and nothing it marks is information
-     that is not also stated by the control's own disabled state. */
-  --ink-faint: #878c93;
+  /* Genuinely non-informational: a disabled control whose state is already
+     announced by the control itself. The only token in the app permitted below
+     4,5:1, and it may never carry a word that is not repeated elsewhere. Every
+     rank that does carry information stops at --ink-soft. */
+  --ink-disabled: #9aa0a7;
   --rule: #dad7d0;
   --rule-strong: #b9b5ac;
 
@@ -103,7 +105,7 @@
     --paper-raise: #1a1e23;
     --ink: #edeef0;
     --ink-soft: #a2a8b0;
-    --ink-faint: #6d737b;
+    --ink-disabled: #5f656d;
     --rule: #252a30;
     --rule-strong: #3b414a;
     --stage: #181b20;
